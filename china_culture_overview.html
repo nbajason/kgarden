@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full bg-slate-950 text-slate-100 dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国五千年文化总览 | 费曼学习法</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif']
+                    },
+                    colors: {
+                        culture: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.9); border-radius: 999px; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.58);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.42);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            transition: all 0.25s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(245, 158, 11, 0.45);
+            background: rgba(30, 41, 59, 0.72);
+        }
+        .feynman-box {
+            background: linear-gradient(135deg, rgba(120, 53, 15, 0.36), rgba(30, 41, 59, 0.68));
+            border-left: 4px solid #f59e0b;
+        }
+        .culture-tree-visual {
+            position: relative;
+            min-height: 410px;
+            border-radius: 1rem;
+            background: radial-gradient(circle at 50% 14%, rgba(245, 158, 11, 0.16), rgba(15, 23, 42, 0.08) 58%), rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(245, 158, 11, 0.32);
+            overflow: hidden;
+        }
+        .culture-tree-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .culture-tree-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.84);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            white-space: nowrap;
+            backdrop-filter: blur(2px);
+        }
+        .culture-tree-label-crown {
+            top: 14%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fed7aa;
+            border-color: rgba(249, 115, 22, 0.46);
+        }
+        .culture-tree-label-trunk {
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fde68a;
+            border-color: rgba(251, 191, 36, 0.46);
+        }
+        .culture-tree-label-root {
+            bottom: 7%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fef08a;
+            border-color: rgba(250, 204, 21, 0.46);
+        }
+        .culture-tree-season {
+            position: absolute;
+            font-size: 11px;
+            line-height: 1.2;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(251, 191, 36, 0.42);
+            background: rgba(15, 23, 42, 0.85);
+            color: #fde68a;
+        }
+        .culture-tree-season-spring { top: 7%; left: 7%; }
+        .culture-tree-season-summer { top: 7%; right: 7%; }
+        .culture-tree-season-autumn { top: 41%; right: 4%; }
+        .culture-tree-season-winter { top: 41%; left: 4%; }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme .glass-panel,
+        body.light-theme .glass-card,
+        body.light-theme .feynman-box,
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden font-sans antialiased bg-slate-950 text-slate-100">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="index.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-culture-500 to-orange-500 flex items-center justify-center text-white">
+                <i class="fa-solid fa-scroll"></i>
+            </div>
+            <span class="font-bold text-slate-100">中国文化总览</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-culture-500 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                <i class="fa-solid fa-scroll w-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">思想分支专题</p>
+            <a href="china_confucianism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-book w-5 text-center text-red-300"></i>
+                <span>儒家专题</span>
+            </a>
+            <a href="china_taoism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-leaf w-5 text-center text-emerald-300"></i>
+                <span>道家专题</span>
+            </a>
+            <a href="china_chan_buddhism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-spa w-5 text-center text-purple-300"></i>
+                <span>禅宗专题</span>
+            </a>
+
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                文化费曼模式
+            </span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-slate-950 p-4 md:p-8">
+        <section class="max-w-7xl mx-auto space-y-8">
+            <div class="glass-panel rounded-2xl p-6 md:p-8 relative overflow-hidden border-amber-500/20">
+                <div class="absolute -right-10 -bottom-12 w-52 h-52 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10">
+                    <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight flex items-center gap-3">
+                        <i class="fa-solid fa-landmark text-amber-300"></i>
+                        中国五千年文化总览
+                    </h2>
+                    <p class="text-slate-300 text-sm md:text-base mt-3 max-w-4xl leading-relaxed">
+                        用费曼学习法来讲，中国文化可以先抓住一句话：
+                        <strong class="text-amber-300">这是一套把超大规模社会长期组织起来，并持续自我更新的生活与意义系统。</strong>
+                        它既写在经典里，也活在餐桌、节日、家风、乡土、城市和技术里。
+                    </p>
+                </div>
+            </div>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-300"></i> 费曼一句话
+                </h3>
+                <div class="feynman-box rounded-xl p-4 text-sm text-slate-100 leading-relaxed">
+                    把中国文化想成一棵巨树：
+                    <strong class="text-amber-200">根是文字和记忆，干是制度和伦理，枝叶是艺术与日常，四季变化是外来交流与时代创新。</strong>
+                    树会掉叶，但只要根与主干在，它就能不断长出新叶。
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6 border-amber-500/25">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-tree text-amber-300"></i> 图解：中国文化巨树模型
+                </h3>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                    <div class="culture-tree-visual p-4">
+                        <svg class="culture-tree-svg" viewBox="0 0 1000 660" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="cultureTrunk" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#a16207" stop-opacity="0.94" />
+                                    <stop offset="100%" stop-color="#7c2d12" stop-opacity="0.92" />
+                                </linearGradient>
+                                <linearGradient id="cultureBranch" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#d97706" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="#9a3412" stop-opacity="0.88" />
+                                </linearGradient>
+                            </defs>
+
+                            <line x1="145" y1="470" x2="855" y2="470" stroke="#fbbf24" stroke-opacity="0.24" stroke-width="2" />
+
+                            <path d="M500 96
+                                     C398 88, 306 142, 276 224
+                                     C252 292, 296 362, 372 388
+                                     C426 406, 470 398, 500 378
+                                     C530 398, 574 406, 628 388
+                                     C704 362, 748 292, 724 224
+                                     C694 142, 602 88, 500 96 Z"
+                                  fill="rgba(74, 222, 128, 0.16)"
+                                  stroke="#4ade80"
+                                  stroke-opacity="0.68"
+                                  stroke-width="3" />
+
+                            <path d="M500 452
+                                     C476 452, 460 434, 462 406
+                                     L470 304
+                                     C472 278, 484 260, 500 252
+                                     C516 260, 528 278, 530 304
+                                     L538 406
+                                     C540 434, 524 452, 500 452 Z"
+                                  fill="url(#cultureTrunk)"
+                                  stroke="#7c2d12"
+                                  stroke-opacity="0.74"
+                                  stroke-width="2.5" />
+
+                            <path d="M488 320 C450 300, 400 278, 328 246" stroke="url(#cultureBranch)" stroke-width="8" stroke-linecap="round" fill="none" />
+                            <path d="M512 320 C550 300, 600 278, 672 246" stroke="url(#cultureBranch)" stroke-width="8" stroke-linecap="round" fill="none" />
+                            <path d="M482 302 C444 274, 410 238, 372 188" stroke="url(#cultureBranch)" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <path d="M518 302 C556 274, 590 238, 628 188" stroke="url(#cultureBranch)" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <path d="M448 286 C420 264, 390 244, 358 224" stroke="url(#cultureBranch)" stroke-width="4" stroke-linecap="round" fill="none" />
+                            <path d="M552 286 C580 264, 610 244, 642 224" stroke="url(#cultureBranch)" stroke-width="4" stroke-linecap="round" fill="none" />
+
+                            <path d="M500 452 C474 468, 448 484, 422 502 C398 520, 386 534, 376 550 C368 560, 354 568, 338 574" stroke="#fbbf24" stroke-opacity="0.86" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 7" fill="none" />
+                            <path d="M500 452 C466 474, 440 496, 420 518 C406 534, 402 548, 396 564 C392 576, 382 586, 368 594" stroke="#fbbf24" stroke-opacity="0.82" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 8" fill="none" />
+                            <path d="M500 452 C526 468, 552 484, 578 502 C602 520, 614 534, 624 550 C632 560, 646 568, 662 574" stroke="#fbbf24" stroke-opacity="0.86" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 7" fill="none" />
+                            <path d="M500 452 C534 474, 560 496, 580 518 C594 534, 598 548, 604 564 C608 576, 618 586, 632 594" stroke="#fbbf24" stroke-opacity="0.82" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 8" fill="none" />
+                            <path d="M500 452 C500 478, 496 498, 500 520 C504 542, 496 560, 500 582" stroke="#fbbf24" stroke-opacity="0.84" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="5 7" fill="none" />
+
+                            <circle cx="328" cy="246" r="7" fill="#86efac" />
+                            <circle cx="372" cy="188" r="6" fill="#86efac" />
+                            <circle cx="628" cy="188" r="6" fill="#86efac" />
+                            <circle cx="672" cy="246" r="7" fill="#86efac" />
+                            <circle cx="378" cy="540" r="6" fill="#fcd34d" />
+                            <circle cx="500" cy="564" r="6" fill="#fcd34d" />
+                            <circle cx="622" cy="540" r="6" fill="#fcd34d" />
+                        </svg>
+
+                        <div class="culture-tree-season culture-tree-season-spring">春：吸纳交流</div>
+                        <div class="culture-tree-season culture-tree-season-summer">夏：制度成形</div>
+                        <div class="culture-tree-season culture-tree-season-autumn">秋：反思重构</div>
+                        <div class="culture-tree-season culture-tree-season-winter">冬：守正蓄势</div>
+                        <div class="culture-tree-label culture-tree-label-crown">枝叶：艺术风格、生活礼俗与创造力</div>
+                        <div class="culture-tree-label culture-tree-label-trunk">主干：伦理秩序、教育体系与治理结构</div>
+                        <div class="culture-tree-label culture-tree-label-root">根系：文字经典、历史记忆与共同语法</div>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-amber-300 font-semibold">哲学基底：根系决定意义密度</p>
+                            <p class="text-slate-300 mt-1">文字、经典与史学构成文化的“本体论地基”。它让一个社会在跨代传递时仍能共享问题意识：我们从哪里来，要成为什么样的人。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-orange-300 font-semibold">制度主干：把德性翻译成可执行秩序</p>
+                            <p class="text-slate-300 mt-1">文化不仅是感受，更是组织技术。教育、礼制与治理把抽象价值转译为规则、角色和责任，使大规模协作既稳定又具弹性。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-rose-300 font-semibold">艺术枝叶：让价值被看见、被触摸、被喜爱</p>
+                            <p class="text-slate-300 mt-1">诗书画印、园林器物、饮食节庆是文化的审美显影。艺术不是装饰，而是伦理与世界观在日常空间中的可感形式。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-yellow-300 font-semibold">四季循环：传统不是静止，而是会呼吸的生命体</p>
+                            <p class="text-slate-300 mt-1">真正的传承是“守正中的创新”。文化通过吸收外来经验、完成本土重释，再回到生活实践，形成持续再生的文明循环。</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-amber-300"></i> 三层速记框架
+                    </h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <article class="glass-card rounded-2xl p-5">
+                        <div class="text-xs inline-flex px-2 py-0.5 rounded border border-amber-500/30 bg-amber-500/10 text-amber-300">第1层：看不见的底层</div>
+                        <h4 class="text-base font-bold mt-3">文字 + 经典 + 历史记忆</h4>
+                        <p class="text-slate-300 text-sm mt-2 leading-relaxed">汉字让跨地域交流有共同接口，经典提供共同问题意识，史书形成代际记忆，文化因此可传承、可对话。</p>
+                    </article>
+                    <article class="glass-card rounded-2xl p-5">
+                        <div class="text-xs inline-flex px-2 py-0.5 rounded border border-orange-500/30 bg-orange-500/10 text-orange-300">第2层：能运转的中层</div>
+                        <h4 class="text-base font-bold mt-3">制度 + 伦理 + 教育</h4>
+                        <p class="text-slate-300 text-sm mt-2 leading-relaxed">从郡县治理到家族伦理，再到科举与学校，文化把个人、家庭与国家连接起来，形成稳定而流动的社会秩序。</p>
+                    </article>
+                    <article class="glass-card rounded-2xl p-5">
+                        <div class="text-xs inline-flex px-2 py-0.5 rounded border border-rose-500/30 bg-rose-500/10 text-rose-300">第3层：看得见的表层</div>
+                        <h4 class="text-base font-bold mt-3">艺术 + 技艺 + 日常习俗</h4>
+                        <p class="text-slate-300 text-sm mt-2 leading-relaxed">诗词书画、戏曲建筑、饮食节庆和礼仪习惯，让抽象价值变成可以体验的生活方式，这就是文化“被感受到”的地方。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-compass-drafting text-amber-300"></i> 思想到实践：四个核心模块
+                    </h3>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-5">
+                    下面把儒家、道家、禅宗与平常心实践放在同一张认知地图里：每一脉都不只是一套观念，
+                    还会落到治理方式、审美取向与日常行动上。
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <article class="glass-card rounded-2xl p-5">
+                        <div class="text-xs inline-flex px-2 py-0.5 rounded border border-red-500/30 bg-red-500/10 text-red-300">模块1</div>
+                        <h4 class="text-base font-bold mt-3 flex items-center gap-2"><i class="fa-solid fa-book text-red-300"></i><a href="china_confucianism.html" class="hover:text-red-300">儒家：修身齐家到家国秩序</a></h4>
+                        <p class="text-slate-300 mt-3 leading-relaxed"><strong class="text-slate-100">治理模型：</strong>以仁义礼智信为核心，通过角色责任与制度分工，把个人修养转成稳定的公共秩序。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">艺术审美：</strong>重视礼乐、文脉与中和之美，强调节制、分寸、对称和历史感。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">日常生活：</strong>从孝亲、守信、敬业做起，以家风和社区互助把道德变成可重复的生活习惯。</p>
+                        <a href="china_confucianism.html" class="inline-flex items-center gap-1 mt-3 text-xs text-red-300 hover:text-red-200">
+                            深入阅读儒家专题 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </article>
+
+                    <article class="glass-card rounded-2xl p-5">
+                        <div class="text-xs inline-flex px-2 py-0.5 rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-300">模块2</div>
+                        <h4 class="text-base font-bold mt-3 flex items-center gap-2"><i class="fa-solid fa-leaf text-emerald-300"></i><a href="china_taoism.html" class="hover:text-emerald-300">道家：顺势而为与低干预治理</a></h4>
+                        <p class="text-slate-300 mt-3 leading-relaxed"><strong class="text-slate-100">治理模型：</strong>强调无为而治、简政少扰，尊重系统自组织能力，在关键节点做最小但有效的调节。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">艺术审美：</strong>偏好留白、虚实相生与自然流动，山水、园林和器物都追求"道法自然"的呼吸感。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">日常生活：</strong>练习节制与减法，少一点执念、多一点弹性，在快慢之间找到身心平衡。</p>
+                        <a href="china_taoism.html" class="inline-flex items-center gap-1 mt-3 text-xs text-emerald-300 hover:text-emerald-200">
+                            深入阅读道家专题 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </article>
+
+                    <article class="glass-card rounded-2xl p-5">
+                        <div class="text-xs inline-flex px-2 py-0.5 rounded border border-purple-500/30 bg-purple-500/10 text-purple-300">模块3</div>
+                        <h4 class="text-base font-bold mt-3 flex items-center gap-2"><i class="fa-solid fa-spa text-purple-300"></i><a href="china_chan_buddhism.html" class="hover:text-purple-300">禅宗：当下觉知与心性治理</a></h4>
+                        <p class="text-slate-300 mt-3 leading-relaxed"><strong class="text-slate-100">治理模型：</strong>强调先安其心再安其事，重视反思、对话与止损，让组织在复杂变化中保持清明判断。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">艺术审美：</strong>崇尚简静空灵，一枝一石见天地，茶、书、庭院与器物都追求"少即是多"。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">日常生活：</strong>以呼吸、行住坐卧和专注做功课，把情绪波动转化为觉察能力，培养平常心。</p>
+                        <a href="china_chan_buddhism.html" class="inline-flex items-center gap-1 mt-3 text-xs text-purple-300 hover:text-purple-200">
+                            深入阅读禅宗专题 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </article>
+
+                    <article class="glass-card rounded-2xl p-5">
+                        <div class="text-xs inline-flex px-2 py-0.5 rounded border border-amber-500/30 bg-amber-500/10 text-amber-300">模块4</div>
+                        <h4 class="text-base font-bold mt-3 flex items-center gap-2"><i class="fa-solid fa-hand-holding-heart text-amber-300"></i>平常心实践：道与布施积德</h4>
+                        <p class="text-slate-300 mt-3 leading-relaxed"><strong class="text-slate-100">治理模型：</strong>以长期主义构建信任网络，鼓励"利他-协作-复利"，让组织文化稳步向善。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">艺术审美：</strong>美不只在作品，也在待人接物的温度；一饭一茶、一言一行都可成为善意表达。</p>
+                        <p class="text-slate-300 mt-2 leading-relaxed"><strong class="text-slate-100">日常生活：</strong>践行日行一善、随分随力布施，既可施财施力，也可施言施心，在助人中完成自我修养。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-timeline text-amber-300"></i> 五段时间线（费曼版）
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3 text-sm">
+                    <div class="glass-card rounded-xl p-4">
+                        <p class="text-xs text-amber-300">先秦</p>
+                        <p class="font-semibold mt-1">思想和礼制打地基</p>
+                        <p class="text-slate-300 mt-2 text-xs">百家争鸣、礼乐文明、书写传统，回答“人如何共处”。</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4">
+                        <p class="text-xs text-amber-300">秦汉到隋唐</p>
+                        <p class="font-semibold mt-1">统一秩序与开放交流</p>
+                        <p class="text-slate-300 mt-2 text-xs">大一统框架确立，丝路交流加速，文化吸收能力大幅增强。</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4">
+                        <p class="text-xs text-amber-300">宋元</p>
+                        <p class="font-semibold mt-1">城市商业与技术跃迁</p>
+                        <p class="text-slate-300 mt-2 text-xs">印刷、航海、手工业与市民文化兴起，日常审美更精细。</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4">
+                        <p class="text-xs text-amber-300">明清</p>
+                        <p class="font-semibold mt-1">传统系统深化</p>
+                        <p class="text-slate-300 mt-2 text-xs">经典体系完善，地方文化繁盛，也逐步面临全球冲击。</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4">
+                        <p class="text-xs text-amber-300">近现代</p>
+                        <p class="font-semibold mt-1">现代转型与再创造</p>
+                        <p class="text-slate-300 mt-2 text-xs">在工业化与全球化中重塑文化表达，把传统资源转成现代能力。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <article class="glass-panel rounded-2xl p-6">
+                    <h3 class="text-base font-bold mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-link text-amber-300"></i> 文化何以延续三千年？
+                    </h3>
+                    <ul class="space-y-2 text-sm text-slate-200 leading-relaxed">
+                        <li>1) 有共同文字，沟通成本低，知识可跨代复制。</li>
+                        <li>2) 有共同经典，讨论问题时有“公共语法”。</li>
+                        <li>3) 有组织系统，把价值观变成可执行规则。</li>
+                        <li>4) 有家国叙事，让个体努力能接入更大共同体。</li>
+                        <li>5) 有吸收能力，能把外来元素本土化、再创造。</li>
+                    </ul>
+                </article>
+
+                <article class="glass-panel rounded-2xl p-6">
+                    <h3 class="text-base font-bold mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-amber-300"></i> 一分钟自测（费曼回讲）
+                    </h3>
+                    <ol class="space-y-2 text-sm text-slate-200 leading-relaxed list-decimal list-inside">
+                        <li>你能不能用“树模型”给朋友讲清中国文化？</li>
+                        <li>你能举出每个时间段一个代表性的文化创新吗？</li>
+                        <li>你能说明“传承”与“创新”为什么不是对立面吗？</li>
+                        <li>如果卡住，回到本页三层框架，再讲一遍直到通顺。</li>
+                    </ol>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+        };
+    </script>
+</body>
+</html>
+

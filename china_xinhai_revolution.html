@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>辛亥革命：帝制终结后为何仍然艰难转轨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .glass-panel { background: rgba(30, 41, 59, 0.58); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.22); }
+        .glass-card { background: rgba(30, 41, 59, 0.42); border: 1px solid rgba(148, 163, 184, 0.15); }
+        .feynman-box { background: linear-gradient(135deg, rgba(76, 5, 25, 0.48), rgba(30, 41, 59, 0.68)); border-left: 4px solid #fb7185; }
+        .node-pulse { animation: xhPulse 1.8s infinite; }
+        @keyframes xhPulse {
+            0% { r: 10; stroke-opacity: 1; }
+            50% { r: 17; stroke-opacity: 0.35; }
+            100% { r: 10; stroke-opacity: 1; }
+        }
+        .map-grid-bg {
+            background-image: radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 0);
+            background-size: 14px 14px;
+        }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme .glass-panel,
+        body.light-theme .glass-card,
+        body.light-theme .feynman-box,
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row">
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="china_history_portal.html" class="text-rose-300 font-bold flex items-center gap-2"><i class="fa-solid fa-landmark"></i>中国历史专题</a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="high_tech_portal.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-500/20">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_history_portal.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 border border-slate-700/50">
+                <i class="fa-solid fa-compass w-4 text-rose-400"></i>中国关键历史总览
+            </a>
+            <p class="px-3 pt-2 pb-1 text-[11px] tracking-wider text-slate-500 uppercase">历史事件列表</p>
+            <a href="china_qin_unification.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-crown w-4 text-amber-400"></i>1. 秦始皇统一六国</a>
+            <a href="china_three_kingdoms_formation.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-chess-rook w-4 text-cyan-400"></i>2. 三国鼎立格局形成</a>
+            <a href="china_first_opium_war.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-ship w-4 text-blue-400"></i>3. 鸦片战争</a>
+            <a href="china_xinhai_revolution.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-rose-500/20 text-rose-200 border border-rose-500/40"><i class="fa-solid fa-flag w-4"></i>4. 辛亥革命</a>
+            <a href="china_war_of_resistance_against_japan.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-shield-halved w-4 text-emerald-400"></i>5. 抗日战争</a>
+            <a href="china_long_march.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-route w-4 text-orange-400"></i>6. 毛主席长征之路</a>
+        </nav>
+    </aside>
+
+    <div class="flex-1 md:overflow-y-auto">
+        <header class="sticky top-0 z-20 bg-slate-900/85 backdrop-blur border-b border-slate-800">
+            <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <h1 class="text-xl md:text-2xl font-bold text-rose-300 flex items-center gap-2"><i class="fa-solid fa-flag"></i>辛亥革命</h1>
+                <div class="flex items-center gap-3 self-end md:self-auto">
+                    <div class="hidden sm:flex flex-wrap items-center gap-2 bg-slate-900/70 px-2.5 py-2 rounded-xl border border-rose-500/30">
+                        <div class="text-center px-2.5 border-r border-slate-700">
+                            <span class="block text-sm font-bold text-rose-300">1905-1912</span>
+                            <span class="text-[10px] text-slate-400">转轨时段</span>
+                        </div>
+                        <div class="text-center px-2.5 border-r border-slate-700">
+                            <span class="block text-sm font-bold text-rose-300">6</span>
+                            <span class="text-[10px] text-slate-400">关键节点</span>
+                        </div>
+                        <div class="text-center px-2.5">
+                            <span class="block text-sm font-bold text-rose-300">17省响应</span>
+                            <span class="text-[10px] text-slate-400">革命扩散</span>
+                        </div>
+                    </div>
+                    <a href="china_history_portal.html" class="text-xs px-3 py-1.5 rounded border border-slate-700 hover:border-rose-500">返回总览</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+            <section class="glass-panel rounded-2xl p-6">
+                <h2 class="text-lg font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-rose-300"></i>费曼一句话</h2>
+                <div class="feynman-box rounded-xl p-4 text-sm text-slate-200 leading-relaxed">
+                    辛亥革命就像“拆掉旧系统、上线新系统”的大升级：帝制这个旧操作系统被卸载了，但新系统（共和制度）一开始没有稳定服务器、统一权限和可靠网络，所以会出现频繁卡顿和冲突。
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-7 flex flex-col gap-4">
+                    <div class="glass-panel rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-rose-300"></i>政体转轨示意图与关键节点</h2>
+                            <span class="text-[11px] text-slate-400">点击节点切换右侧内容</span>
+                        </div>
+                        <div class="relative h-[320px] md:h-[390px] rounded-xl border border-slate-700/70 bg-slate-900/70 map-grid-bg overflow-hidden">
+                            <svg viewBox="0 0 800 460" class="w-full h-full">
+                                <defs>
+                                    <linearGradient id="xhRouteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#e11d48" />
+                                        <stop offset="55%" stop-color="#fb7185" />
+                                        <stop offset="100%" stop-color="#fda4af" />
+                                    </linearGradient>
+                                </defs>
+                                <g class="opacity-40">
+                                    <path d="M 80,300 Q 300,250 520,210 T 720,145" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="6,6"></path>
+                                    <text x="95" y="325" fill="#94a3b8" font-size="11">组织酝酿</text>
+                                    <text x="360" y="250" fill="#94a3b8" font-size="11">起义扩散</text>
+                                    <text x="650" y="175" fill="#94a3b8" font-size="11">共和转轨</text>
+                                </g>
+                                <path d="M 120,300 L 220,275 L 320,245 L 430,220 L 550,185 L 680,140"
+                                      fill="none" stroke="url(#xhRouteGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M 120,300 L 220,275 L 320,245 L 430,220 L 550,185 L 680,140"
+                                      fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.4" stroke-dasharray="8,7"></path>
+                                <g id="xhMapNodes"></g>
+                            </svg>
+                        </div>
+                        <div class="mt-3 flex items-center justify-between gap-2 bg-slate-900/70 border border-slate-700 rounded-lg p-2">
+                            <button id="xhPrevBtn" class="px-3 py-1.5 text-xs rounded bg-rose-900/60 border border-rose-700/60 hover:border-rose-500">上一节点</button>
+                            <div id="xhCurrentRange" class="text-xs text-rose-200 truncate px-1 text-center"></div>
+                            <button id="xhNextBtn" class="px-3 py-1.5 text-xs rounded bg-rose-900/60 border border-rose-700/60 hover:border-rose-500">下一节点</button>
+                        </div>
+                    </div>
+                    <div id="xhNodeStrip" class="grid grid-cols-2 md:grid-cols-3 gap-2"></div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="glass-card rounded-2xl p-6 h-full">
+                        <div class="border-b border-slate-700 pb-3 mb-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <span id="xhNodeOrder" class="text-[11px] px-2 py-1 rounded bg-rose-500/20 text-rose-200 border border-rose-500/40"></span>
+                                <span id="xhNodeTime" class="text-xs text-slate-400"></span>
+                            </div>
+                            <h3 id="xhNodeTitle" class="mt-2 text-xl font-bold text-rose-200"></h3>
+                        </div>
+                        <p id="xhNodeDesc" class="text-sm text-slate-200 leading-relaxed"></p>
+
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-xs">
+                            <div class="bg-slate-900 rounded-lg border border-slate-700 p-2">制度切换：<span id="xhNodeChange" class="text-rose-300"></span></div>
+                            <div class="bg-slate-900 rounded-lg border border-slate-700 p-2">社会动员：<span id="xhNodeMobilize" class="text-rose-300"></span></div>
+                            <div class="bg-slate-900 rounded-lg border border-slate-700 p-2">秩序稳定：<span id="xhNodeStability" class="text-rose-300"></span></div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4 class="text-xs tracking-wider text-slate-400 mb-2">关键内容</h4>
+                            <ul id="xhKeyPoints" class="space-y-2 text-sm text-slate-300"></ul>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4 class="text-xs tracking-wider text-slate-400 mb-2">关键人物</h4>
+                            <div id="xhFigures" class="space-y-2"></div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-700/80">
+                            <p id="xhNodeMiniQuote" class="text-sm text-rose-100 italic"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-feather-pointed text-rose-300"></i>历史名言</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                    <div class="glass-card rounded-xl p-4 border border-rose-800/40">
+                        <p class="text-slate-200 italic">“世界潮流，浩浩荡荡，顺之则昌，逆之则亡。”</p>
+                        <p class="mt-2 text-xs text-rose-300">——孙中山</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 border border-rose-800/40">
+                        <p class="text-slate-200 italic">“驱除鞑虏，恢复中华，创立民国，平均地权。”</p>
+                        <p class="mt-2 text-xs text-rose-300">——同盟会纲领</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 border border-rose-800/40">
+                        <p class="text-slate-200 italic">“革命尚未成功，同志仍须努力。”</p>
+                        <p class="mt-2 text-xs text-rose-300">——孙中山</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        const xhNodesData = [
+            {
+                id: 1,
+                name: '革命思想扩散与组织成网',
+                short: '思想酝酿',
+                time: '1905 - 1911',
+                x: 120,
+                y: 300,
+                change: '中',
+                mobilize: '中',
+                stability: '低',
+                desc: '同盟会成立后，革命由分散行动转向跨区域组织协同。',
+                keyPoints: ['革命口号形成共同政治目标', '报刊与社团传播加速思想扩散', '侨资与地方力量开始对接'],
+                quote: '“组织化是从理想到行动的关键一跳。”'
+            },
+            {
+                id: 2,
+                name: '武昌起义爆发：裂缝公开化',
+                short: '起义爆发',
+                time: '1911.10',
+                x: 220,
+                y: 275,
+                change: '高',
+                mobilize: '高',
+                stability: '低',
+                desc: '武昌起义点燃全国响应，清廷权威出现快速坍塌。',
+                keyPoints: ['军事起义触发政治连锁反应', '地方督抚与新军迅速重组站队', '中央对地方控制显著削弱'],
+                quote: '“中心松动之后，边缘会迅速重排。”'
+            },
+            {
+                id: 3,
+                name: '各省响应：旧帝制失去支撑',
+                short: '省份响应',
+                time: '1911.10 - 1911.12',
+                x: 320,
+                y: 245,
+                change: '高',
+                mobilize: '高',
+                stability: '中低',
+                desc: '多省宣布独立，革命从局部起义转为全国政体危机。',
+                keyPoints: ['地方政治选择成为关键变量', '清廷财政与军政链条断裂', '新旧权力并存导致治理摩擦'],
+                quote: '“革命速度快于制度重建速度。”'
+            },
+            {
+                id: 4,
+                name: '清帝退位：帝制正式终结',
+                short: '政权更替',
+                time: '1912.2',
+                x: 430,
+                y: 220,
+                change: '极高',
+                mobilize: '中',
+                stability: '中低',
+                desc: '清帝退位标志皇权体制退场，共和制度获得名义合法性。',
+                keyPoints: ['制度名称完成切换', '权力分配仍高度博弈', '旧官僚结构并未同步消失'],
+                quote: '“终结帝制是起点，不是终点。”'
+            },
+            {
+                id: 5,
+                name: '临时政府与权力磨合',
+                short: '共和开局',
+                time: '1912',
+                x: 550,
+                y: 185,
+                change: '高',
+                mobilize: '中',
+                stability: '低',
+                desc: '共和政体落地初期面临中央军权、财政与党政协商的多重难题。',
+                keyPoints: ['制度文本与执行能力存在落差', '地方军政力量仍强势', '政治联盟稳定性不足'],
+                quote: '“制度上线后，真正考验是运行能力。”'
+            },
+            {
+                id: 6,
+                name: '新旧拉扯：国家重建长期化',
+                short: '新旧拉扯',
+                time: '1912 以后',
+                x: 680,
+                y: 140,
+                change: '中',
+                mobilize: '中',
+                stability: '低',
+                desc: '共和制度进入长期磨合，现代国家建设转为持续性工程。',
+                keyPoints: ['权力结构重组持续多年', '政治合法性竞争并未结束', '国家治理在冲突中缓慢重建'],
+                quote: '“革命成功不等于秩序立刻稳定。”'
+            }
+        ];
+
+        const xhFiguresData = {
+            1: [
+                { name: '孙中山', role: '革命思想与组织核心', impact: '提出三民主义并推动同盟会组织化。' },
+                { name: '黄兴', role: '革命军事骨干', impact: '连接政治理念与武装实践，强化行动能力。' }
+            ],
+            2: [
+                { name: '蒋翊武', role: '文学社领导者', impact: '组织武昌新军起义，触发全国连锁响应。' },
+                { name: '黎元洪', role: '湖北都督', impact: '在起义后进入权力中心，稳定局部政治秩序。' }
+            ],
+            3: [
+                { name: '谭人凤等地方革命派', role: '省级推动者', impact: '各省独立进程使中央权威加速瓦解。' },
+                { name: '张謇等立宪派', role: '政治协调力量', impact: '在新旧秩序间斡旋，影响转轨路径。' }
+            ],
+            4: [
+                { name: '隆裕太后', role: '清廷最终决策者', impact: '发布退位诏书，完成帝制形式终结。' },
+                { name: '袁世凯', role: '北洋军政核心', impact: '在议和与权力重组中掌握关键筹码。' }
+            ],
+            5: [
+                { name: '孙中山', role: '临时大总统', impact: '推动共和制度名义落地并进行权力交接。' },
+                { name: '袁世凯', role: '继任权力中心', impact: '主导中央军政资源，重塑共和国初期权力结构。' }
+            ],
+            6: [
+                { name: '宋教仁', role: '政党政治推动者', impact: '尝试以议会政治稳定共和秩序。' },
+                { name: '蔡锷', role: '护国运动代表', impact: '反对帝制复辟，延续共和政治正当性。' }
+            ]
+        };
+
+        let currentXhIndex = 0;
+        const xhMapNodesEl = document.getElementById('xhMapNodes');
+        const xhNodeStripEl = document.getElementById('xhNodeStrip');
+
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        function renderXhFigures(nodeId) {
+            const figuresEl = document.getElementById('xhFigures');
+            const figures = xhFiguresData[nodeId] || [];
+            figuresEl.innerHTML = '';
+            if (!figures.length) {
+                figuresEl.innerHTML = '<p class="text-xs text-slate-500">该节点暂无补充人物</p>';
+                return;
+            }
+            figures.forEach((person) => {
+                const item = document.createElement('div');
+                item.className = 'bg-slate-900/80 border border-slate-700 rounded-lg p-2';
+                item.innerHTML = `<p class="text-xs text-rose-200 font-semibold">${person.name} <span class="text-[10px] text-slate-400 font-normal">${person.role}</span></p><p class="text-xs text-slate-300 mt-1">${person.impact}</p>`;
+                figuresEl.appendChild(item);
+            });
+        }
+
+        function renderXhMapNodes() {
+            xhMapNodesEl.innerHTML = '';
+            xhNodesData.forEach((node, idx) => {
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('class', 'cursor-pointer');
+                g.onclick = () => updateXhNodeView(idx);
+
+                const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                pulse.setAttribute('cx', node.x);
+                pulse.setAttribute('cy', node.y);
+                pulse.setAttribute('r', '10');
+                pulse.setAttribute('fill', 'none');
+                pulse.setAttribute('stroke', '#fb7185');
+                pulse.setAttribute('stroke-width', '2');
+                pulse.setAttribute('id', `xh-pulse-${idx}`);
+                pulse.setAttribute('class', idx === 0 ? 'node-pulse' : 'hidden');
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', node.x);
+                circle.setAttribute('cy', node.y);
+                circle.setAttribute('r', '7');
+                circle.setAttribute('stroke', '#fff');
+                circle.setAttribute('stroke-width', '1.3');
+                circle.setAttribute('id', `xh-circle-${idx}`);
+                circle.setAttribute('fill', idx === 0 ? '#e11d48' : '#fda4af');
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', node.x);
+                text.setAttribute('y', node.y - 13);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-size', '10.5');
+                text.setAttribute('fill', '#ffe4e6');
+                text.textContent = node.short;
+
+                g.appendChild(pulse);
+                g.appendChild(circle);
+                g.appendChild(text);
+                xhMapNodesEl.appendChild(g);
+            });
+        }
+
+        function renderXhNodeStrip() {
+            xhNodeStripEl.innerHTML = '';
+            xhNodesData.forEach((node, idx) => {
+                const btn = document.createElement('button');
+                btn.className = idx === currentXhIndex
+                    ? 'text-xs rounded-lg border px-2 py-2 text-left bg-rose-500/20 border-rose-500/40 text-rose-100'
+                    : 'text-xs rounded-lg border px-2 py-2 text-left bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500';
+                btn.innerHTML = `<p class="font-semibold">${node.id}. ${node.short}</p><p class="text-[10px] text-slate-400 mt-0.5">${node.time}</p>`;
+                btn.onclick = () => updateXhNodeView(idx);
+                xhNodeStripEl.appendChild(btn);
+            });
+        }
+
+        function updateXhNodeView(index) {
+            currentXhIndex = index;
+            const node = xhNodesData[index];
+
+            document.getElementById('xhNodeOrder').textContent = `节点 ${node.id} / ${xhNodesData.length}`;
+            document.getElementById('xhNodeTime').textContent = node.time;
+            document.getElementById('xhNodeTitle').textContent = node.name;
+            document.getElementById('xhNodeDesc').textContent = node.desc;
+            document.getElementById('xhNodeChange').textContent = node.change;
+            document.getElementById('xhNodeMobilize').textContent = node.mobilize;
+            document.getElementById('xhNodeStability').textContent = node.stability;
+            document.getElementById('xhCurrentRange').textContent = `${node.time} | ${node.short}`;
+            document.getElementById('xhNodeMiniQuote').textContent = `“${node.quote}”`;
+
+            const keyPointsEl = document.getElementById('xhKeyPoints');
+            keyPointsEl.innerHTML = '';
+            node.keyPoints.forEach((point) => {
+                const li = document.createElement('li');
+                li.className = 'bg-slate-900/80 border border-slate-700 rounded-lg p-2';
+                li.textContent = point;
+                keyPointsEl.appendChild(li);
+            });
+
+            xhNodesData.forEach((_, idx) => {
+                const pulse = document.getElementById(`xh-pulse-${idx}`);
+                const circle = document.getElementById(`xh-circle-${idx}`);
+                if (!pulse || !circle) return;
+                if (idx === index) {
+                    pulse.classList.remove('hidden');
+                    pulse.classList.add('node-pulse');
+                    circle.setAttribute('fill', '#e11d48');
+                    circle.setAttribute('r', '8');
+                } else {
+                    pulse.classList.add('hidden');
+                    pulse.classList.remove('node-pulse');
+                    circle.setAttribute('fill', idx < index ? '#be123c' : '#fda4af');
+                    circle.setAttribute('r', '6.5');
+                }
+            });
+
+            renderXhFigures(node.id);
+            renderXhNodeStrip();
+        }
+
+        window.onload = function() {
+            renderXhMapNodes();
+            updateXhNodeView(0);
+            document.getElementById('xhPrevBtn')?.addEventListener('click', () => {
+                if (currentXhIndex > 0) updateXhNodeView(currentXhIndex - 1);
+            });
+            document.getElementById('xhNextBtn')?.addEventListener('click', () => {
+                if (currentXhIndex < xhNodesData.length - 1) updateXhNodeView(currentXhIndex + 1);
+            });
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentXhIndex > 0) {
+                    updateXhNodeView(currentXhIndex - 1);
+                } else if (e.key === 'ArrowRight' && currentXhIndex < xhNodesData.length - 1) {
+                    updateXhNodeView(currentXhIndex + 1);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

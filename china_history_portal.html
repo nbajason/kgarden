@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full bg-slate-950 text-slate-100 dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国历史关键转折专题入口</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif']
+                    },
+                    colors: {
+                        history: {
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.9); border-radius: 999px; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.58);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.42);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            transition: all 0.25s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(248, 113, 113, 0.5);
+            background: rgba(30, 41, 59, 0.72);
+        }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme .glass-panel,
+        body.light-theme .glass-card,
+        body.light-theme .feynman-box,
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden font-sans antialiased bg-slate-950 text-slate-100">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="index.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-history-500 to-amber-500 flex items-center justify-center text-white">
+                <i class="fa-solid fa-landmark"></i>
+            </div>
+            <span class="font-bold text-slate-100">中国历史专题</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-history-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-500/20">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+            <a href="china_history_portal.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-red-500/15 text-red-300 border border-red-500/30">
+                <i class="fa-solid fa-compass w-5 text-center"></i>
+                <span>中国关键历史总览</span>
+            </a>
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">历史事件列表</p>
+            <a href="china_qin_unification.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-crown w-5 text-center text-amber-400"></i>
+                <span>1. 秦始皇统一六国</span>
+            </a>
+            <a href="china_three_kingdoms_formation.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-chess-rook w-5 text-center text-cyan-400"></i>
+                <span>2. 三国鼎立格局形成</span>
+            </a>
+            <a href="china_first_opium_war.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-ship w-5 text-center text-blue-400"></i>
+                <span>3. 鸦片战争</span>
+            </a>
+            <a href="china_xinhai_revolution.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-flag w-5 text-center text-rose-400"></i>
+                <span>4. 辛亥革命</span>
+            </a>
+            <a href="china_war_of_resistance_against_japan.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-shield-halved w-5 text-center text-emerald-400"></i>
+                <span>5. 抗日战争</span>
+            </a>
+            <a href="china_long_march.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-route w-5 text-center text-orange-400"></i>
+                <span>6. 毛主席长征之路</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                历史费曼模式
+            </span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v3.0</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-slate-950 p-4 md:p-8">
+        <section class="max-w-7xl mx-auto space-y-8">
+            <div class="glass-panel rounded-2xl p-6 md:p-8 relative overflow-hidden border-red-500/20">
+                <div class="absolute -right-10 -bottom-12 w-52 h-52 bg-red-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight flex items-center gap-3">
+                            <i class="fa-solid fa-book-open text-amber-300"></i>
+                            中国历史关键转折专题入口
+                        </h2>
+                        <p class="text-slate-300 text-sm md:text-base mt-3 max-w-3xl leading-relaxed">
+                            这一组页面采用费曼学习法组织：每个主题都用最直白语言解释“为什么会发生”，再用可交互图表梳理“怎么发展”，最后给出“影响和逻辑链”。
+                        </p>
+                    </div>
+                    <a href="china_long_march.html" class="shrink-0 px-3 py-1.5 rounded-lg text-xs bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20">
+                        <i class="fa-solid fa-map-location-dot mr-1"></i>查看互动长征页
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-cubes text-sky-400"></i> 历史主题矩阵
+                    </h3>
+                    <span class="text-xs text-slate-500">共 6 个主题</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                    <a href="china_qin_unification.html" class="glass-card rounded-2xl p-5 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-lg"><i class="fa-solid fa-crown"></i></div>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">前230-前221</span>
+                            </div>
+                            <h4 class="font-bold text-slate-100 group-hover:text-amber-300">秦始皇统一六国</h4>
+                            <p class="text-slate-400 text-xs mt-2">从分裂竞争到一统治理，理解制度统一背后的动员逻辑。</p>
+                        </div>
+                    </a>
+
+                    <a href="china_three_kingdoms_formation.html" class="glass-card rounded-2xl p-5 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-lg"><i class="fa-solid fa-chess-rook"></i></div>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">184-229</span>
+                            </div>
+                            <h4 class="font-bold text-slate-100 group-hover:text-cyan-300">三国鼎立格局形成</h4>
+                            <p class="text-slate-400 text-xs mt-2">从中央失灵到区域政权稳定，拆解乱世中的战略平衡。</p>
+                        </div>
+                    </a>
+
+                    <a href="china_first_opium_war.html" class="glass-card rounded-2xl p-5 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-lg"><i class="fa-solid fa-ship"></i></div>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">1840-1842</span>
+                            </div>
+                            <h4 class="font-bold text-slate-100 group-hover:text-blue-300">鸦片战争</h4>
+                            <p class="text-slate-400 text-xs mt-2">技术差距如何引发制度冲击，近代转型为何由被动开始。</p>
+                        </div>
+                    </a>
+
+                    <a href="china_xinhai_revolution.html" class="glass-card rounded-2xl p-5 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-lg"><i class="fa-solid fa-flag"></i></div>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20">1911-1912</span>
+                            </div>
+                            <h4 class="font-bold text-slate-100 group-hover:text-rose-300">辛亥革命</h4>
+                            <p class="text-slate-400 text-xs mt-2">帝制退出历史舞台后，共和秩序为何难以立刻稳定。</p>
+                        </div>
+                    </a>
+
+                    <a href="china_war_of_resistance_against_japan.html" class="glass-card rounded-2xl p-5 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">1931-1945</span>
+                            </div>
+                            <h4 class="font-bold text-slate-100 group-hover:text-emerald-300">抗日战争</h4>
+                            <p class="text-slate-400 text-xs mt-2">从局部抗战到全国抗战，理解持久战背后的资源逻辑。</p>
+                        </div>
+                    </a>
+
+                    <a href="china_long_march.html" class="glass-card rounded-2xl p-5 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-300 flex items-center justify-center text-lg"><i class="fa-solid fa-route"></i></div>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-orange-500/10 text-orange-300 border border-orange-500/20">1934-1936</span>
+                            </div>
+                            <h4 class="font-bold text-slate-100 group-hover:text-orange-300">毛主席长征之路</h4>
+                            <p class="text-slate-400 text-xs mt-2">以可视化节点重构关键抉择、人物博弈与战略转折。</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三国鼎立格局形成：乱世如何走向三方平衡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .glass-panel { background: rgba(30, 41, 59, 0.58); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.22); }
+        .glass-card { background: rgba(30, 41, 59, 0.42); border: 1px solid rgba(148, 163, 184, 0.15); }
+        .feynman-box { background: linear-gradient(135deg, rgba(8, 47, 73, 0.5), rgba(30, 41, 59, 0.68)); border-left: 4px solid #22d3ee; }
+        .node-pulse { animation: sgPulse 1.8s infinite; }
+        @keyframes sgPulse {
+            0% { r: 10; stroke-opacity: 1; }
+            50% { r: 17; stroke-opacity: 0.35; }
+            100% { r: 10; stroke-opacity: 1; }
+        }
+        .map-grid-bg {
+            background-image: radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 0);
+            background-size: 14px 14px;
+        }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme .glass-panel,
+        body.light-theme .glass-card,
+        body.light-theme .feynman-box,
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row">
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="china_history_portal.html" class="text-cyan-300 font-bold flex items-center gap-2"><i class="fa-solid fa-landmark"></i>中国历史专题</a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="high_tech_portal.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-500/20">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_history_portal.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 border border-slate-700/50">
+                <i class="fa-solid fa-compass w-4 text-cyan-400"></i>中国关键历史总览
+            </a>
+            <p class="px-3 pt-2 pb-1 text-[11px] tracking-wider text-slate-500 uppercase">历史事件列表</p>
+            <a href="china_qin_unification.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-crown w-4 text-amber-400"></i>1. 秦始皇统一六国</a>
+            <a href="china_three_kingdoms_formation.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-cyan-500/20 text-cyan-200 border border-cyan-500/40"><i class="fa-solid fa-chess-rook w-4"></i>2. 三国鼎立格局形成</a>
+            <a href="china_first_opium_war.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-ship w-4 text-blue-400"></i>3. 鸦片战争</a>
+            <a href="china_xinhai_revolution.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-flag w-4 text-rose-400"></i>4. 辛亥革命</a>
+            <a href="china_war_of_resistance_against_japan.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-shield-halved w-4 text-emerald-400"></i>5. 抗日战争</a>
+            <a href="china_long_march.html" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60"><i class="fa-solid fa-route w-4 text-orange-400"></i>6. 毛主席长征之路</a>
+        </nav>
+    </aside>
+
+    <div class="flex-1 md:overflow-y-auto">
+        <header class="sticky top-0 z-20 bg-slate-900/85 backdrop-blur border-b border-slate-800">
+            <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <h1 class="text-xl md:text-2xl font-bold text-cyan-300 flex items-center gap-2"><i class="fa-solid fa-chess-rook"></i>三国鼎立格局形成</h1>
+                <div class="flex items-center gap-3 self-end md:self-auto">
+                    <div class="hidden sm:flex flex-wrap items-center gap-2 bg-slate-900/70 px-2.5 py-2 rounded-xl border border-cyan-500/30">
+                        <div class="text-center px-2.5 border-r border-slate-700">
+                            <span class="block text-sm font-bold text-cyan-300">184-229</span>
+                            <span class="text-[10px] text-slate-400">格局成型期</span>
+                        </div>
+                        <div class="text-center px-2.5 border-r border-slate-700">
+                            <span class="block text-sm font-bold text-cyan-300">6</span>
+                            <span class="text-[10px] text-slate-400">关键节点</span>
+                        </div>
+                        <div class="text-center px-2.5">
+                            <span class="block text-sm font-bold text-cyan-300">魏蜀吴</span>
+                            <span class="text-[10px] text-slate-400">鼎立三方</span>
+                        </div>
+                    </div>
+                    <a href="china_history_portal.html" class="text-xs px-3 py-1.5 rounded border border-slate-700 hover:border-cyan-500">返回总览</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+            <section class="glass-panel rounded-2xl p-6">
+                <h2 class="text-lg font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-cyan-300"></i>费曼一句话</h2>
+                <div class="feynman-box rounded-xl p-4 text-sm text-slate-200 leading-relaxed">
+                    把东汉末年想成“总部失灵的超级公司”：总部发不出工资、管不住分部，各地经理都开始自保。最后不是谁最强谁赢，而是谁能把“地盘 + 粮食 + 人才 + 合法性”组合得最稳定，才形成魏蜀吴三方平衡。
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-7 flex flex-col gap-4">
+                    <div class="glass-panel rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-cyan-300"></i>格局示意图与关键节点</h2>
+                            <span class="text-[11px] text-slate-400">点击节点切换右侧内容</span>
+                        </div>
+                        <div class="relative h-[320px] md:h-[390px] rounded-xl border border-slate-700/70 bg-slate-900/70 map-grid-bg overflow-hidden">
+                            <svg viewBox="0 0 800 460" class="w-full h-full">
+                                <defs>
+                                    <linearGradient id="sgRouteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#06b6d4" />
+                                        <stop offset="55%" stop-color="#22d3ee" />
+                                        <stop offset="100%" stop-color="#67e8f9" />
+                                    </linearGradient>
+                                </defs>
+                                <g class="opacity-40">
+                                    <path d="M 90,180 Q 330,130 700,180" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="6,6"></path>
+                                    <text x="130" y="170" fill="#94a3b8" font-size="11">中原</text>
+                                    <text x="360" y="275" fill="#94a3b8" font-size="11">荆州</text>
+                                    <text x="670" y="230" fill="#94a3b8" font-size="11">江东</text>
+                                </g>
+                                <path d="M 120,120 L 220,140 L 320,170 L 420,220 L 540,240 L 680,210"
+                                      fill="none" stroke="url(#sgRouteGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M 120,120 L 220,140 L 320,170 L 420,220 L 540,240 L 680,210"
+                                      fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.4" stroke-dasharray="8,7"></path>
+                                <g id="sgMapNodes"></g>
+                            </svg>
+                        </div>
+                        <div class="mt-3 flex items-center justify-between gap-2 bg-slate-900/70 border border-slate-700 rounded-lg p-2">
+                            <button id="sgPrevBtn" class="px-3 py-1.5 text-xs rounded bg-cyan-900/60 border border-cyan-700/60 hover:border-cyan-500">上一节点</button>
+                            <div id="sgCurrentRange" class="text-xs text-cyan-200 truncate px-1 text-center"></div>
+                            <button id="sgNextBtn" class="px-3 py-1.5 text-xs rounded bg-cyan-900/60 border border-cyan-700/60 hover:border-cyan-500">下一节点</button>
+                        </div>
+                    </div>
+                    <div id="sgNodeStrip" class="grid grid-cols-2 md:grid-cols-3 gap-2"></div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="glass-card rounded-2xl p-6 h-full">
+                        <div class="border-b border-slate-700 pb-3 mb-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <span id="sgNodeOrder" class="text-[11px] px-2 py-1 rounded bg-cyan-500/20 text-cyan-200 border border-cyan-500/40"></span>
+                                <span id="sgNodeTime" class="text-xs text-slate-400"></span>
+                            </div>
+                            <h3 id="sgNodeTitle" class="mt-2 text-xl font-bold text-cyan-200"></h3>
+                        </div>
+                        <p id="sgNodeDesc" class="text-sm text-slate-200 leading-relaxed"></p>
+
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-xs">
+                            <div class="bg-slate-900 rounded-lg border border-slate-700 p-2">魏势能：<span id="sgNodeWei" class="text-cyan-300"></span></div>
+                            <div class="bg-slate-900 rounded-lg border border-slate-700 p-2">蜀势能：<span id="sgNodeShu" class="text-cyan-300"></span></div>
+                            <div class="bg-slate-900 rounded-lg border border-slate-700 p-2">吴势能：<span id="sgNodeWu" class="text-cyan-300"></span></div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4 class="text-xs tracking-wider text-slate-400 mb-2">关键内容</h4>
+                            <ul id="sgKeyPoints" class="space-y-2 text-sm text-slate-300"></ul>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4 class="text-xs tracking-wider text-slate-400 mb-2">关键人物</h4>
+                            <div id="sgFigures" class="space-y-2"></div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-700/80">
+                            <p id="sgNodeMiniQuote" class="text-sm text-cyan-100 italic"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-feather-pointed text-cyan-300"></i>历史名言</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                    <div class="glass-card rounded-xl p-4 border border-cyan-800/40">
+                        <p class="text-slate-200 italic">“夫英雄者，胸怀大志，腹有良谋。”</p>
+                        <p class="mt-2 text-xs text-cyan-300">——《三国演义》</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 border border-cyan-800/40">
+                        <p class="text-slate-200 italic">“天下大势，分久必合，合久必分。”</p>
+                        <p class="mt-2 text-xs text-cyan-300">——罗贯中《三国演义》</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-4 border border-cyan-800/40">
+                        <p class="text-slate-200 italic">“今天下三分，益州疲弊，此诚危急存亡之秋也。”</p>
+                        <p class="mt-2 text-xs text-cyan-300">——诸葛亮《出师表》</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        const sgNodesData = [
+            {
+                id: 1,
+                name: '黄巾余波：中央统治失效',
+                short: '中央失灵',
+                time: '184 - 196',
+                x: 120,
+                y: 120,
+                wei: '20',
+                shu: '5',
+                wu: '10',
+                desc: '财政、军权和行政链条断裂，地方军政集团开始接管秩序。',
+                keyPoints: ['朝廷对地方控制急剧下降', '军阀混战取代中央调度', '区域政权开始形成雏形'],
+                quote: '“中央一旦失灵，地方会迅速填补权力真空。”'
+            },
+            {
+                id: 2,
+                name: '官渡定盘：北方优势成型',
+                short: '官渡定盘',
+                time: '200',
+                x: 220,
+                y: 140,
+                wei: '65',
+                shu: '20',
+                wu: '25',
+                desc: '曹操在官渡战役胜出，北方资源向魏集团快速集中。',
+                keyPoints: ['北方人口与粮源向一方聚集', '战略主动权转向曹操集团', '后续南下基础基本奠定'],
+                quote: '“北方先定，魏的体量优势才真正出现。”'
+            },
+            {
+                id: 3,
+                name: '赤壁转折：南北失衡被纠正',
+                short: '赤壁分界',
+                time: '208',
+                x: 320,
+                y: 170,
+                wei: '60',
+                shu: '45',
+                wu: '55',
+                desc: '孙刘联盟在赤壁阻止北方南下一统，三方生存空间被确认。',
+                keyPoints: ['联盟合作对冲体量差距', '长江防线成为战略屏障', '短期统一机会被关闭'],
+                quote: '“赤壁不是终局，却决定了终局不会太快到来。”'
+            },
+            {
+                id: 4,
+                name: '荆州与益州：蜀汉立足西南',
+                short: '蜀汉立足',
+                time: '209 - 219',
+                x: 420,
+                y: 220,
+                wei: '62',
+                shu: '58',
+                wu: '56',
+                desc: '刘备集团取得益州，形成可持续动员的后方基地。',
+                keyPoints: ['地形险要提高防御效率', '益州资源支撑长期治理', '联吴制魏有了现实基础'],
+                quote: '“地盘、人口、粮食到位，政权才能长期化。”'
+            },
+            {
+                id: 5,
+                name: '江东稳固：吴国水陆体系成熟',
+                short: '江东稳固',
+                time: '210 - 222',
+                x: 540,
+                y: 240,
+                wei: '72',
+                shu: '60',
+                wu: '68',
+                desc: '孙吴整合江东与长江中下游，形成稳定的水军与财政体系。',
+                keyPoints: ['江防与水军构成长线优势', '地方士族合作提升治理效率', '东南经济能力持续释放'],
+                quote: '“吴的核心竞争力，在于江防与地方治理协同。”'
+            },
+            {
+                id: 6,
+                name: '魏蜀吴建国：鼎立制度化',
+                short: '三方建国',
+                time: '220 - 229',
+                x: 680,
+                y: 210,
+                wei: '80',
+                shu: '62',
+                wu: '70',
+                desc: '魏、蜀、吴相继建国，竞争从军阀混战转为国家对抗。',
+                keyPoints: ['政治合法性叙事同步展开', '区域边界与战略分工更清晰', '鼎立格局进入长期相持阶段'],
+                quote: '“三国形成不是瞬间事件，而是制度化过程。”'
+            }
+        ];
+
+        const sgFiguresData = {
+            1: [
+                { name: '何进', role: '外戚主政者', impact: '政治失衡激化宫廷冲突，引发军阀入场。' },
+                { name: '董卓', role: '割据军阀', impact: '挟天子以令诸侯，中央权威进一步崩解。' }
+            ],
+            2: [
+                { name: '曹操', role: '魏集团核心', impact: '官渡胜利后整合北方资源，形成体量优势。' },
+                { name: '袁绍', role: '北方对手', impact: '失败导致北方竞争格局快速收敛。' }
+            ],
+            3: [
+                { name: '周瑜', role: '东吴都督', impact: '主导赤壁战术执行，阻断北方南下节奏。' },
+                { name: '刘备', role: '蜀汉奠基者', impact: '与孙吴联盟共同塑造三方生存空间。' }
+            ],
+            4: [
+                { name: '刘备', role: '蜀汉建立者', impact: '取得益州后形成稳定后方与政治中心。' },
+                { name: '诸葛亮', role: '治理设计者', impact: '推进内政整合与战略协同，提升政权韧性。' }
+            ],
+            5: [
+                { name: '孙权', role: '东吴君主', impact: '稳定江东政治结构，形成长期区域治理能力。' },
+                { name: '鲁肃', role: '战略协调者', impact: '推动联吴抗魏思路，平衡三方关系。' }
+            ],
+            6: [
+                { name: '曹丕', role: '魏国建立者', impact: '代汉建魏使竞争进入国家化阶段。' },
+                { name: '孙权', role: '吴国皇帝', impact: '称帝后鼎立格局制度化完成闭环。' }
+            ]
+        };
+
+        let currentSgIndex = 0;
+
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        const sgMapNodesEl = document.getElementById('sgMapNodes');
+        const sgNodeStripEl = document.getElementById('sgNodeStrip');
+
+        function renderSgFigures(nodeId) {
+            const figuresEl = document.getElementById('sgFigures');
+            const figures = sgFiguresData[nodeId] || [];
+            figuresEl.innerHTML = '';
+            if (!figures.length) {
+                figuresEl.innerHTML = '<p class="text-xs text-slate-500">该节点暂无补充人物</p>';
+                return;
+            }
+            figures.forEach((person) => {
+                const item = document.createElement('div');
+                item.className = 'bg-slate-900/80 border border-slate-700 rounded-lg p-2';
+                item.innerHTML = `<p class="text-xs text-cyan-200 font-semibold">${person.name} <span class="text-[10px] text-slate-400 font-normal">${person.role}</span></p><p class="text-xs text-slate-300 mt-1">${person.impact}</p>`;
+                figuresEl.appendChild(item);
+            });
+        }
+
+        function renderSgMapNodes() {
+            sgMapNodesEl.innerHTML = '';
+            sgNodesData.forEach((node, idx) => {
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('class', 'cursor-pointer');
+                g.onclick = () => updateSgNodeView(idx);
+
+                const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                pulse.setAttribute('cx', node.x);
+                pulse.setAttribute('cy', node.y);
+                pulse.setAttribute('r', '10');
+                pulse.setAttribute('fill', 'none');
+                pulse.setAttribute('stroke', '#22d3ee');
+                pulse.setAttribute('stroke-width', '2');
+                pulse.setAttribute('id', `sg-pulse-${idx}`);
+                pulse.setAttribute('class', idx === 0 ? 'node-pulse' : 'hidden');
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', node.x);
+                circle.setAttribute('cy', node.y);
+                circle.setAttribute('r', '7');
+                circle.setAttribute('stroke', '#fff');
+                circle.setAttribute('stroke-width', '1.3');
+                circle.setAttribute('id', `sg-circle-${idx}`);
+                circle.setAttribute('fill', idx === 0 ? '#06b6d4' : '#67e8f9');
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', node.x);
+                text.setAttribute('y', node.y - 13);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-size', '10.5');
+                text.setAttribute('fill', '#cffafe');
+                text.textContent = node.short;
+
+                g.appendChild(pulse);
+                g.appendChild(circle);
+                g.appendChild(text);
+                sgMapNodesEl.appendChild(g);
+            });
+        }
+
+        function renderSgNodeStrip() {
+            sgNodeStripEl.innerHTML = '';
+            sgNodesData.forEach((node, idx) => {
+                const btn = document.createElement('button');
+                btn.className = idx === currentSgIndex
+                    ? 'text-xs rounded-lg border px-2 py-2 text-left bg-cyan-500/20 border-cyan-500/40 text-cyan-100'
+                    : 'text-xs rounded-lg border px-2 py-2 text-left bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500';
+                btn.innerHTML = `<p class="font-semibold">${node.id}. ${node.short}</p><p class="text-[10px] text-slate-400 mt-0.5">${node.time}</p>`;
+                btn.onclick = () => updateSgNodeView(idx);
+                sgNodeStripEl.appendChild(btn);
+            });
+        }
+
+        function updateSgNodeView(index) {
+            currentSgIndex = index;
+            const node = sgNodesData[index];
+
+            document.getElementById('sgNodeOrder').textContent = `节点 ${node.id} / ${sgNodesData.length}`;
+            document.getElementById('sgNodeTime').textContent = node.time;
+            document.getElementById('sgNodeTitle').textContent = node.name;
+            document.getElementById('sgNodeDesc').textContent = node.desc;
+            document.getElementById('sgNodeWei').textContent = node.wei;
+            document.getElementById('sgNodeShu').textContent = node.shu;
+            document.getElementById('sgNodeWu').textContent = node.wu;
+            document.getElementById('sgCurrentRange').textContent = `${node.time} | ${node.short}`;
+            document.getElementById('sgNodeMiniQuote').textContent = `“${node.quote}”`;
+
+            const keyPointsEl = document.getElementById('sgKeyPoints');
+            keyPointsEl.innerHTML = '';
+            node.keyPoints.forEach((point) => {
+                const li = document.createElement('li');
+                li.className = 'bg-slate-900/80 border border-slate-700 rounded-lg p-2';
+                li.textContent = point;
+                keyPointsEl.appendChild(li);
+            });
+
+            sgNodesData.forEach((_, idx) => {
+                const pulse = document.getElementById(`sg-pulse-${idx}`);
+                const circle = document.getElementById(`sg-circle-${idx}`);
+                if (!pulse || !circle) return;
+                if (idx === index) {
+                    pulse.classList.remove('hidden');
+                    pulse.classList.add('node-pulse');
+                    circle.setAttribute('fill', '#06b6d4');
+                    circle.setAttribute('r', '8');
+                } else {
+                    pulse.classList.add('hidden');
+                    pulse.classList.remove('node-pulse');
+                    circle.setAttribute('fill', idx < index ? '#0891b2' : '#67e8f9');
+                    circle.setAttribute('r', '6.5');
+                }
+            });
+
+            renderSgFigures(node.id);
+            renderSgNodeStrip();
+        }
+
+        window.onload = function() {
+            renderSgMapNodes();
+            updateSgNodeView(0);
+            document.getElementById('sgPrevBtn')?.addEventListener('click', () => {
+                if (currentSgIndex > 0) updateSgNodeView(currentSgIndex - 1);
+            });
+            document.getElementById('sgNextBtn')?.addEventListener('click', () => {
+                if (currentSgIndex < sgNodesData.length - 1) updateSgNodeView(currentSgIndex + 1);
+            });
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSgIndex > 0) {
+                    updateSgNodeView(currentSgIndex - 1);
+                } else if (e.key === 'ArrowRight' && currentSgIndex < sgNodesData.length - 1) {
+                    updateSgNodeView(currentSgIndex + 1);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

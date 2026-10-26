@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国近代杰出人物全景图 - 费曼学习法</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    colors: {
+                        ink: {
+                            900: '#0b1020'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 40;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(251, 146, 60, 0.55);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .ragdoll-cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 40;
+            user-select: none;
+        }
+        .ragdoll-pose {
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            transform-origin: center;
+        }
+
+        body.light-theme,
+        body.light-theme #content-shell,
+        body.light-theme #sidebar,
+        body.light-theme main {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col md:flex-row">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="index.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-red-600 via-orange-500 to-amber-500 flex items-center justify-center text-white font-bold">
+                <i class="fa-solid fa-book-open-reader text-sm"></i>
+            </div>
+            <span class="font-bold text-base text-slate-100 tracking-wide">中国近代人物</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center space-x-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-600 via-orange-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
+                <i class="fa-solid fa-book-open-reader text-lg"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold text-slate-100 tracking-wide leading-tight">中国近代杰出人物</h1>
+                <p class="text-xs text-orange-300 font-medium">费曼学习法人物馆</p>
+            </div>
+            <i class="fa-solid fa-house text-xs text-slate-500"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2">
+            <button onclick="switchView('dashboard')" id="sidebar-btn-overview" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-orange-500/20 text-orange-200 border border-orange-400/30">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-compass w-5 text-center"></i>
+                    <span>人物总览</span>
+                </span>
+            </button>
+            <p class="px-3 pt-3 text-[10px] font-semibold tracking-wider text-slate-500 uppercase">Figures</p>
+            <div id="sidebar-figure-links" class="space-y-1"></div>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800/80 bg-slate-900/50 text-xs text-slate-400">
+            <div class="flex items-center justify-between text-xs">
+                <span class="flex items-center space-x-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                    <span>人物认知图谱</span>
+                </span>
+                <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
+            </div>
+        </div>
+    </aside>
+
+    <div id="content-shell" class="flex-1 md:overflow-y-auto bg-slate-950">
+        <header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+            <div class="max-w-7xl mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('dashboard')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 via-orange-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-500/20">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-100 to-amber-300">中国近代杰出人物全景图</span>
+                        <span class="hidden sm:inline-block ml-2 px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-xs text-orange-300">总览 + 人物页面</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="switchView('dashboard')" id="nav-btn-dashboard" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-orange-500/20 text-orange-200 border border-orange-400/30">
+                        <i class="fa-solid fa-house mr-1.5"></i>总览
+                    </button>
+                    <button onclick="openFeynmanModal()" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/20 transition-colors">
+                        <i class="fa-solid fa-brain mr-1.5"></i>费曼法
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            <section id="view-dashboard" class="space-y-8">
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-red-950/40 to-slate-900 border border-red-500/20 p-8 md:p-10">
+                    <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-16 -top-16 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="relative z-10 max-w-3xl space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-500/10 border border-red-500/20 text-red-300">
+                            <i class="fa-solid fa-fire"></i> 中国近代人物认知地图
+                        </div>
+                        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+                            从晚清变局到现代复兴<br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-300 via-orange-200 to-amber-300">11 个人物主题展馆</span>
+                        </h1>
+                        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                            用费曼学习法看人物史：每个人物页面都用「背景问题 -> 关键行动 -> 结果影响」三步解释。毛主席页面额外加入“长征中遇到的人与问题”专题模块。
+                        </p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-800">
+                            <div><div class="text-xs text-slate-400">覆盖人物组</div><div class="text-xl font-bold text-white">11 组</div></div>
+                            <div><div class="text-xs text-slate-400">时间跨度</div><div class="text-xl font-bold text-amber-300">晚清至当代</div></div>
+                            <div><div class="text-xs text-slate-400">重点专题</div><div class="text-xl font-bold text-red-300">长征破局</div></div>
+                            <div><div class="text-xs text-slate-400">学习模式</div><div class="text-xl font-bold text-emerald-300">费曼拆解</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/70 rounded-2xl border border-slate-800 p-4 flex flex-col md:flex-row md:items-center gap-3 md:justify-between">
+                    <div class="relative w-full md:w-96">
+                        <label for="figure-search" class="sr-only">搜索人物</label>
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                        <input id="figure-search" type="text" placeholder="搜索人物（如：毛、邓、袁隆平）" oninput="renderFigureGrid()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500">
+                    </div>
+                    <p class="text-xs text-slate-400">点击卡片进入对应人物页面</p>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-layer-group text-orange-400"></i> 人物总览</h2>
+                        <span class="text-xs text-slate-400">共 11 组人物</span>
+                    </div>
+                    <div id="figures-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+                </div>
+            </section>
+
+            <section id="view-detail" class="hidden space-y-8">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <button onclick="switchView('dashboard')" class="inline-flex items-center text-sm text-slate-400 hover:text-orange-300 transition-colors">
+                        <i class="fa-solid fa-arrow-left mr-2"></i>返回人物总览
+                    </button>
+                    <div class="text-xs text-slate-400 flex items-center gap-2">
+                        <span>总览</span><i class="fa-solid fa-chevron-right text-[10px]"></i><span class="text-slate-200" id="detail-breadcrumb-title">人物页面</span>
+                    </div>
+                </div>
+
+                <div id="figure-detail-container" class="space-y-8"></div>
+            </section>
+        </main>
+    </div>
+
+    <div id="feynman-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 bg-slate-950/80 backdrop-blur-md p-4 flex items-center justify-center">
+        <div class="max-w-lg w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 relative space-y-4">
+            <button onclick="closeFeynmanModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">费曼学习法速览</h3>
+                    <p class="text-xs text-indigo-300">把复杂人物史讲给 10 岁孩子听</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">用三步理解人物：1) 他面对什么现实难题；2) 他做了哪些关键决策；3) 这些决策带来什么长期影响。你能讲清楚，才算真正理解。</p>
+            <button onclick="closeFeynmanModal()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium">知道了</button>
+        </div>
+    </div>
+
+    <button id="ragdoll-cat-toggle" type="button" class="ragdoll-cat-btn flex flex-col items-center gap-1 rounded-xl border border-pink-400/40 bg-slate-900/90 px-2 py-1.5 hover:border-pink-300/70" onclick="toggleRagdollCatPose()" aria-pressed="false" title="点击让 Benji 趴下，再点会坐好">
+        <svg width="86" height="66" viewBox="0 0 172 132" aria-hidden="true">
+            <g id="ragdoll-cat-sit" class="ragdoll-pose">
+                <ellipse cx="86" cy="94" rx="34" ry="22" fill="#e8d8c8"></ellipse>
+                <ellipse cx="86" cy="98" rx="20" ry="12" fill="#f7efe6"></ellipse>
+                <circle cx="86" cy="58" r="24" fill="#f1dfcf"></circle>
+                <polygon points="68,42 77,24 84,44" fill="#d8beaa"></polygon>
+                <polygon points="104,42 95,24 88,44" fill="#d8beaa"></polygon>
+                <circle cx="78" cy="56" r="4" fill="#334155"></circle>
+                <circle cx="94" cy="56" r="4" fill="#334155"></circle>
+                <ellipse cx="86" cy="65" rx="4" ry="3" fill="#f9a8d4"></ellipse>
+                <path d="M 80 72 Q 86 76 92 72" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                <ellipse cx="61" cy="93" rx="8" ry="7" fill="#f1dfcf"></ellipse>
+                <ellipse cx="111" cy="93" rx="8" ry="7" fill="#f1dfcf"></ellipse>
+                <path d="M 116 94 Q 135 96 146 84" stroke="#d8beaa" stroke-width="6" fill="none" stroke-linecap="round"></path>
+            </g>
+            <g id="ragdoll-cat-lie" class="ragdoll-pose hidden">
+                <ellipse cx="88" cy="88" rx="46" ry="17" fill="#e8d8c8"></ellipse>
+                <ellipse cx="88" cy="92" rx="30" ry="10" fill="#f7efe6"></ellipse>
+                <circle cx="52" cy="80" r="19" fill="#f1dfcf"></circle>
+                <polygon points="39,70 47,56 52,72" fill="#d8beaa"></polygon>
+                <polygon points="61,71 55,56 50,72" fill="#d8beaa"></polygon>
+                <circle cx="46" cy="79" r="3.5" fill="#334155"></circle>
+                <circle cx="58" cy="79" r="3.5" fill="#334155"></circle>
+                <ellipse cx="52" cy="86" rx="3.5" ry="2.8" fill="#f9a8d4"></ellipse>
+                <path d="M 48 91 Q 52 94 56 91" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                <ellipse cx="95" cy="95" rx="9" ry="5" fill="#f1dfcf"></ellipse>
+                <ellipse cx="110" cy="95" rx="9" ry="5" fill="#f1dfcf"></ellipse>
+                <path d="M 124 90 Q 148 87 156 98" stroke="#d8beaa" stroke-width="6" fill="none" stroke-linecap="round"></path>
+            </g>
+        </svg>
+        <span class="text-[10px] font-bold text-pink-200">Fia & Benji</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        const figuresData = [
+            {
+                id: 'zeng-li',
+                name: '曾国藩和李鸿章',
+                era: '晚清洋务起步',
+                icon: 'fa-solid fa-scroll',
+                tag: '自强求变',
+                brief: '以湘军平乱与洋务实践推动晚清军政和工业近代化。',
+                feynman: '他们像“旧帝国里的修理工”，先止血，再尝试装新机器。',
+                highlights: [
+                    '面对内乱与财政崩溃，先重建组织与军纪。',
+                    '推动洋务企业、近代海军与新式学堂。',
+                    '路径仍受旧体制约束，改革效果有限。'
+                ]
+            },
+            {
+                id: 'kang-liang',
+                name: '康有为和梁启超',
+                era: '维新思潮兴起',
+                icon: 'fa-solid fa-feather-pointed',
+                tag: '制度启蒙',
+                brief: '倡导变法、宪政和新式教育，推动思想启蒙。',
+                feynman: '他们是在“旧房子里画新蓝图”的人，先改观念再谈制度。',
+                highlights: [
+                    '通过报刊与学会推动新政治语言。',
+                    '戊戌变法虽失败，但改革议题被永久打开。',
+                    '思想影响延续到后续共和与新文化浪潮。'
+                ]
+            },
+            {
+                id: 'sun',
+                name: '孙中山',
+                era: '革命与共和',
+                icon: 'fa-solid fa-flag',
+                tag: '共和先驱',
+                brief: '提出三民主义，组织革命，推动辛亥变局。',
+                feynman: '孙中山做的事是“把皇朝系统切换成共和国系统”。',
+                highlights: [
+                    '通过同盟会整合革命力量。',
+                    '辛亥革命后推动共和合法性框架。',
+                    '提出民族、民权、民生三民主义。'
+                ]
+            },
+            {
+                id: 'mao',
+                name: '毛主席',
+                era: '革命转折与国家建构',
+                icon: 'fa-solid fa-mountain-sun',
+                tag: '战略破局',
+                brief: '在极端困局中重塑战略方向，长征成为关键转折。',
+                feynman: '长征像一场“边撤退边重组”的极限管理，把部队从崩盘边缘拉回。',
+                highlights: [
+                    '遵义会议前后完成路线纠偏。',
+                    '四渡赤水体现机动作战与主动权思维。',
+                    '确立北上落脚点，保存并重建核心力量。'
+                ],
+                longMarch: [
+                    {
+                        stage: '湘江战役后转向',
+                        problem: '主力损失惨重，原计划路线继续执行将面临被围歼风险。',
+                        people: '周恩来、朱德、王稼祥、张闻天',
+                        result: '转向贵州，争取战略主动。'
+                    },
+                    {
+                        stage: '遵义会议',
+                        problem: '如何纠正教条主义指挥并重建有效军事决策体系。',
+                        people: '周恩来、王稼祥、张闻天、博古、李德',
+                        result: '路线纠偏，形成新的领导核心。'
+                    },
+                    {
+                        stage: '四渡赤水',
+                        problem: '数十万追堵兵力下，红军处于绝对劣势。',
+                        people: '蒋介石、薛岳以及地方军阀体系',
+                        result: '灵活机动摆脱围堵，保存主力。'
+                    },
+                    {
+                        stage: '雪山草地与北上分歧',
+                        problem: '自然环境极限与内部路线分歧叠加。',
+                        people: '张国焘、徐向前、董必武等',
+                        result: '坚持北上，避免组织性分裂。'
+                    }
+                ]
+            },
+            {
+                id: 'deng',
+                name: '邓小平',
+                era: '改革开放',
+                icon: 'fa-solid fa-chart-line',
+                tag: '发展转轨',
+                brief: '推动改革开放，使中国经济进入长期增长轨道。',
+                feynman: '核心是“先把蛋糕做大，再逐步优化分配规则”。',
+                highlights: [
+                    '提出以经济建设为中心。',
+                    '推动对外开放与市场化改革。',
+                    '确立现代化发展长期路线。'
+                ]
+            },
+            {
+                id: 'chiang',
+                name: '蒋介石',
+                era: '战争与政权竞争',
+                icon: 'fa-solid fa-chess-knight',
+                tag: '政军统合',
+                brief: '主导国民政府时期军事与政治整合，也面临内外多重挑战。',
+                feynman: '他试图用“中央集权+军事动员”维持国家秩序。',
+                highlights: [
+                    '推进中央政权整合。',
+                    '在战争压力下进行国家动员。',
+                    '战略决策受复杂内外环境制约。'
+                ]
+            },
+            {
+                id: 'jiang-hu',
+                name: '江泽民和胡锦涛',
+                era: '全球化与制度完善',
+                icon: 'fa-solid fa-globe',
+                tag: '稳健治理',
+                brief: '在全球化背景下推进经济增长、制度建设与社会治理。',
+                feynman: '这阶段像“高速列车控速”，既要快也要稳。',
+                highlights: [
+                    '加入 WTO，深度融入全球产业链。',
+                    '推动信息化、工业化与基础设施升级。',
+                    '强化制度化治理与社会发展议题。'
+                ]
+            },
+            {
+                id: 'yuan',
+                name: '袁隆平',
+                era: '农业科技跃迁',
+                icon: 'fa-solid fa-seedling',
+                tag: '粮食安全',
+                brief: '杂交水稻技术突破，显著提升粮食产量。',
+                feynman: '他做的是“让同一块田多产粮”的技术革命。',
+                highlights: [
+                    '长期攻关杂交水稻关键技术。',
+                    '推动产量提升与抗逆性改良。',
+                    '对中国和全球粮食安全贡献突出。'
+                ]
+            },
+            {
+                id: 'tu',
+                name: '屠呦呦',
+                era: '中西医结合创新',
+                icon: 'fa-solid fa-flask-vial',
+                tag: '医学突破',
+                brief: '从传统医药典籍中提取灵感，发现青蒿素。',
+                feynman: '她把“古方经验”变成“现代可验证药物”。',
+                highlights: [
+                    '在极端资源条件下持续实验攻关。',
+                    '青蒿素显著降低疟疾死亡率。',
+                    '体现了跨学科与问题导向科研路径。'
+                ]
+            },
+            {
+                id: 'huang-yu',
+                name: '黄旭华和于敏',
+                era: '国防科技攻坚',
+                icon: 'fa-solid fa-shield-halved',
+                tag: '隐姓埋名',
+                brief: '在关键国防领域实现重大突破，夯实战略安全底座。',
+                feynman: '他们做的是“看不见但决定安全上限”的底层工程。',
+                highlights: [
+                    '长期隐姓埋名进行高强度科研。',
+                    '攻克高复杂度系统工程难题。',
+                    '塑造国家战略威慑与安全能力。'
+                ]
+            },
+            {
+                id: 'zhong',
+                name: '钟南山',
+                era: '公共卫生治理',
+                icon: 'fa-solid fa-stethoscope',
+                tag: '医学担当',
+                brief: '在重大公共卫生事件中坚持科学判断与专业发声。',
+                feynman: '核心价值是“在不确定中给社会可靠坐标”。',
+                highlights: [
+                    '在关键窗口期推动科学防控共识。',
+                    '强调循证医学与临床一线反馈。',
+                    '提升公众健康风险认知能力。'
+                ]
+            }
+        ];
+
+        let activeFigureId = null;
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        let isRagdollCatLying = false;
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        function toggleRagdollCatPose() {
+            isRagdollCatLying = !isRagdollCatLying;
+            const sitPose = document.getElementById('ragdoll-cat-sit');
+            const liePose = document.getElementById('ragdoll-cat-lie');
+            const catBtn = document.getElementById('ragdoll-cat-toggle');
+
+            if (sitPose && liePose) {
+                sitPose.classList.toggle('hidden', isRagdollCatLying);
+                liePose.classList.toggle('hidden', !isRagdollCatLying);
+            }
+
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isRagdollCatLying));
+                catBtn.title = isRagdollCatLying ? 'Benji 正在趴着，再点会坐好' : '点击让 Benji 趴下，再点会坐好';
+            }
+        }
+
+        function switchView(viewName, figureId = null) {
+            const dashboardView = document.getElementById('view-dashboard');
+            const detailView = document.getElementById('view-detail');
+            const navDashboardBtn = document.getElementById('nav-btn-dashboard');
+
+            if (viewName === 'dashboard') {
+                dashboardView.classList.remove('hidden');
+                detailView.classList.add('hidden');
+                navDashboardBtn.className = 'px-3 py-1.5 rounded-lg text-sm font-medium bg-orange-500/20 text-orange-200 border border-orange-400/30';
+                activeFigureId = null;
+                renderSidebarFigureLinks();
+                updateSidebarOverviewButton(true);
+            } else {
+                dashboardView.classList.add('hidden');
+                detailView.classList.remove('hidden');
+                navDashboardBtn.className = 'px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800';
+                activeFigureId = figureId;
+                renderFigureDetail(figureId);
+                renderSidebarFigureLinks(figureId);
+                updateSidebarOverviewButton(false);
+            }
+
+            closeSidebarOnMobile();
+            scrollContentToTop();
+        }
+
+        function updateSidebarOverviewButton(active) {
+            const btn = document.getElementById('sidebar-btn-overview');
+            btn.className = active
+                ? 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-orange-500/20 text-orange-200 border border-orange-400/30'
+                : 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/70 hover:text-white border border-transparent';
+        }
+
+        function renderSidebarFigureLinks(currentId = null) {
+            const container = document.getElementById('sidebar-figure-links');
+            container.innerHTML = figuresData.map((f) => {
+                const active = f.id === currentId;
+                const klass = active
+                    ? 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-orange-500/20 text-orange-200 border border-orange-400/30'
+                    : 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/70 hover:text-white border border-transparent';
+                return `
+                    <button onclick="switchView('detail', '${f.id}')" class="${klass}">
+                        <span class="flex items-center gap-2">
+                            <i class="${f.icon} w-4 text-center ${active ? 'text-amber-300' : 'text-orange-400'}"></i>
+                            <span class="text-xs leading-snug">${f.name}</span>
+                        </span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderFigureGrid() {
+            const grid = document.getElementById('figures-grid');
+            const query = (document.getElementById('figure-search').value || '').toLowerCase();
+            const filtered = figuresData.filter((f) => {
+                return (
+                    f.name.toLowerCase().includes(query) ||
+                    f.brief.toLowerCase().includes(query) ||
+                    f.feynman.toLowerCase().includes(query)
+                );
+            });
+
+            if (!filtered.length) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3 opacity-50"></i>
+                        <p class="text-sm">没有找到匹配人物，请换一个关键词。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map((f) => `
+                <div onclick="switchView('detail', '${f.id}')" class="group rounded-2xl bg-slate-900/80 border border-slate-800 p-5 hover:border-orange-500/50 transition-all cursor-pointer flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-300 flex items-center justify-center text-xl">
+                                <i class="${f.icon}"></i>
+                            </div>
+                            <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">${f.tag}</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-orange-200 transition-colors">${f.name}</h3>
+                            <p class="text-xs text-slate-400 mt-1">${f.era}</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">${f.brief}</p>
+                        <div class="bg-slate-950/70 border border-slate-800 rounded-lg p-3">
+                            <div class="text-[11px] text-amber-400 font-semibold mb-1"><i class="fa-solid fa-lightbulb mr-1"></i>费曼一句话</div>
+                            <p class="text-xs text-slate-300 italic">${f.feynman}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-orange-300 font-medium flex items-center justify-between">
+                        <span>进入人物页面</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFigureDetail(figureId) {
+            const figure = figuresData.find((f) => f.id === figureId);
+            if (!figure) return;
+
+            document.getElementById('detail-breadcrumb-title').innerText = figure.name;
+            const container = document.getElementById('figure-detail-container');
+
+            const highlightsHtml = figure.highlights.map((item, idx) => `
+                <div class="relative pl-6 border-l-2 border-orange-500/30">
+                    <div class="absolute -left-[6px] top-1 w-2.5 h-2.5 rounded-full bg-orange-400"></div>
+                    <div class="text-[11px] text-slate-500 mb-0.5">关键点 0${idx + 1}</div>
+                    <div class="text-sm text-slate-200">${item}</div>
+                </div>
+            `).join('');
+
+            const maoSpecial = figure.id === 'mao' ? renderMaoLongMarchModule(figure.longMarch || []) : '';
+
+            container.innerHTML = `
+                <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-red-950/30 to-slate-900 border border-red-500/20 p-7 md:p-8">
+                    <div class="flex flex-col md:flex-row md:items-center gap-5 md:justify-between">
+                        <div class="space-y-2 max-w-3xl">
+                            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs bg-red-500/10 border border-red-500/30 text-red-300">人物页面</div>
+                            <h1 class="text-3xl font-extrabold text-white flex items-center gap-3"><i class="${figure.icon} text-orange-300"></i>${figure.name}</h1>
+                            <p class="text-sm text-slate-300">${figure.brief}</p>
+                            <p class="text-xs text-amber-300 italic">费曼拆解：${figure.feynman}</p>
+                        </div>
+                        <div class="shrink-0 bg-slate-950/70 border border-slate-800 rounded-xl p-4 w-full md:w-64">
+                            <div class="text-[11px] text-slate-400">历史阶段</div>
+                            <div class="text-base text-white font-bold mt-1">${figure.era}</div>
+                            <div class="text-[11px] text-slate-400 mt-3">主题标签</div>
+                            <div class="text-sm text-orange-300 font-semibold mt-1">${figure.tag}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-5">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-timeline text-orange-400"></i>核心问题与关键行动</h2>
+                    <div class="space-y-5">${highlightsHtml}</div>
+                </div>
+
+                ${maoSpecial}
+            `;
+
+            if (figure.id === 'mao' && figure.longMarch && figure.longMarch.length) {
+                showMaoStage(0);
+            }
+        }
+
+        function renderMaoLongMarchModule(stages) {
+            const tabsHtml = stages.map((s, idx) => `
+                <button onclick="showMaoStage(${idx})" id="mao-stage-tab-${idx}" class="mao-stage-tab px-3 py-2 rounded-lg text-xs font-medium border transition-all ${idx === 0 ? 'bg-red-900/50 border-red-500/50 text-red-100' : 'bg-slate-900/60 border-slate-700 text-slate-300 hover:text-white'}">${s.stage}</button>
+            `).join('');
+
+            return `
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-5">
+                    <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-route text-red-400"></i>毛主席长征专题：遇到的人与问题</h2>
+                            <p class="text-xs text-slate-400 mt-1">参考 <code>mao.html</code> 的核心思路，提炼成快速学习版。</p>
+                        </div>
+                        <a href="mao.html" class="shrink-0 px-3 py-1.5 rounded-lg text-xs bg-red-500/10 border border-red-500/30 text-red-300 hover:bg-red-500/20 transition-colors">
+                            打开完整长征交互版 <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </a>
+                    </div>
+                    <div class="flex flex-wrap gap-2">${tabsHtml}</div>
+                    <div id="mao-stage-detail" class="bg-slate-950/70 border border-slate-800 rounded-xl p-4 space-y-3"></div>
+                </div>
+            `;
+        }
+
+        function showMaoStage(index) {
+            const mao = figuresData.find((f) => f.id === 'mao');
+            if (!mao || !mao.longMarch) return;
+            const stage = mao.longMarch[index];
+            if (!stage) return;
+
+            document.querySelectorAll('.mao-stage-tab').forEach((tab, idx) => {
+                if (idx === index) {
+                    tab.className = 'mao-stage-tab px-3 py-2 rounded-lg text-xs font-medium border transition-all bg-red-900/50 border-red-500/50 text-red-100';
+                } else {
+                    tab.className = 'mao-stage-tab px-3 py-2 rounded-lg text-xs font-medium border transition-all bg-slate-900/60 border-slate-700 text-slate-300 hover:text-white';
+                }
+            });
+
+            const detail = document.getElementById('mao-stage-detail');
+            if (!detail) return;
+            detail.innerHTML = `
+                <div>
+                    <div class="text-xs text-red-300 font-semibold mb-1">阶段</div>
+                    <div class="text-base font-bold text-white">${stage.stage}</div>
+                </div>
+                <div>
+                    <div class="text-xs text-amber-300 font-semibold mb-1">核心问题</div>
+                    <p class="text-sm text-slate-300 leading-relaxed">${stage.problem}</p>
+                </div>
+                <div>
+                    <div class="text-xs text-indigo-300 font-semibold mb-1">关键人物</div>
+                    <p class="text-sm text-slate-300">${stage.people}</p>
+                </div>
+                <div>
+                    <div class="text-xs text-emerald-300 font-semibold mb-1">阶段结果</div>
+                    <p class="text-sm text-slate-300">${stage.result}</p>
+                </div>
+            `;
+        }
+
+        function openFeynmanModal() {
+            const modal = document.getElementById('feynman-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeFeynmanModal() {
+            const modal = document.getElementById('feynman-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function closeSidebarOnMobile() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('flex');
+            }
+        }
+
+        function scrollContentToTop() {
+            const shell = document.getElementById('content-shell');
+            if (shell) {
+                shell.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+
+            applyTheme(currentTheme);
+            renderFigureGrid();
+            renderSidebarFigureLinks();
+            updateSidebarOverviewButton(true);
+        };
+    </script>
+</body>
+</html>

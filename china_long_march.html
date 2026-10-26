@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毛主席的长征之路：遇见的战友、对手与历史抉择</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        redgold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#d97706',
+                            800: '#92400e',
+                            900: '#78350f',
+                        },
+                        revolutionary: {
+                            red: '#991b1b',
+                            darkred: '#450a0a',
+                            crimson: '#dc2626',
+                            gold: '#fbbf24',
+                            paper: '#fcf8f2',
+                            darkbg: '#120d0d',
+                            cardbg: '#1c1414',
+                            border: '#3a2424'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'Noto Serif SC', 'serif'],
+                        sans: ['PingFang SC', 'Microsoft YaHei', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <style>
+        /* Custom scrollbar for immersive feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #120d0d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #450a0a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #991b1b;
+        }
+
+        .calligraphy {
+            font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', serif;
+        }
+
+        .map-glow {
+            filter: drop-shadow(0px 0px 8px rgba(220, 38, 38, 0.6));
+        }
+
+        .active-node {
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                r: 10;
+                stroke-opacity: 1;
+            }
+            50% {
+                r: 18;
+                stroke-opacity: 0.3;
+            }
+            100% {
+                r: 10;
+                stroke-opacity: 1;
+            }
+        }
+
+        .dash-route {
+            stroke-dasharray: 8, 6;
+            animation: dash 30s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -1000;
+            }
+        }
+
+        .parchment-bg {
+            background-color: #1c1414;
+            background-image: radial-gradient(#2a1a1a 1px, transparent 0);
+            background-size: 16px 16px;
+        }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 60;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 60;
+            user-select: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar,
+        body.light-theme #content-shell {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="bg-revolutionary-"],
+        body.light-theme [class*="bg-black/"],
+        body.light-theme .parchment-bg {
+            background: rgba(255, 255, 255, 0.94) !important;
+        }
+        body.light-theme [class*="text-gray-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-gray-"],
+        body.light-theme [class*="border-revolutionary-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="bg-revolutionary-darkbg text-gray-200 font-sans min-h-screen flex flex-col md:flex-row selection:bg-revolutionary-red selection:text-white">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-black/70 border-b border-revolutionary-border z-50">
+        <a href="china_history_portal.html" class="text-revolutionary-gold font-bold">中国历史专题</a>
+        <button id="mobileMenuBtn" class="text-gray-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-revolutionary-cardbg border-r border-revolutionary-border fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="high_tech_portal.html" class="group p-5 border-b border-revolutionary-border flex items-center gap-3 hover:bg-black/30 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-500/20">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-gray-500 group-hover:text-amber-400"></i>
+        </a>
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 text-sm">
+            <a href="china_history_portal.html" class="block px-3 py-2.5 rounded-lg text-gray-300 hover:bg-black/30 border border-revolutionary-border/70">
+                <i class="fa-solid fa-compass mr-2 text-revolutionary-gold"></i>中国关键历史总览
+            </a>
+            <p class="px-3 pt-2 pb-1 text-[11px] tracking-wider text-gray-500 uppercase">历史事件列表</p>
+            <a href="china_qin_unification.html" class="block px-3 py-2.5 rounded-lg text-gray-300 hover:bg-black/30">1. 秦始皇统一六国</a>
+            <a href="china_three_kingdoms_formation.html" class="block px-3 py-2.5 rounded-lg text-gray-300 hover:bg-black/30">2. 三国鼎立格局形成</a>
+            <a href="china_first_opium_war.html" class="block px-3 py-2.5 rounded-lg text-gray-300 hover:bg-black/30">3. 鸦片战争</a>
+            <a href="china_xinhai_revolution.html" class="block px-3 py-2.5 rounded-lg text-gray-300 hover:bg-black/30">4. 辛亥革命</a>
+            <a href="china_war_of_resistance_against_japan.html" class="block px-3 py-2.5 rounded-lg text-gray-300 hover:bg-black/30">5. 抗日战争</a>
+            <a href="china_long_march.html" class="block px-3 py-2.5 rounded-lg bg-red-500/20 text-red-200 border border-red-400/30">6. 毛主席长征之路</a>
+        </nav>
+    </aside>
+
+    <div id="content-shell" class="flex-1 md:overflow-y-auto">
+
+    <!-- Header Header Section -->
+    <header class="border-b border-revolutionary-border bg-gradient-to-r from-revolutionary-darkred via-black to-revolutionary-darkred text-white py-6 px-4 md:px-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-mx-auto flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+            <div>
+                <div class="flex items-center space-x-3 mb-1">
+                    <span class="inline-block w-3 h-3 rounded-full bg-revolutionary-gold animate-ping"></span>
+                    <span class="text-xs tracking-widest text-revolutionary-gold uppercase font-semibold">1934.10 - 1935.10 伟大历史转折</span>
+                </div>
+                <h1 class="text-2xl md:text-4xl font-bold tracking-tight text-white calligraphy flex items-center gap-3">
+                    <i class="fa-solid font-bold text-revolutionary-gold fa-compass"></i>
+                    毛主席的长征之路：遇见的战友、对手与历史抉择
+                </h1>
+                <p class="text-xs md:text-sm text-gray-400 mt-1 max-w-2xl">
+                    全景呈现毛主席在长征途中经历的军事危机、政治路线抉择、自然极端困境，以及与同志、对手和强敌的博弈智慧。
+                </p>
+            </div>
+            
+            <!-- Quick Stats & Filters -->
+            <div class="flex flex-wrap items-center gap-3 bg-black/40 p-3 rounded-xl border border-revolutionary-border/60">
+                <div class="text-center px-3 border-r border-gray-700">
+                    <span class="block text-xl font-bold text-revolutionary-gold">25,000</span>
+                    <span class="text-[10px] text-gray-400">二万五千里</span>
+                </div>
+                <div class="text-center px-3 border-r border-gray-700">
+                    <span class="block text-xl font-bold text-revolutionary-crimson">7</span>
+                    <span class="text-[10px] text-gray-400">核心转折站</span>
+                </div>
+                <div class="text-center px-3">
+                    <span class="block text-xl font-bold text-amber-400">18+</span>
+                    <span class="text-[10px] text-gray-400">关键人物</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left / Top Column: Map & Route Interactive Panel (7 Cols) -->
+        <section class="lg:col-span-7 flex flex-col gap-4">
+            
+            <!-- Interactive SVG Long March Map Card -->
+            <div class="bg-revolutionary-cardbg border border-revolutionary-border rounded-xl p-4 shadow-xl flex flex-col relative overflow-hidden parchment-bg">
+                <div class="flex justify-between items-center mb-3 z-10">
+                    <h2 class="text-lg font-bold text-revolutionary-gold flex items-center gap-2 calligraphy">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        长征路线示意图与关键节点 (Map Navigation)
+                    </h2>
+                    <span class="text-xs text-gray-400 bg-black/50 px-2.5 py-1 rounded-full border border-gray-800">
+                        点击节点切换历史站点
+                    </span>
+                </div>
+
+                <!-- SVG Map Canvas -->
+                <div class="relative w-full h-[380px] md:h-[440px] bg-black/40 rounded-lg border border-revolutionary-border/50 flex items-center justify-center overflow-hidden">
+                    
+                    <!-- Decorative Map Elements / Topography Simulation -->
+                    <svg id="longMarchMap" viewBox="0 0 800 500" class="w-full h-full object-contain">
+                        <defs>
+                            <!-- Line Gradients -->
+                            <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#dc2626" />
+                                <stop offset="50%" stop-color="#f59e0b" />
+                                <stop offset="100%" stop-color="#10b981" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- Subtle Map Background Features (Rivers & Mountains) -->
+                        <g class="opacity-30">
+                            <!-- Yangtze River Path -->
+                            <path d="M 50,300 Q 200,280 350,330 T 600,280 T 780,220" fill="none" stroke="#2563eb" stroke-width="3" stroke-dasharray="4,2"/>
+                            <text x="620" y="270" fill="#60a5fa" font-size="10" class="calligraphy">长江水系</text>
+                            
+                            <!-- Yellow River Path -->
+                            <path d="M 300,100 Q 450,120 550,80 T 750,110" fill="none" stroke="#d97706" stroke-width="2.5" stroke-dasharray="3,2"/>
+                            <text x="600" y="75" fill="#f59e0b" font-size="10" class="calligraphy">黄河</text>
+
+                            <!-- Mountain Ranges (Snow Mountains Sketch) -->
+                            <polygon points="260,200 280,160 300,200" fill="none" stroke="#9ca3af" stroke-width="1.5"/>
+                            <polygon points="280,210 305,150 330,210" fill="none" stroke="#9ca3af" stroke-width="1.5"/>
+                            <text x="270" y="145" fill="#d1d5db" font-size="10" class="calligraphy">夹金山(雪山)</text>
+
+                            <!-- Grasslands Sketch -->
+                            <path d="M 320,130 Q 350,110 380,130 T 420,130" fill="none" stroke="#059669" stroke-width="1.5"/>
+                            <text x="350" y="105" fill="#34d399" font-size="10" class="calligraphy">松潘草地</text>
+                        </g>
+
+                        <!-- The Long March Route Line -->
+                        <path id="marchRouteLine" d="M 680,380 L 590,390 L 440,360 L 360,340 L 290,260 L 330,120 L 520,70" 
+                              fill="none" stroke="url(#routeGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="map-glow"/>
+                        
+                        <path d="M 680,380 L 590,390 L 440,360 L 360,340 L 290,260 L 330,120 L 520,70" 
+                              fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="dash-route opacity-70"/>
+
+                        <!-- Map Station Nodes (Rendered dynamically via JS) -->
+                        <g id="mapNodesGroup"></g>
+                    </svg>
+
+                    <!-- Legend Overlay -->
+                    <div class="absolute bottom-3 left-3 bg-black/80 backdrop-blur-md p-2.5 rounded-lg border border-gray-800 text-[11px] space-y-1 z-10">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-revolutionary-crimson inline-block"></span>
+                            <span>红军长征主干路线</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
+                            <span>历史转折与决策地</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
+                            <span>胜利会师与新局面</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Bar Slider Controls -->
+                <div class="mt-4 flex items-center justify-between gap-2 bg-black/50 p-2 rounded-lg border border-gray-800">
+                    <button id="prevBtn" class="px-3 py-1.5 bg-revolutionary-darkred hover:bg-revolutionary-red text-white text-xs font-semibold rounded transition flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left"></i> 上一站
+                    </button>
+                    
+                    <div class="flex-1 text-center font-mono text-xs text-revolutionary-gold truncate px-2" id="currentStationRange">
+                        1934.10 - 1935.10 漫漫长征路
+                    </div>
+
+                    <button id="nextBtn" class="px-3 py-1.5 bg-revolutionary-darkred hover:bg-revolutionary-red text-white text-xs font-semibold rounded transition flex items-center gap-1">
+                        下一站 <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Route Stations Quick Strip -->
+            <div class="grid grid-cols-7 gap-1.5" id="stationThumbnails">
+                <!-- Injected via Javascript -->
+            </div>
+
+            <!-- Mao's Poem & Quote Card -->
+            <div class="bg-revolutionary-cardbg border border-revolutionary-border rounded-xl p-5 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 text-revolutionary-darkred/20 text-8xl font-serif pointer-events-none select-none calligraphy">
+                    長征
+                </div>
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2 calligraphy">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                        长征诗词与历史名言 (Mao's Poem / Quote)
+                    </h3>
+                    <span id="poemTitle" class="text-xs text-gray-400 font-serif">《七律·长征》</span>
+                </div>
+                <div id="poemContent" class="text-base md:text-lg text-revolutionary-paper font-serif leading-relaxed italic bg-black/30 p-3.5 rounded-lg border border-amber-900/30 text-center calligraphy">
+                    "红军不怕远征难，万水千山只等闲。"
+                </div>
+            </div>
+
+            <div class="bg-revolutionary-cardbg border border-revolutionary-border rounded-xl p-5 shadow-xl">
+                <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2 mb-3 calligraphy">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    费曼速记卡：为什么长征是“战略重启”而不只是“大撤退”
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                    <div class="bg-black/35 border border-gray-800 rounded-lg p-3">
+                        <p class="text-amber-300 font-semibold mb-1">第一步：保火种</p>
+                        <p class="text-gray-300">先把主力从被围歼状态中带出来，保证组织还在、指挥链还在。</p>
+                    </div>
+                    <div class="bg-black/35 border border-gray-800 rounded-lg p-3">
+                        <p class="text-amber-300 font-semibold mb-1">第二步：换打法</p>
+                        <p class="text-gray-300">遵义会议后，战略从教条硬拼转向机动穿插，重夺主动权。</p>
+                    </div>
+                    <div class="bg-black/35 border border-gray-800 rounded-lg p-3">
+                        <p class="text-amber-300 font-semibold mb-1">第三步：建新局</p>
+                        <p class="text-gray-300">到达陕北后形成新根据地，完成“落脚点 + 出发点”的转换。</p>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-gray-300 bg-black/30 border border-gray-800 rounded-lg p-3">
+                    <details>
+                        <summary class="cursor-pointer text-amber-300">费曼自检：一句话讲清长征的历史意义</summary>
+                        <p class="mt-2 text-gray-300">长征让革命力量从战术被动走向战略主动，并重建了后续发展的政治与组织基础。</p>
+                    </details>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Column: Deep Dive Station & People Info Panel (5 Cols) -->
+        <section class="lg:col-span-5 flex flex-col gap-4">
+            
+            <!-- Main Station Info Card -->
+            <div class="bg-revolutionary-cardbg border border-revolutionary-border rounded-xl p-5 shadow-xl flex-1 flex flex-col">
+                
+                <!-- Station Title & Date -->
+                <div class="border-b border-revolutionary-border pb-3 mb-4 flex justify-between items-start">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span id="stationNumber" class="bg-revolutionary-red text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                                第 1 站
+                            </span>
+                            <span id="stationDate" class="text-xs font-mono text-amber-400">
+                                1934年10月
+                            </span>
+                        </div>
+                        <h2 id="stationName" class="text-2xl font-bold text-white calligraphy mt-1">
+                            瑞金出发与撤离中央苏区
+                        </h2>
+                    </div>
+                    <span id="stationLocation" class="text-xs text-gray-400 bg-gray-900 px-2.5 py-1 rounded-full border border-gray-800 flex items-center gap-1">
+                        <i class="fa-solid fa-location-dot text-red-500"></i> 江西瑞金
+                    </span>
+                </div>
+
+                <!-- Core Challenge / Crisis Box -->
+                <div class="mb-4 bg-red-950/40 border border-red-900/50 rounded-lg p-3.5">
+                    <h4 class="text-xs font-bold text-red-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation"></i> 核心困境与历史危机 (Core Challenge)
+                    </h4>
+                    <p id="stationChallenge" class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                        第五次反“围剿”失败，中央红军迫不得已实行战略转移。“博古、李德”实行教条主义与退却主义，红军面临被歼灭危险。
+                    </p>
+                </div>
+
+                <!-- Mao's Strategic Decision & Wisdom -->
+                <div class="mb-5 bg-amber-950/30 border border-amber-900/40 rounded-lg p-3.5">
+                    <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb"></i> 毛主席的决策与破局智慧 (Mao's Decision)
+                    </h4>
+                    <p id="stationWisdom" class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                        在被排挤出领导层的情况下，毛主席随军转移。他在行军中积极向王稼祥、洛甫（张闻天）等阐明教条主义指挥的危害，逐步建立思想共识。
+                    </p>
+                </div>
+
+                <!-- Interactive Key People Filter & Grid -->
+                <div class="flex-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-users"></i> 该节点涉及的关键人物 (People Met)
+                        </h4>
+                        <!-- Person Type Filter Tabs -->
+                        <div class="flex gap-1 text-[10px]">
+                            <button class="people-filter-btn active bg-revolutionary-red text-white px-2 py-0.5 rounded" data-filter="all">全部</button>
+                            <button class="people-filter-btn bg-gray-800 text-gray-400 hover:text-white px-2 py-0.5 rounded" data-filter="ally">战友</button>
+                            <button class="people-filter-btn bg-gray-800 text-gray-400 hover:text-white px-2 py-0.5 rounded" data-filter="rival">路线对手</button>
+                            <button class="people-filter-btn bg-gray-800 text-gray-400 hover:text-white px-2 py-0.5 rounded" data-filter="enemy">敌将</button>
+                        </div>
+                    </div>
+
+                    <!-- People Grid Cards -->
+                    <div id="peopleGrid" class="grid grid-cols-2 gap-2 max-h-[220px] overflow-y-auto pr-1">
+                        <!-- People badges rendered via JS -->
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Person Story Detail Modal -->
+    <div id="personModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-revolutionary-cardbg border border-revolutionary-border max-w-lg w-full rounded-xl p-6 shadow-2xl relative transform scale-95 transition-transform duration-300" id="modalContainer">
+            
+            <!-- Close Button -->
+            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="flex items-center gap-4 mb-4 border-b border-revolutionary-border pb-4">
+                <div id="modalAvatar" class="w-14 h-14 rounded-full bg-revolutionary-darkred border-2 border-revolutionary-gold flex items-center justify-center text-2xl font-bold text-revolutionary-gold font-serif">
+                    周
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h3 id="modalName" class="text-xl font-bold text-white calligraphy">周恩来</h3>
+                        <span id="modalRoleBadge" class="text-[10px] bg-red-900/80 text-red-200 border border-red-700 px-2 py-0.5 rounded-full">
+                            革命战友 / 坚实盟友
+                        </span>
+                    </div>
+                    <p id="modalIdentity" class="text-xs text-amber-400/90 mt-0.5">中央三人团成员、红军总政委</p>
+                </div>
+            </div>
+
+            <!-- Modal Body Content -->
+            <div class="space-y-3 text-xs md:text-sm text-gray-300 max-h-[60vh] overflow-y-auto pr-2">
+                <div>
+                    <h4 class="text-xs font-bold text-amber-400 uppercase mb-1">【长征中的关键交互与故事】</h4>
+                    <p id="modalStory" class="leading-relaxed bg-black/40 p-3 rounded border border-gray-800">
+                        在遵义会议前后，周恩来展现了极高的党性与大局观，全力支持毛主席回到红军领导岗位，二人形成了终身紧密的战略互信。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-red-400 uppercase mb-1">【毛主席对该人物的博弈与抉择智慧】</h4>
+                    <p id="modalMaoWisdom" class="leading-relaxed bg-black/40 p-3 rounded border border-gray-800">
+                        毛主席高度评价周恩来的大局观，在关键历史关头联合周恩来、朱德等，实现了红军领导核心的和平过渡。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="mt-5 text-right">
+                <button id="modalConfirmBtn" class="px-4 py-1.5 bg-revolutionary-darkred hover:bg-revolutionary-red text-white text-xs rounded transition">
+                    了解完毕
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Data Script -->
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        // Data structure for Mao's Long March Viewer
+        const stationsData = [
+            {
+                id: 1,
+                name: "瑞金出发与长征序幕",
+                date: "1934年10月",
+                location: "江西瑞金 / 赣南苏区",
+                x: 680,
+                y: 380,
+                challenge: "第五次反“围剿”失败，红军被迫进行战略大转移。博古、李德采取“大搬家”式的退却，缺乏灵活机动战术，部队极其被动。",
+                wisdom: "毛主席虽然当时处于被排挤地位，但依然随军行动。他利用行军途中与王稼祥、张闻天（洛甫）同行的机会，深入交流分析军事失利的根本原因，逐渐形成了改变错误路线的思想联盟。",
+                poemTitle: "《清平乐·会昌》 (1934)",
+                poem: "踏遍青山人未老，风景这边独好。会昌城外高峰，颠连直接东海。",
+                people: [
+                    {
+                        name: "王稼祥",
+                        type: "ally",
+                        role: "中央军委副主席 / 关键盟友",
+                        story: "在行军担架上与毛主席深入交谈，深刻认清了李德指挥的错误，是遵义会议前明确支持毛主席出来指挥红军的核心领导人之一。",
+                        wisdom: "毛主席通过深度的政治思想工作，团结了党内高层有远见卓识的同志。"
+                    },
+                    {
+                        name: "张闻天 (洛甫)",
+                        type: "ally",
+                        role: "中央政治局委员",
+                        story: "受毛主席分析的打动，逐步摆脱教条主义影响，转而支持毛主席的正确军事主张，为遵义会议做好了政治准备。",
+                        wisdom: "毛主席善于团结党内高级理论家，从思想源头纠正“左”倾错误。"
+                    },
+                    {
+                        name: "博古",
+                        type: "rival",
+                        role: "中共中央总负责 (博古/李德路线)",
+                        story: "过分迷信共产国际代表李德，放弃了毛主席机动灵活的游击战与运动战原则，导致苏区丧失与红军重大损失。",
+                        wisdom: "毛主席在遵循党内纪律的同时，坚持用事实与实事求是的态度同教条主义作斗争。"
+                    },
+                    {
+                        name: "李德",
+                        type: "rival",
+                        role: "共产国际军事顾问",
+                        story: "不顾中国国情，坐在地图前瞎指挥，推行“阵地战”和“短促突击”，使红军陷入被动挨打局面。",
+                        wisdom: "毛主席坚决反对脱离实际的教条主义，强调“把马克思主义普及到中国的具体环境”。"
+                    },
+                    {
+                        name: "蒋介石",
+                        type: "enemy",
+                        role: "国民政府军事委员会委员长",
+                        story: "部署五道封锁线，调集数十万大军试图将红军围歼于赣南和湘粤边境。",
+                        wisdom: "毛主席洞察敌人的战略意图，寻找敌军缝隙穿插突破。"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "湘江战役与路线危机",
+                date: "1934年11月 - 12月",
+                location: "广西全州 / 湘江",
+                x: 590,
+                y: 390,
+                challenge: "突破国军第四道封锁线时发生惨烈的湘江战役，红军由出发时的8.6万人锐减至3万余人。博古、李德仍坚持原计划去湘西与红二、六军团会合，而蒋介石早已部署重兵防守。",
+                wisdom: "在部队面临生死存亡的危急关头，毛主席极力主张放弃去湘西的死板计划，改向敌军兵力虚弱的贵州进军，争取了通道转兵，挽救了红军。",
+                poemTitle: "《十六字令三首》 (1934)",
+                poem: "山，快马加鞭未下鞍。惊回首，离天三尺三。",
+                people: [
+                    {
+                        name: "周恩来",
+                        type: "ally",
+                        role: "红军总政委 / 三人团成员",
+                        story: "目睹湘江惨败后，深刻反思军事指挥问题，在通道会议和黎平会议上采纳并支持了毛主席转向贵州的正确建议。",
+                        wisdom: "毛主席用事实说服周恩来，二人形成了挽救红军危局的坚固战略合作。"
+                    },
+                    {
+                        name: "朱德",
+                        type: "ally",
+                        role: "红军总司令",
+                        story: "在湘江血战中亲临前线指挥作战，极力支持毛主席灵活机动的战略转折路线。",
+                        wisdom: "“朱毛”紧密团结，保持了红军主力部队的凝聚力与战斗意志。"
+                    },
+                    {
+                        name: "薛岳",
+                        type: "enemy",
+                        role: "国军中央军“剿匪”前敌总指挥",
+                        story: "率领中央军主力紧追红军不舍，企图将红军围歼于湘桂边界。",
+                        wisdom: "毛主席利用薛岳与地方军阀（如桂系、黔军）之间的矛盾，避实击虚。"
+                    }
+                ]
+            },
+            {
+                id: 3,
+                name: "遵义会议：历史伟大转折",
+                date: "1935年1月",
+                location: "贵州遵义",
+                x: 440,
+                y: 360,
+                challenge: "确定党和红军未来走向的决断时刻。如何彻底总结第五次反“围剿”以来的军事教训，结束“左”倾教条主义统治？",
+                wisdom: "遵义会议上，毛主席作了关于军事问题的关键发言，切中要害地批判了“左”倾军事错误的实质。会议确立了毛主席在党中央和红军的领导地位，在极其危急的关头挽救了党、挽救了红军。",
+                poemTitle: "《忆秦娥·娄山关》 (1935.2)",
+                poem: "雄关漫道真如铁，而今迈步从头越。从头越，苍山如海，残阳如血。",
+                people: [
+                    {
+                        name: "周恩来",
+                        type: "ally",
+                        role: "中央领导人",
+                        story: "在遵义会议上作了自我批评，全力推举毛主席领导红军军事工作。",
+                        wisdom: "毛主席与周恩来相互信任，平稳实现了党内最高军事指挥权力的交接。"
+                    },
+                    {
+                        name: "王稼祥",
+                        type: "ally",
+                        role: "中央军委副主席",
+                        story: "在遵义会议上投下了至关重要的支持毛主席的一票，明确提出由毛主席指挥红军。",
+                        wisdom: "毛主席极具亲和力与说服力，赢得了军委核心成员的关键支持。"
+                    },
+                    {
+                        name: "博古",
+                        type: "rival",
+                        role: "原中共中央总负责",
+                        story: "在会议上作检查，虽思想有所保留，但在随后的政治大局中服从了遵义会议的决议。",
+                        wisdom: "毛主席采取团结-批评-团结的态度，没有搞无情打击，保持了党的团结。"
+                    },
+                    {
+                        name: "王家烈",
+                        type: "enemy",
+                        role: "贵州军阀 / 黔军首领",
+                        story: "黔军守备空虚，双枪兵战斗力低下，遵义战役中被红军大败。",
+                        wisdom: "毛主席抓住军阀防线薄弱点，出其不意夺取遵义，为红军赢得了宝贵的休整时间。"
+                    }
+                ]
+            },
+            {
+                id: 4,
+                name: "四渡赤水：军事指挥的神来之笔",
+                date: "1935年1月 - 5月",
+                location: "川黔滇边境 / 赤水河",
+                x: 360,
+                y: 340,
+                challenge: "蒋介石调集川军、黔军、滇军及中央军共40万大军围追堵截，而红军只有3万余人，面临被关门歼灭的绝境。",
+                wisdom: "毛主席展现出高超的运动战艺术，指挥红军声东击西、穿插往复，四渡赤水、虚击贵阳、佯攻昆明、巧渡金沙江，彻底甩开了数十万敌军的围追堵截。",
+                poemTitle: "《七律·长征》 (1935)",
+                poem: "金沙水拍云崖暖，大渡桥横铁索寒。",
+                people: [
+                    {
+                        name: "贺子珍",
+                        type: "ally",
+                        role: "毛主席妻子 / 红军战士",
+                        story: "在长征途中遭遇敌机轰炸，为掩护伤员身负重伤，体内留下了多处弹片，展现了革命女性的顽强与牺牲。",
+                        wisdom: "毛主席在承受巨大军事压力的同时，也承受着家庭与亲人的牺牲考验。"
+                    },
+                    {
+                        name: "蒋介石",
+                        type: "enemy",
+                        role: "国军最高统帅",
+                        story: "亲自飞赴贵阳督战，本以为可以将红军围歼，却被毛主席以“虚击贵阳”逼得调云南滇军救驾，反被红军借机巧渡金沙江。",
+                        wisdom: "毛主席“打得赢就打，打不赢就走”，牢牢掌握战略主动权。"
+                    },
+                    {
+                        name: "龙云 / 滇军",
+                        type: "enemy",
+                        role: "云南军阀",
+                        story: "云南主力被牵制到贵阳，导致云南本土空虚，红军顺利缴获地图并巧渡金沙江。",
+                        wisdom: "毛主席精通地理与敌军心理，善于利用敌人的调动创造战机。"
+                    }
+                ]
+            },
+            {
+                id: 5,
+                name: "强渡大渡河与飞夺泸定桥",
+                date: "1935年5月 - 6月",
+                location: "四川甘孜/雅安 / 泸定桥",
+                x: 290,
+                y: 260,
+                challenge: "大渡河天险当前，前有天险与守敌，后有薛岳追兵，蒋介石妄图使红军成为“石达开第二”。",
+                wisdom: "毛主席与军委果断决策，一方面强渡大渡河，另一方面精选22名勇士冒着枪林弹雨飞夺泸定桥，粉碎了蒋介石歼灭红军于大渡河以南的企图。",
+                poemTitle: "《七律·长征》 (1935)",
+                poem: "大渡桥横铁索寒。更喜岷山千里雪，三军过后尽开颜。",
+                people: [
+                    {
+                        name: "刘伯承",
+                        type: "ally",
+                        role: "红军总参谋长 / 先遣队司令",
+                        story: "与彝族首领小叶丹“彝海结盟”，成功开辟通过彝族地区的道路，并指挥了强渡大渡河天险。",
+                        wisdom: "毛主席充分信任依靠刘伯承等将领的军事才干与民族平等政策智慧。"
+                    },
+                    {
+                        name: "刘文辉",
+                        type: "enemy",
+                        role: "川康军阀 / 国军24军军长",
+                        story: "布防大渡河与泸定桥，拆除桥板并用火攻，但未能阻止红军敢死队的猛烈冲锋。",
+                        wisdom: "毛主席抓住敌军防线节点，以速度战胜力量。"
+                    }
+                ]
+            },
+            {
+                id: 6,
+                name: "过雪山草地与张国焘分裂斗争",
+                date: "1935年6月 - 9月",
+                location: "四川阿坝 / 夹金山与松潘草地",
+                x: 330,
+                y: 120,
+                challenge: "自然环境极端恶劣（终年积雪的高山与人迹罕至的沼泽草地）；同时，红一、四方面军会师后，张国焘自恃人多势众，自立中央，企图分裂党和红军。",
+                wisdom: "毛主席坚决反对张国焘南下西康的错误主张，坚持北上抗日的大局。在极其艰难的情况下率领中央红军果断北上，脱离险境，保持了党对红军的绝对领导。",
+                poemTitle: "《念奴娇·昆仑》 (1935)",
+                poem: "横空出世，莽昆仑，阅尽人间春色。飞起玉龙三百万，革周天寒彻。",
+                people: [
+                    {
+                        name: "张国焘",
+                        type: "rival",
+                        role: "红四方面军主要领导人",
+                        story: "野心膨胀，反对中央北上方针，甚至密谋胁迫党中央。后公然另立“中央”，最终招致失败。",
+                        wisdom: "毛主席在原则问题上绝不妥协，以非凡的政治勇气化解了党和红军面临的最严重内部分裂危机。"
+                    },
+                    {
+                        name: "董必武",
+                        type: "ally",
+                        role: "党内尊称“董老” / 革命前辈",
+                        story: "年过半百依然徒步过雪山草地，以坚定的共产主义信念感染全军。",
+                        wisdom: "毛主席依靠老一辈革命家坚定信念，凝聚军心。"
+                    },
+                    {
+                        name: "徐向前",
+                        type: "ally",
+                        role: "红四方面军总指挥",
+                        story: "在关键时刻保持大局观，明确表示“哪有红军打红军的道理”，避免了内部流血冲突。",
+                        wisdom: "毛主席善于区别对待，团结四方面军广大指战员。"
+                    }
+                ]
+            },
+            {
+                id: 7,
+                name: "吴起镇会师与陕甘落脚点",
+                date: "1935年10月 - 1936年10月",
+                location: "陕西延安 / 吴起镇",
+                x: 520,
+                y: 70,
+                challenge: "经过长途跋涉，部队极度疲惫，国民党骑兵追击部队紧追不舍。红军急需建立稳固的根据地。",
+                wisdom: "毛主席在吴起镇指挥“切掉尾巴”之战，击败追敌骑兵。随后胜利会师陕北红军，将长征的落脚点选在陕甘，开创了中国革命的全新局面。",
+                poemTitle: "《清平乐·六盘山》 (1935.10)",
+                poem: "天高云淡，望断南飞雁。不到长城非好汉，屈指行程二万。",
+                people: [
+                    {
+                        name: "彭德怀",
+                        type: "ally",
+                        role: "红一军团/红三军团指挥官",
+                        story: "在吴起镇亲自指挥红军切掉敌军骑兵尾巴，毛主席赠诗赞誉：“山高路远坑深，大军纵横驰骋。谁敢横刀立马？唯我彭大将军！”",
+                        wisdom: "毛主席与彭德怀配合默契，用果断的胜利为长征划上圆满句号。"
+                    },
+                    {
+                        name: "刘志丹",
+                        type: "ally",
+                        role: "陕甘边革命根据地创始人",
+                        story: "创建了陕甘苏区，为中央红军提供了宝贵的落脚点与抗日最前线基业。",
+                        wisdom: "毛主席高度评价陕甘苏区，实现了“落脚点”与“出发点”的伟大结合。"
+                    }
+                ]
+            }
+        ];
+
+        // State Management
+        let currentStationIndex = 0;
+        let activeFilter = 'all';
+
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        // DOM elements
+        const mapNodesGroup = document.getElementById('mapNodesGroup');
+        const stationNumberEl = document.getElementById('stationNumber');
+        const stationDateEl = document.getElementById('stationDate');
+        const stationNameEl = document.getElementById('stationName');
+        const stationLocationEl = document.getElementById('stationLocation');
+        const stationChallengeEl = document.getElementById('stationChallenge');
+        const stationWisdomEl = document.getElementById('stationWisdom');
+        const poemTitleEl = document.getElementById('poemTitle');
+        const poemContentEl = document.getElementById('poemContent');
+        const peopleGridEl = document.getElementById('peopleGrid');
+        const stationThumbnailsEl = document.getElementById('stationThumbnails');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentStationRangeEl = document.getElementById('currentStationRange');
+
+        // Modal Elements
+        const personModal = document.getElementById('personModal');
+        const modalContainer = document.getElementById('modalContainer');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalAvatar = document.getElementById('modalAvatar');
+        const modalName = document.getElementById('modalName');
+        const modalRoleBadge = document.getElementById('modalRoleBadge');
+        const modalIdentity = document.getElementById('modalIdentity');
+        const modalStory = document.getElementById('modalStory');
+        const modalMaoWisdom = document.getElementById('modalMaoWisdom');
+
+        // Initialize App
+        function initApp() {
+            renderMapNodes();
+            renderStationThumbnails();
+            updateStationView(0);
+            setupEventListeners();
+        }
+
+        // Render Map Nodes onto SVG
+        function renderMapNodes() {
+            mapNodesGroup.innerHTML = '';
+            stationsData.forEach((station, idx) => {
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                g.setAttribute("class", "cursor-pointer group");
+                g.onclick = () => updateStationView(idx);
+
+                // Outer pulsing ring for active node
+                const pulseCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                pulseCircle.setAttribute("cx", station.x);
+                pulseCircle.setAttribute("cy", station.y);
+                pulseCircle.setAttribute("r", "10");
+                pulseCircle.setAttribute("fill", "none");
+                pulseCircle.setAttribute("stroke", "#fbbf24");
+                pulseCircle.setAttribute("stroke-width", "2");
+                pulseCircle.setAttribute("id", `pulse-node-${idx}`);
+                pulseCircle.setAttribute("class", idx === 0 ? "active-node" : "hidden");
+
+                // Main Node Circle
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", station.x);
+                circle.setAttribute("cy", station.y);
+                circle.setAttribute("r", "7");
+                circle.setAttribute("fill", idx === 0 ? "#dc2626" : "#fbbf24");
+                circle.setAttribute("stroke", "#ffffff");
+                circle.setAttribute("stroke-width", "1.5");
+                circle.setAttribute("id", `circle-node-${idx}`);
+
+                // Station Label text
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", station.x);
+                text.setAttribute("y", station.y - 12);
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("fill", "#fcf8f2");
+                text.setAttribute("font-size", "11");
+                text.setAttribute("class", "calligraphy select-none font-bold drop-shadow");
+                text.textContent = `${idx + 1}.${station.name.split('')[0]}${station.name.split('')[1]}`;
+
+                g.appendChild(pulseCircle);
+                g.appendChild(circle);
+                g.appendChild(text);
+                mapNodesGroup.appendChild(g);
+            });
+        }
+
+        // Render bottom Station Strip Thumbnails
+        function renderStationThumbnails() {
+            stationThumbnailsEl.innerHTML = '';
+            stationsData.forEach((st, idx) => {
+                const thumb = document.createElement('button');
+                thumb.className = `p-1.5 rounded border text-center transition flex flex-col items-center justify-center ${
+                    idx === currentStationIndex 
+                    ? 'bg-revolutionary-darkred border-amber-400 text-white' 
+                    : 'bg-black/40 border-gray-800 text-gray-400 hover:text-white hover:border-gray-600'
+                }`;
+                thumb.onclick = () => updateStationView(idx);
+                thumb.innerHTML = `
+                    <span class="text-[9px] font-mono block">站 ${idx+1}</span>
+                    <span class="text-[10px] font-bold font-serif truncate w-full">${st.name.substring(0, 3)}..</span>
+                `;
+                stationThumbnailsEl.appendChild(thumb);
+            });
+        }
+
+        // Update Station View UI
+        function updateStationView(index) {
+            currentStationIndex = index;
+            const data = stationsData[index];
+
+            // Update texts
+            stationNumberEl.textContent = `第 ${data.id} 站 / 共 ${stationsData.length} 站`;
+            stationDateEl.textContent = data.date;
+            stationNameEl.textContent = data.name;
+            stationLocationEl.innerHTML = `<i class="fa-solid fa-location-dot text-red-500"></i> ${data.location}`;
+            stationChallengeEl.textContent = data.challenge;
+            stationWisdomEl.textContent = data.wisdom;
+
+            poemTitleEl.textContent = data.poemTitle;
+            poemContentEl.textContent = `“${data.poem}”`;
+
+            currentStationRangeEl.textContent = `${data.date} | ${data.name}`;
+
+            // Update SVG map highlights
+            stationsData.forEach((_, idx) => {
+                const pulse = document.getElementById(`pulse-node-${idx}`);
+                const circle = document.getElementById(`circle-node-${idx}`);
+                if (pulse && circle) {
+                    if (idx === index) {
+                        pulse.classList.remove('hidden');
+                        pulse.classList.add('active-node');
+                        circle.setAttribute('fill', '#dc2626');
+                        circle.setAttribute('r', '8.5');
+                    } else {
+                        pulse.classList.add('hidden');
+                        pulse.classList.remove('active-node');
+                        circle.setAttribute('fill', idx < index ? '#10b981' : '#fbbf24');
+                        circle.setAttribute('r', '6.5');
+                    }
+                }
+            });
+
+            // Update bottom strip
+            renderStationThumbnails();
+
+            // Render People Badges for this station
+            renderPeopleGrid();
+        }
+
+        // Render People Grid based on filter
+        function renderPeopleGrid() {
+            const data = stationsData[currentStationIndex];
+            peopleGridEl.innerHTML = '';
+
+            const filteredPeople = data.people.filter(p => {
+                if (activeFilter === 'all') return true;
+                return p.type === activeFilter;
+            });
+
+            if (filteredPeople.length === 0) {
+                peopleGridEl.innerHTML = `<div class="col-span-2 text-center text-xs text-gray-500 py-4">该分类下暂无代表人物</div>`;
+                return;
+            }
+
+            filteredPeople.forEach(person => {
+                const card = document.createElement('div');
+                
+                // Color theme based on type
+                let typeBg = "bg-red-950/60 border-red-800/60 text-red-300";
+                let badgeText = "革命战友";
+                if (person.type === 'rival') {
+                    typeBg = "bg-amber-950/60 border-amber-800/60 text-amber-300";
+                    badgeText = "路线分歧";
+                } else if (person.type === 'enemy') {
+                    typeBg = "bg-zinc-900 border-zinc-700 text-zinc-300";
+                    badgeText = "围剿敌将";
+                }
+
+                card.className = `p-2 rounded border ${typeBg} cursor-pointer hover:scale-[1.02] transition shadow flex items-center justify-between gap-2`;
+                card.onclick = () => openPersonModal(person);
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <div class="w-7 h-7 rounded-full bg-black/60 border border-current flex items-center justify-center font-serif font-bold text-xs shrink-0">
+                            ${person.name[0]}
+                        </div>
+                        <div class="truncate">
+                            <h5 class="text-xs font-bold text-white leading-tight flex items-center gap-1">
+                                ${person.name}
+                            </h5>
+                            <span class="text-[9px] opacity-80 block truncate">${person.role}</span>
+                        </div>
+                    </div>
+                    <span class="text-[9px] px-1.5 py-0.5 rounded bg-black/40 border border-white/10 shrink-0">
+                        ${badgeText}
+                    </span>
+                `;
+
+                peopleGridEl.appendChild(card);
+            });
+        }
+
+        // Open Person Detail Modal
+        function openPersonModal(person) {
+            modalAvatar.textContent = person.name[0];
+            modalName.textContent = person.name;
+            modalIdentity.textContent = person.role;
+            modalStory.textContent = person.story;
+            modalMaoWisdom.textContent = person.wisdom;
+
+            if (person.type === 'ally') {
+                modalRoleBadge.textContent = "革命战友 / 坚实盟友";
+                modalRoleBadge.className = "text-[10px] bg-red-900/80 text-red-200 border border-red-700 px-2 py-0.5 rounded-full";
+            } else if (person.type === 'rival') {
+                modalRoleBadge.textContent = "党内路线分歧者 / 争论对手";
+                modalRoleBadge.className = "text-[10px] bg-amber-900/80 text-amber-200 border border-amber-700 px-2 py-0.5 rounded-full";
+            } else {
+                modalRoleBadge.textContent = "国军围追堵截敌方将领";
+                modalRoleBadge.className = "text-[10px] bg-zinc-800 text-zinc-300 border border-zinc-600 px-2 py-0.5 rounded-full";
+            }
+
+            personModal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContainer.classList.remove('scale-95');
+            modalContainer.classList.add('scale-100');
+        }
+
+        // Close Modal
+        function closeModal() {
+            personModal.classList.add('opacity-0', 'pointer-events-none');
+            modalContainer.classList.remove('scale-100');
+            modalContainer.classList.add('scale-95');
+        }
+
+        // Event Listeners Setup
+        function setupEventListeners() {
+            prevBtn.onclick = () => {
+                if (currentStationIndex > 0) updateStationView(currentStationIndex - 1);
+            };
+
+            nextBtn.onclick = () => {
+                if (currentStationIndex < stationsData.length - 1) updateStationView(currentStationIndex + 1);
+            };
+
+            // Filter Buttons
+            document.querySelectorAll('.people-filter-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    document.querySelectorAll('.people-filter-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-revolutionary-red', 'text-white');
+                        b.classList.add('bg-gray-800', 'text-gray-400');
+                    });
+                    e.target.classList.add('active', 'bg-revolutionary-red', 'text-white');
+                    e.target.classList.remove('bg-gray-800', 'text-gray-400');
+                    
+                    activeFilter = e.target.getAttribute('data-filter');
+                    renderPeopleGrid();
+                };
+            });
+
+            closeModalBtn.onclick = closeModal;
+            modalConfirmBtn.onclick = closeModal;
+            personModal.onclick = (e) => {
+                if (e.target === personModal) closeModal();
+            };
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentStationIndex > 0) {
+                    updateStationView(currentStationIndex - 1);
+                } else if (e.key === 'ArrowRight' && currentStationIndex < stationsData.length - 1) {
+                    updateStationView(currentStationIndex + 1);
+                } else if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        // Run on load
+        window.onload = function() {
+            initApp();
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+        };
+    </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国行业发展史全景图 - 费曼学习法深度解析</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        /* Custom Animations */
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 3s infinite ease-in-out;
+        }
+        .ragdoll-cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        .ragdoll-pose {
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            transform-origin: center;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen md:h-screen flex flex-col md:flex-row selection:bg-indigo-500 selection:text-white">
+
+    <!-- Mobile Top Bar -->
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="index.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-indigo-500 to-amber-500 flex items-center justify-center text-white font-bold">
+                <i class="fa-solid fa-landmark-flag text-sm"></i>
+            </div>
+            <span class="font-bold text-base text-slate-100 tracking-wide">美国行业发展史</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Left Sidebar Navigation -->
+    <aside id="sidebar" class="hidden md:flex flex-col w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0 z-40 fixed md:relative inset-y-0 left-0 w-full md:w-64 overflow-hidden">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center space-x-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/20">
+                <i class="fa-solid fa-brain text-lg"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold text-slate-100 tracking-wide leading-tight">个人知识花园</h1>
+                <p class="text-xs text-sky-400 font-medium">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-house text-xs text-slate-500"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2">
+            <button onclick="switchView('dashboard')" id="sidebar-btn-overview" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-indigo-600/30 text-indigo-300 border border-indigo-500/30">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-house w-5 text-center text-indigo-300"></i>
+                    <span>全景总览</span>
+                </span>
+            </button>
+
+            <p class="px-3 pt-4 text-[10px] font-semibold tracking-wider text-slate-500 uppercase">Industry Sectors</p>
+            <div id="sidebar-sector-links" class="space-y-1"></div>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800/80 bg-slate-900/50 text-xs text-slate-400">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+                <span class="flex items-center space-x-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                    <span>费曼学习模式</span>
+                </span>
+                <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v3.0</span>
+            </div>
+        </div>
+    </aside>
+
+    <div id="content-shell" class="flex-1 md:overflow-y-auto bg-slate-950">
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('dashboard')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-amber-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-landmark-flag"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">美国行业发展史</span>
+                    <span class="hidden sm:inline-block text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full ml-2 font-medium">费曼学习法</span>
+                </div>
+            </div>
+
+            <!-- Quick Navigation Controls -->
+            <div class="flex items-center space-x-3">
+                <button onclick="switchView('dashboard')" id="nav-btn-dashboard" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-indigo-600/30 text-indigo-300 border border-indigo-500/30">
+                    <i class="fa-solid fa-house mr-1.5"></i>全景总览
+                </button>
+                <div class="relative">
+                    <button onclick="toggleTopSectorDropdown()" id="nav-btn-theme" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-coins text-amber-400"></i>
+                        <span id="nav-current-sector-label">主题展馆</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-500"></i>
+                    </button>
+                    <div id="nav-sector-dropdown" class="hidden absolute right-0 mt-2 w-72 rounded-xl border border-slate-700 bg-slate-900/95 shadow-2xl backdrop-blur-md overflow-hidden">
+                        <div class="px-3 py-2 text-[11px] text-slate-400 border-b border-slate-800">选择主题展馆</div>
+                        <div id="nav-sector-dropdown-menu" class="p-2 space-y-1 max-h-80 overflow-y-auto"></div>
+                    </div>
+                </div>
+                <button onclick="openFeynmanModal()" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 border border-amber-500/30 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-brain"></i>
+                    <span class="hidden md:inline">什么是费曼学习法？</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main id="app-container" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 1: DASHBOARD / OVERALL HUB (总览页) -->
+        <!-- ========================================================================= -->
+        <section id="view-dashboard" class="space-y-10">
+
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950/50 to-slate-900 border border-indigo-500/20 p-8 md:p-12 shadow-2xl">
+                <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -top-20 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-bolt text-amber-400"></i> 一站式全景解密 · 彻底讲透
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                        从荒野农田到全球帝国 <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-sky-300 to-amber-300">美国十大核心行业演进全景</span>
+                    </h1>
+                    <p class="mt-4 text-base md:text-lg text-slate-300 leading-relaxed">
+                        用<span class="text-amber-300 font-semibold underline decoration-amber-500/50 underline-offset-4">费曼学习法</span>拆解复杂概念：去除晦涩术语，用大白话、直观类比与第一原理，还原美国如何通过金融、科技、能源与制造构筑全球经济版图。
+                    </p>
+
+                    <!-- Quick Stats Cards -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-800">
+                        <div>
+                            <div class="text-xs text-slate-400 font-medium">历史跨度</div>
+                            <div class="text-xl font-bold text-white mt-1">250+ 年</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-400 font-medium">核心产业领域</div>
+                            <div class="text-xl font-bold text-indigo-400 mt-1">10 大板块</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-400 font-medium">重点精讲</div>
+                            <div class="text-xl font-bold text-amber-400 mt-1">金融与资本</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-400 font-medium">学习模式</div>
+                            <div class="text-xl font-bold text-emerald-400 mt-1">费曼极简模型</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filter Bar -->
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-900/60 p-4 rounded-2xl border border-slate-800 backdrop-blur-sm">
+                <!-- Search Input -->
+                <div class="relative w-full md:w-96">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="sector-search" placeholder="搜索行业、关键词 (例：金融, 芯片, 石油)..." 
+                           oninput="filterSectors()"
+                           class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap items-center gap-2 w-full md:w-auto" id="category-filter-buttons">
+                    <button onclick="setCategoryFilter('all')" data-cat="all" class="cat-filter-btn active-cat px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-indigo-600 text-white">
+                        全部板块 (10)
+                    </button>
+                    <button onclick="setCategoryFilter('capital')" data-cat="capital" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent">
+                        资本与基础设施
+                    </button>
+                    <button onclick="setCategoryFilter('tech')" data-cat="tech" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent">
+                        高科技与前沿
+                    </button>
+                    <button onclick="setCategoryFilter('consumer')" data-cat="consumer" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent">
+                        消费与传媒
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sectors Grid -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-indigo-400"></i> 行业全景板块图谱
+                    </h2>
+                    <span class="text-xs text-slate-400">点击任意板块卡片进入“费曼讲堂”深度剖析</span>
+                </div>
+
+                <div id="sectors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards will be populated dynamically via JavaScript -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 2: DETAIL VIEW - SHOWCASE: US FINANCIAL HISTORY (重点：美国金融史) -->
+        <!-- ========================================================================= -->
+        <section id="view-detail" class="hidden space-y-10">
+
+            <!-- Detail Header / Breadcrumb -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <button onclick="switchView('dashboard')" class="inline-flex items-center text-sm font-medium text-slate-400 hover:text-indigo-400 transition-colors">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> 返回行业总览
+                </button>
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                    <span>总览</span>
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    <span class="text-slate-200" id="detail-breadcrumb-title">美国金融发展史</span>
+                </div>
+            </div>
+
+            <!-- DETAIL CONTENT FOR FINANCE -->
+            <div id="sector-detail-finance" class="space-y-10">
+                
+                <!-- Sector Hero Block -->
+                <div class="relative rounded-3xl bg-gradient-to-r from-amber-950/40 via-slate-900 to-indigo-950/40 border border-amber-500/30 p-8 shadow-xl">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                        <div class="space-y-3 max-w-2xl">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold">
+                                <i class="fa-solid fa-crown"></i> 核心主推展厅 · 费曼精讲
+                            </div>
+                            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">美国金融发展史 <span class="text-amber-400 text-2xl font-normal">(US Financial History)</span></h1>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                                从汉密尔顿的国债实验，到摩根时代的银行救市，再到布雷顿森林体系建立与2008年次贷风暴——看华尔街如何一步步掌握全球资金的水龙头。
+                            </p>
+                        </div>
+                        <div class="bg-slate-950/80 border border-amber-500/20 p-5 rounded-2xl flex flex-col justify-center space-y-2 lg:w-72 shrink-0">
+                            <span class="text-xs text-amber-400 font-semibold uppercase tracking-wider"><i class="fa-solid fa-lightbulb mr-1"></i> 费曼核心结论</span>
+                            <p class="text-xs text-slate-300 italic">
+                                "金融的本质只有两件事：**跨越时间的资源调配** 与 **风险的定价和转移**。美国金融史就是一部不断建水坝（监管）与发洪水（危机/印钞）的博弈史。"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION A: FEYNMAN CONCEPT BREAKDOWN (第一原理/大白话讲清) -->
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 md:p-8 space-y-6">
+                    <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl font-bold">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-white">1. 费曼大白话：用“血液循环”彻底理解美国金融</h2>
+                            <p class="text-xs text-slate-400">摒弃晦涩词汇，用第一原理剖析金融体系</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Analogy 1 -->
+                        <div class="bg-slate-950/60 rounded-xl p-5 border border-slate-800/80 space-y-2 hover:border-amber-500/30 transition-all">
+                            <div class="text-amber-400 font-bold text-base flex items-center gap-2">
+                                <i class="fa-solid fa-heart-pulse"></i> 华尔街 = 人体血液循环系统
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                如果把美国经济比作一个人：**实体企业**是肌肉和器官，需要能量；**资金**就是血液，携带养分；**华尔街与银行**就是心脏和血管泵，负责把有余钱人的血液（存款/投资），泵给缺钱但有想法的人（企业/买房者）。
+                            </p>
+                        </div>
+                        <!-- Analogy 2 -->
+                        <div class="bg-slate-950/60 rounded-xl p-5 border border-slate-800/80 space-y-2 hover:border-amber-500/30 transition-all">
+                            <div class="text-amber-400 font-bold text-base flex items-center gap-2">
+                                <i class="fa-solid fa-building-columns"></i> 美联储 = 中央水库的总闸门
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                美联储（Fed）就像全国水库管理员。经济干旱（衰落）时，他**降息放水**刺激庄稼生长；经济发大水（通胀/泡沫）时，他**加息关闸**把水抽走。水放多了会通胀，水太少企业会渴死。
+                            </p>
+                        </div>
+                        <!-- Analogy 3 -->
+                        <div class="bg-slate-950/60 rounded-xl p-5 border border-slate-800/80 space-y-2 hover:border-amber-500/30 transition-all">
+                            <div class="text-amber-400 font-bold text-base flex items-center gap-2">
+                                <i class="fa-solid fa-ticket"></i> 国债 = 国家的终极信用卡
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                汉密尔顿创立的美国国债制度，相当于美国政府向全球开了一张“信用良好、永不逾期”的信用卡。世界各国愿意借钱给美国，美国用借来的钱建国家，再靠经济增长还利息。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION B: THE 4 MAJOR ERAS - DETAILED FEYNMAN CHRONOLOGY -->
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-timeline text-indigo-400"></i> 2. 演进四大里程碑时代 (Four Major Eras)
+                        </h2>
+                        <span class="text-xs text-slate-400">点击各大时代卡片查看详细演进脉络</span>
+                    </div>
+
+                    <!-- Accordion / Interactive Era Tabs -->
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4" id="era-tabs-container">
+                        <!-- Era 1 Button -->
+                        <button onclick="showEraDetail(1)" id="era-tab-1" class="era-tab-btn active-era text-left p-4 rounded-xl border transition-all bg-indigo-950/60 border-indigo-500/50 text-white">
+                            <div class="text-xs text-amber-400 font-semibold mb-1">阶段 1 (1789-1860s)</div>
+                            <div class="font-bold text-sm">建国初期与国债基石</div>
+                            <div class="text-[11px] text-slate-400 mt-1">汉密尔顿 vs 杰斐逊 的央行之争</div>
+                        </button>
+                        <!-- Era 2 Button -->
+                        <button onclick="showEraDetail(2)" id="era-tab-2" class="era-tab-btn text-left p-4 rounded-xl border transition-all bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700">
+                            <div class="text-xs text-amber-400 font-semibold mb-1">阶段 2 (1870s-1920s)</div>
+                            <div class="font-bold text-sm">镀金时代与强人崛起</div>
+                            <div class="text-[11px] text-slate-400 mt-1">J.P.摩根救市与美联储诞生</div>
+                        </button>
+                        <!-- Era 3 Button -->
+                        <button onclick="showEraDetail(3)" id="era-tab-3" class="era-tab-btn text-left p-4 rounded-xl border transition-all bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700">
+                            <div class="text-xs text-amber-400 font-semibold mb-1">阶段 3 (1929-1970s)</div>
+                            <div class="font-bold text-sm">大萧条、新政与美元霸权</div>
+                            <div class="text-[11px] text-slate-400 mt-1">1929崩溃、布雷顿森林体系</div>
+                        </button>
+                        <!-- Era 4 Button -->
+                        <button onclick="showEraDetail(4)" id="era-tab-4" class="era-tab-btn text-left p-4 rounded-xl border transition-all bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700">
+                            <div class="text-xs text-amber-400 font-semibold mb-1">阶段 4 (1980s-至今)</div>
+                            <div class="font-bold text-sm">放松监管、次贷危机与FinTech</div>
+                            <div class="text-[11px] text-slate-400 mt-1">2008危机、QE量化宽松、加密金融</div>
+                        </button>
+                    </div>
+
+                    <!-- Era Detailed Content Box -->
+                    <div id="era-content-display" class="bg-slate-900/90 rounded-2xl border border-indigo-500/30 p-6 md:p-8 relative">
+                        <!-- Populated by JS function renderEraContent() -->
+                    </div>
+                </div>
+
+                <!-- SECTION C: VISUAL SCHEMA / FLOW OF MONEY (资金流动图解) -->
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 md:p-8 space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-diagram-project text-amber-400"></i> 3. 费曼直观图解：现代金融的资金循环大动脉
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-1">看懂储户、银行、美联储、华尔街与企业之间的闭环关系</p>
+                        </div>
+                    </div>
+
+                    <!-- Diagram Canvas / SVG Schematic -->
+                    <div class="bg-slate-950 rounded-xl p-6 border border-slate-800 flex flex-col items-center justify-center relative overflow-hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl relative z-10">
+                            
+                            <!-- Node 1: Fed -->
+                            <div class="bg-indigo-950/60 border border-indigo-500/40 p-4 rounded-xl text-center space-y-2">
+                                <div class="w-10 h-10 rounded-full bg-indigo-600/30 mx-auto flex items-center justify-center text-indigo-400">
+                                    <i class="fa-solid fa-building-columns text-lg"></i>
+                                </div>
+                                <div class="font-bold text-white text-sm">美联储 (Fed)</div>
+                                <div class="text-[11px] text-slate-300">制定基准利率 · 印钞 / 缩表 · 终极贷款人</div>
+                            </div>
+
+                            <!-- Flow Arrow -->
+                            <div class="hidden md:flex items-center justify-center text-amber-400 text-xl animate-pulse-subtle">
+                                <i class="fa-solid fa-right-left"></i>
+                            </div>
+
+                            <!-- Node 2: Wall Street & Banks -->
+                            <div class="bg-amber-950/60 border border-amber-500/40 p-4 rounded-xl text-center space-y-2">
+                                <div class="w-10 h-10 rounded-full bg-amber-600/30 mx-auto flex items-center justify-center text-amber-400">
+                                    <i class="fa-solid fa-vault text-lg"></i>
+                                </div>
+                                <div class="font-bold text-white text-sm">华尔街与商业银行</div>
+                                <div class="text-[11px] text-slate-300">吸收存款 · 发放贷款 · 股票/债券承销 · 风险包装</div>
+                            </div>
+
+                        </div>
+
+                        <!-- Secondary Flow -->
+                        <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-slate-800 relative z-10">
+                            <!-- Bottom Node 1 -->
+                            <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl text-center">
+                                <div class="font-semibold text-emerald-400 text-xs mb-1"><i class="fa-solid fa-industry mr-1"></i> 实体企业与创新者</div>
+                                <div class="text-[11px] text-slate-300">通过IPO/发债融资，建造工厂、研发AI、扩大生产，创造GDP。</div>
+                            </div>
+                            <!-- Bottom Node 2 -->
+                            <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl text-center">
+                                <div class="font-semibold text-sky-400 text-xs mb-1"><i class="fa-solid fa-users mr-1"></i> 普通大众与投资人</div>
+                                <div class="text-[11px] text-slate-300">存钱获息、购买401k养老基金/股票、贷款买房买车，分享经济红利或承担泡沫破裂风险。</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECTION D: INTERACTIVE FEYNMAN SELF-TEST / QUIZ ("讲给10岁小孩听") -->
+                <div class="bg-gradient-to-br from-indigo-950/40 via-slate-900 to-amber-950/30 rounded-2xl border border-indigo-500/30 p-6 md:p-8 space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div>
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold mb-2">
+                                <i class="fa-solid fa-graduation-cap"></i> 费曼终极检验
+                            </div>
+                            <h2 class="text-xl font-bold text-white">4. "讲给10岁小孩听" 费曼互动测试卡</h2>
+                            <p class="text-xs text-slate-400">费曼学习法的核心是：如果你不能用极简的话解释清楚，说明你还没真正理解！</p>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="feynman-quiz-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- DETAIL CONTENT FOR OTHER SECTORS (DYNAMICALLY RENDERED) -->
+            <div id="sector-detail-generic" class="hidden space-y-8">
+                <!-- Javascript will inject custom Feynman breakdowns for Tech, Energy, Auto, etc. -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FEYNMAN EXPLAINER MODAL -->
+    <div id="feynman-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+            <button onclick="closeFeynmanModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-2xl">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">什么是费曼学习法？</h3>
+                    <div class="text-xs text-amber-400">The Feynman Technique</div>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed">
+                由诺贝尔物理学奖得主理查德·费曼（Richard Feynman）提出。其核心逻辑是：**用最简单的语言（甚至能让10岁小孩听懂）向别人解释一个复杂概念。**
+            </p>
+
+            <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
+                <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-indigo-600/30 text-indigo-400 flex items-center justify-center shrink-0 font-bold text-[11px]">1</span>
+                    <span class="text-slate-300"><strong class="text-white">确定目标概念：</strong> 选择想学习的行业或金融概念。</span>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-indigo-600/30 text-indigo-400 flex items-center justify-center shrink-0 font-bold text-[11px]">2</span>
+                    <span class="text-slate-300"><strong class="text-white">大白话输出：</strong> 抛弃所有专业术语，使用生活中的类比（如把华尔街比作血液泵）。</span>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-indigo-600/30 text-indigo-400 flex items-center justify-center shrink-0 font-bold text-[11px]">3</span>
+                    <span class="text-slate-300"><strong class="text-white">查漏补缺：</strong> 卡壳的地方就是认知盲区，重新翻阅历史资料彻底搞懂。</span>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-indigo-600/30 text-indigo-400 flex items-center justify-center shrink-0 font-bold text-[11px]">4</span>
+                    <span class="text-slate-300"><strong class="text-white">提炼极简模型：</strong> 用一句话或简单的直观图解总结本质。</span>
+                </div>
+            </div>
+
+            <div class="pt-4 text-center">
+                <button onclick="closeFeynmanModal()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl text-xs transition-colors">
+                    知道了，开始学习！
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button id="ragdoll-cat-toggle" type="button" class="ragdoll-cat-btn flex flex-col items-center gap-1 rounded-xl border border-pink-400/40 bg-slate-900/90 px-2 py-1.5 hover:border-pink-300/70" onclick="toggleRagdollCatPose()" aria-pressed="false" title="点击让 Benji 趴下，再点会坐好">
+        <svg width="86" height="66" viewBox="0 0 172 132" aria-hidden="true">
+            <g id="ragdoll-cat-sit" class="ragdoll-pose">
+                <ellipse cx="86" cy="94" rx="34" ry="22" fill="#e8d8c8"></ellipse>
+                <ellipse cx="86" cy="98" rx="20" ry="12" fill="#f7efe6"></ellipse>
+                <circle cx="86" cy="58" r="24" fill="#f1dfcf"></circle>
+                <polygon points="68,42 77,24 84,44" fill="#d8beaa"></polygon>
+                <polygon points="104,42 95,24 88,44" fill="#d8beaa"></polygon>
+                <circle cx="78" cy="56" r="4" fill="#334155"></circle>
+                <circle cx="94" cy="56" r="4" fill="#334155"></circle>
+                <ellipse cx="86" cy="65" rx="4" ry="3" fill="#f9a8d4"></ellipse>
+                <path d="M 80 72 Q 86 76 92 72" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                <ellipse cx="61" cy="93" rx="8" ry="7" fill="#f1dfcf"></ellipse>
+                <ellipse cx="111" cy="93" rx="8" ry="7" fill="#f1dfcf"></ellipse>
+                <path d="M 116 94 Q 135 96 146 84" stroke="#d8beaa" stroke-width="6" fill="none" stroke-linecap="round"></path>
+            </g>
+            <g id="ragdoll-cat-lie" class="ragdoll-pose hidden">
+                <ellipse cx="88" cy="88" rx="46" ry="17" fill="#e8d8c8"></ellipse>
+                <ellipse cx="88" cy="92" rx="30" ry="10" fill="#f7efe6"></ellipse>
+                <circle cx="52" cy="80" r="19" fill="#f1dfcf"></circle>
+                <polygon points="39,70 47,56 52,72" fill="#d8beaa"></polygon>
+                <polygon points="61,71 55,56 50,72" fill="#d8beaa"></polygon>
+                <circle cx="46" cy="79" r="3.5" fill="#334155"></circle>
+                <circle cx="58" cy="79" r="3.5" fill="#334155"></circle>
+                <ellipse cx="52" cy="86" rx="3.5" ry="2.8" fill="#f9a8d4"></ellipse>
+                <path d="M 48 91 Q 52 94 56 91" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                <ellipse cx="95" cy="95" rx="9" ry="5" fill="#f1dfcf"></ellipse>
+                <ellipse cx="110" cy="95" rx="9" ry="5" fill="#f1dfcf"></ellipse>
+                <path d="M 124 90 Q 148 87 156 98" stroke="#d8beaa" stroke-width="6" fill="none" stroke-linecap="round"></path>
+            </g>
+        </svg>
+        <span class="text-[10px] font-bold text-pink-200">Fia & Benji</span>
+    </button>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-8 mt-12 text-center text-xs text-slate-500 space-y-2">
+        <p>美国行业发展史全景图 (US Industry Histories) · 基于费曼学习法构建</p>
+        <p class="text-[11px]">内容涵盖：金融、半导体科技、航空航天、能源、汽车、医疗、零售、传媒、电信与地产</p>
+    </footer>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // =========================================================================
+        // DATA STORE: ALL SECTORS & DETAILED HISTORIES
+        // =========================================================================
+        const sectorsData = [
+            {
+                id: 'finance',
+                name: '金融与资本 (Finance & Wall Street)',
+                category: 'capital',
+                icon: 'fa-solid fa-coins',
+                color: 'amber',
+                tag: '重点主推',
+                brief: '从汉密尔顿建立国债，到J.P.摩根救市，再到美联储掌控全球流动性。',
+                feynmanSummary: '金融是经济的血液循环系统，把闲置资金泵给最有生产力的企业。',
+                keyCompanies: 'JPMorgan Chase, Goldman Sachs, Federal Reserve, BlackRock',
+                erasCount: '4 个关键纪元',
+                isHighlight: true
+            },
+            {
+                id: 'tech',
+                name: '科技与半导体 (Tech & Semiconductors)',
+                category: 'tech',
+                icon: 'fa-solid fa-microchip',
+                color: 'sky',
+                tag: '前沿核心',
+                brief: '从仙童半导体与硅谷诞生，到Wintel联盟、移动互联网与今天的AI算力霸权。',
+                feynmanSummary: '科技本质是“用沙子（硅）做成会思考的开关”，极大地放大了人类处理信息的效率。',
+                keyCompanies: 'Intel, Apple, Microsoft, NVIDIA, Google, Meta',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "芯片就像是微型工厂里亿万个极小的开关（晶体管）。硅谷的伟大之处，就是把原本需要占据一整栋楼的计算机，缩减到了指甲盖大小，并让全世界都能用得起。",
+                    eras: [
+                        { era: "1950s-1970s", title: "硅谷黎明与仙童八叛逆", detail: "肖克利实验室与仙童半导体成立，孵化了英特尔等巨头。硅替代了德州仪器早期采用的锗，硅谷由此得名。" },
+                        { era: "1980s-1990s", title: "个人电脑 (PC) 革命与 Wintel 霸权", detail: "IBM推出PC标准，微软提供操作系统(Windows)，英特尔提供芯片(Intel)，两者组成Wintel联盟垄断个人计算。" },
+                        { era: "2000s-2010s", title: "移动互联网与智能手机", detail: "苹果2007年发布iPhone，将计算带入口袋。云计算（AWS）兴起，软件开始“吃掉世界”。" },
+                        { era: "2020s-至今", title: "AI算力风暴与芯片法案", detail: "英伟达(NVIDIA)凭借GPU与CUDA生态统治AI算力，半导体成为大国博弈的核心战略物资。" }
+                    ]
+                }
+            },
+            {
+                id: 'energy',
+                name: '能源与石油 (Energy & Oil)',
+                category: 'capital',
+                icon: 'fa-solid fa-oil-well',
+                color: 'emerald',
+                tag: '工业基石',
+                brief: '从洛克菲勒的标准石油帝国垄断，到两次石油危机与今日页岩气革命。',
+                feynmanSummary: '能源是工业社会的“食物”，谁掌握了便宜且稳定的能量来源，谁就拥有生产力。',
+                keyCompanies: 'Standard Oil, ExxonMobil, Chevron, ConocoPhillips',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "石油是地下埋藏的亿万年前的阳光。洛克菲勒不靠挖井赚钱，而是靠炼油与控制输油管道（输血管）建立了庞大的商业帝国。",
+                    eras: [
+                        { era: "1850s-1911", title: "洛克菲勒与标准石油垄断", detail: "洛克菲勒通过控制炼油与运输，垄断全美90%石油，最终导致1911年著名的反托拉斯拆分。" },
+                        { era: "1910s-1970s", title: "石油美元与中东风云", detail: "汽车普及让石油替代煤炭成为第一能源。美苏冷战与布雷顿森林体系解体后，美元与石油绑定。" },
+                        { era: "2000s-2010s", title: "页岩油革命 (Shale Revolution)", detail: "水力压裂与水力水平井技术突破，美国从最大石油进口国一跃重回全球最大原油生产国。" },
+                        { era: "2020s-至今", title: "清洁能源转型与双重博弈", detail: "光伏、风电与核能转型加速，但传统油气依然是现代化工与能源安全的底线保障。" }
+                    ]
+                }
+            },
+            {
+                id: 'auto',
+                name: '汽车与先进制造 (Automotive)',
+                category: 'capital',
+                icon: 'fa-solid fa-car',
+                color: 'red',
+                tag: '流水线革命',
+                brief: '亨利·福特发明移动装配线让汽车走进千家万户，底特律三大巨头的兴衰。',
+                feynmanSummary: '汽车工业的本质是“流水线化”。它改变了人类的地理距离感，并孕育了现代中产阶级。',
+                keyCompanies: 'Ford, General Motors (GM), Chrysler, Tesla',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "在福特之前，做汽车像造房子一样慢；福特之后，做汽车像汉堡店做快餐一样，工人站着不动，车子自己滑过来。",
+                    eras: [
+                        { era: "1908-1920s", title: "福特T型车与流水线革命", detail: "1913年福特引入移动装配线，将造车时间从12小时缩短到93分钟，价格大幅降低，普通工人也买得起。" },
+                        { era: "1930s-1960s", title: "底特律黄金时代与GM崛起", detail: "通用汽车（GM）通过多品牌策略（雪佛兰到凯迪拉克）和分期付款买车，超越福特成为工业霸主。" },
+                        { era: "1970s-1990s", title: "日本汽车冲击与底特律阵痛", detail: "两次石油危机让省油且故障率低的日本车（丰田/本田）抢占美国大半市场，底特律走向衰落。" },
+                        { era: "2010s-至今", title: "特斯拉与智能电动车革命", detail: "特斯拉用“软件定义汽车”和超级工厂重塑汽车产业链，将传统制造推向智能化时代。" }
+                    ]
+                }
+            },
+            {
+                id: 'aerospace',
+                name: '航空航天与国防 (Aerospace & Defense)',
+                category: 'capital',
+                icon: 'fa-solid fa-plane-departure',
+                color: 'indigo',
+                tag: '国家意志',
+                brief: '从莱特兄弟试飞，到二战军工复合体、阿波罗登月与商业航天SpaceX。',
+                feynmanSummary: '航空航天是把最顶尖的物理学与材料学带入平流层与宇宙，是国家综合实力的终极展示。',
+                keyCompanies: 'Boeing, Lockheed Martin, Northrop Grumman, SpaceX',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "火箭就像是会飞的巨型油罐，90%重量都是燃料。现代商业航天最神奇的地方，就是把用完的‘油罐’再安全降落并重复使用。",
+                    eras: [
+                        { era: "1903-1930s", title: "莱特兄弟与民航起步", detail: "小鹰镇首飞开启飞行时代，邮政航班与早期商业客机建立起跨洲空中走廊。" },
+                        { era: "1940s-1960s", title: "二战军工与阿波罗登月", detail: "B-29与喷气式飞机投入二战，冷战时期国家意志驱动阿波罗计划，1969年人类首次登月。" },
+                        { era: "1970s-2000s", title: "波音双雄垄断与军工复合体", detail: "波音747开启大容量民航时代，洛克希德·马丁等军工巨头与五角大楼形成深厚合作关系。" },
+                        { era: "2010s-至今", title: "SpaceX与商业航天新纪元", detail: "马斯克创立SpaceX，通过可回收火箭Falcon 9和星链（Starlink）极大地降低了轨发成本。" }
+                    ]
+                }
+            },
+            {
+                id: 'media',
+                name: '传媒与娱乐 (Media & Entertainment)',
+                category: 'consumer',
+                icon: 'fa-solid fa-film',
+                color: 'purple',
+                tag: '文化软实力',
+                brief: '从好莱坞八大影业垄断，到广播电视网，再到Netflix流媒体与社交媒体时代。',
+                feynmanSummary: '传媒是“注意力经济”。用精彩的故事与视觉冲击获取大众的时间，再通过广告或订阅变现。',
+                keyCompanies: 'Disney, Warner Bros, Netflix, Comcast, Meta/Instagram',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "好莱坞就像是造梦工厂，用标准化的流水线生产喜怒哀乐，并向全世界出口美国生活方式。",
+                    eras: [
+                        { era: "1920s-1940s", title: "好莱坞黄金时代与大厂制", detail: "迪士尼、华纳兄弟等八大影业建立演员签约与影院垄断体系，《乱世佳人》等经典诞生。" },
+                        { era: "1950s-1980s", title: "电视网络革命 (NBC/CBS/ABC)", detail: "电视走进亿万家庭，新闻直播与情景喜剧重塑美国公共生活与消费文化。" },
+                        { era: "1990s-2010s", title: "有线电视与互联网媒体", detail: "HBO拉开精品剧集序幕，YouTube与Facebook开启用户自创内容(UGC)时代。" },
+                        { era: "2010s-至今", title: "流媒体大战与算法推荐", detail: "Netflix用“按月订阅+全集释放”颠覆传统观影，TikTok与算法重新定义注意力分配。" }
+                    ]
+                }
+            },
+            {
+                id: 'pharma',
+                name: '医疗与生物制药 (Healthcare & Bio)',
+                category: 'tech',
+                icon: 'fa-solid fa-vial-virus',
+                color: 'pink',
+                tag: '生命科技',
+                brief: '从青霉素工业化生产，到FDA严格监管、基因工程与mRNA疫苗革命。',
+                feynmanSummary: '制药是高风险的高科技投资：烧十亿美元、耗时十年，只为在一万种分子中找到能拯救生命的那一个。',
+                keyCompanies: 'Pfizer, Johnson & Johnson, Eli Lilly, Moderna, Amgen',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "靶向药就像是带有精确GPS的巡航导弹，只炸死体内的癌细胞，而不伤及无辜的健康细胞。",
+                    eras: [
+                        { era: "1940s-1960s", title: "抗生素时代与FDA建立", detail: "青霉素二战量产拯救无数生命，反应停（沙利度胺）事件后FDA建立起全球最严药物审批标准。" },
+                        { era: "1970s-1990s", title: "重组DNA与生物科技诞生", detail: "Genentech成立，利用基因工程重组人造胰岛素，开启大分子生物药新时代。" },
+                        { era: "2000s-2010s", title: "人类基因组计划与靶向药", detail: "人类基因组破译完成，针对特定基因突变的抗癌靶向药和单抗药物迎来爆发。" },
+                        { era: "2020s-至今", title: "mRNA平台与GLP-1减肥药", detail: "Moderna与辉瑞快速开发新冠mRNA疫苗，礼来与诺和诺德的减肥药重塑医药市值版图。" }
+                    ]
+                }
+            },
+            {
+                id: 'retail',
+                name: '零售与电子商务 (Retail & E-Commerce)',
+                category: 'consumer',
+                icon: 'fa-solid fa-cart-shopping',
+                color: 'orange',
+                tag: '渠道霸权',
+                brief: '从西尔斯邮购目录，到沃尔玛供应链帝国，再到亚马逊算法与极速履约。',
+                feynmanSummary: '零售的核心永远只有三个词：“选择多、价格低、送货快”。形式在变，人性未变。',
+                keyCompanies: 'Walmart, Amazon, Costco, Target, eBay',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "沃尔玛是用卫星和条形码把商品从工厂直连货架；亚马逊则是直接把整个货架搬到了你的手机屏幕上。",
+                    eras: [
+                        { era: "1890s-1950s", title: "西尔斯 (Sears) 邮购帝国", detail: "通过厚厚的邮购目录册，将百货商品送达美国广袤农村，被誉为19世纪的“线下亚马逊”。" },
+                        { era: "1960s-1990s", title: "沃尔玛 (Walmart) 供应链奇迹", detail: "山姆·沃尔顿首创天天低价(EDLP)，利用卫星联网和自有物流中心，降本增效统治实体零售。" },
+                        { era: "1995-2010s", title: "亚马逊 (Amazon) 飞轮效应", detail: "贝佐斯从网上卖书起家，通过Prime会员与AWS云计算协同，打造全球最大的电商帝国。" },
+                        { era: "2020s-至今", title: "全渠道履约与跨境电商", detail: "线上下单、店内提货(BOPIS)普及，SHEIN、TEMU等新一代跨境电商掀起供应链效率再升级。" }
+                    ]
+                }
+            },
+            {
+                id: 'telecom',
+                name: '电信与网络通讯 (Telecommunications)',
+                category: 'tech',
+                icon: 'fa-solid fa-tower-cell',
+                color: 'blue',
+                tag: '信息动脉',
+                brief: '贝尔发明电话与贝尔实验室创新，AT&T解体，再到移动4G/5G与光纤骨干网。',
+                feynmanSummary: '电信是数字世界的公路网，把声音、文字与视频打包成光电信号瞬间传遍全球。',
+                keyCompanies: 'AT&T, Verizon, T-Mobile, Cisco',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "贝尔实验室就像是科学界的魔法学院，不仅发明了现代电话网，还顺便孕育了晶体管、UNIX系统和C语言。",
+                    eras: [
+                        { era: "1876-1980s", title: "贝尔帝国 (Ma Bell) 垄断", detail: "亚历山大·贝尔发明电话，AT&T长期垄断全美电信，旗下贝尔实验室斩获多项诺贝尔奖。" },
+                        { era: "1984", title: "AT&T反垄断大拆分", detail: "美国司法部强行将AT&T拆分为7家区域性“小贝尔”公司，引入市场竞争激发电信活力。" },
+                        { era: "1990s-2000s", title: "互联网骨干网与思科狂潮", detail: "光纤大铺设，思科(Cisco)提供路由器，将全美及全球电脑连入World Wide Web。" },
+                        { era: "2010s-至今", title: "移动通信 (4G/5G) 与无线时代", detail: "4G网络催生移动支付与短视频，运营商沦为“管道”，通信基础设施转向高速低时延。" }
+                    ]
+                }
+            },
+            {
+                id: 'realestate',
+                name: '房地产与建筑 (Real Estate)',
+                category: 'capital',
+                icon: 'fa-solid fa-building',
+                color: 'stone',
+                tag: '城镇化浪潮',
+                brief: '二战后郊区化浪潮（莱维敦），房利美与房地美二次抵押市场，以及2008房地产泡沫。',
+                feynmanSummary: '房地产是将土地、信贷与人类居住需求绑定的杠杆游戏，承载了“美国梦”的物理载体。',
+                keyCompanies: 'Fannie Mae, Freddie Mac, CBRE, Lennar',
+                erasCount: '4 个关键纪元',
+                isHighlight: false,
+                content: {
+                    feynmanAnalogy: "‘莱维敦’就像是工厂制造标准化面包一样造房子，让二战退伍老兵都能用低廉的价格买到带花园的郊区独栋。" ,
+                    eras: [
+                        { era: "1930s-1940s", title: "新政救市与房利美 (Fannie Mae) 成立", detail: "大萧条后罗斯福创立政府赞助企业，首创30年固定利率房贷，降低普通人购房门槛。" },
+                        { era: "1950s-1970s", title: "郊区化浪潮与莱维敦模式", detail: "高速公路网建设与汽车普及，促使中产阶级大规模迁往郊区，“带后院的房子”成为美国梦标准配置。" },
+                        { era: "1980s-2007", title: "住房抵押贷款证券化 (MBS)", detail: "华尔街将打包的房屋贷款卖给全球投资者，信贷过剩最终演变成2008年次贷危机。" },
+                        { era: "2010s-至今", title: "机构买房与仓储地产崛起", detail: "黑石等黑马机构大规模收购租赁住宅，同时电商爆发带动大型仓储物流地产繁荣。" }
+                    ]
+                }
+            }
+        ];
+
+        // ERA DETAILS FOR FINANCIAL HISTORY (THE MAIN SHOWCASE)
+        const financeErasDetails = {
+            1: {
+                title: "阶段一：建国初期与国债基石 (1789 - 1860s)",
+                subtitle: "亚历山大·汉密尔顿 vs 托马斯·杰斐逊 的国家灵魂之争",
+                feynmanBreakdown: "独立战争后，美国各州欠了一屁股债，货币乱七八糟。首任财政部长汉密尔顿想出一个绝招：**由联邦政府把所有州的债务揽过来，发行统一的新国债！**",
+                keyEvents: [
+                    { year: "1790年", event: "汉密尔顿提交《关于公共信用的报告》", impact: "确立国债信用，建立旋转门：只要美国按时还息，全世界就愿意借钱给这个新国家。" },
+                    { year: "1791年", event: "第一巡回美国银行 (First Bank of North America) 成立", impact: "爆发“央行违宪”大论战，杰斐逊代表农场主反对过度的金融集中，央行牌照20年后未获延期。" },
+                    { year: "1836年", event: "杰克逊总统废除第二美国银行", impact: "美国进入长达数 shifted 的“自由银行时代”，千奇百怪的纸币泛滥，金融危机频发。" }
+                ],
+                feynmanTakeaway: "这一时期奠定了美国‘借未来钱办今天事’的金融基因。国债从负担变成了信用交易的终极抵押品。"
+            },
+            2: {
+                title: "阶段二：镀金时代、强人救市与美联储诞生 (1870s - 1920s)",
+                subtitle: "J.P.摩根的个人帝国与 1907 年金融大恐慌",
+                feynmanBreakdown: "当时美国没有中央银行，经济全靠铁路和工业大亨野蛮生长。1907年银行挤兑大爆发，大家都没钱了，最后竟然靠大金融家 **J.P. 摩根** 一个人召集富豪掏腰包拯救了华尔街！",
+                keyEvents: [
+                    { year: "1890s", event: "强人资本主义 (Robber Barons) 巅峰", detail: "J.P.摩根通过资本整合钢铁（创建美钢）和铁路，华尔街力量超越华盛顿。" },
+                    { year: "1907年", event: "1907年华尔街大恐慌 (Panic of 1907)", detail: "信托公司倒闭引发挤兑，摩根把纽约最顶尖的银行家锁在图书馆里，直到他们凑够救市资金。" },
+                    { year: "1913年", event: "《美联储法案》通过，美联储 (Fed) 成立", detail: "国会意识到“不能把国家命运系于某一个人”，于是创造了分散式的中央银行——美联储。" }
+                ],
+                feynmanTakeaway: "1907恐慌让美国明白：金融系统太复杂，必须有一个权威的‘终极贷款人’（美联储）在火灾时喷水。"
+            },
+            3: {
+                title: "阶段三：大萧条、罗斯福新政与美元霸权 (1929 - 1970s)",
+                subtitle: "1929年股市崩盘、玻璃-斯蒂格尔法案与布雷顿森林体系",
+                feynmanBreakdown: "1929年疯狂加杠杆买股导致大崩盘，全美上万家银行倒闭。罗斯福上台后，给银行套上了紧箍咒：**存钱的银行绝对不许去炒股（分业经营）**；二战后，美元与黄金挂钩，成为全球通行货币。",
+                keyEvents: [
+                    { year: "1929年", event: "黑色星期二与大萧条爆发", detail: "股市一天蒸发数十亿，经济陷入长达10年的通缩与失业惨剧。" },
+                    { year: "1933年", event: "《玻璃-斯蒂格尔法案》(Glass-Steagall) & SEC成立", detail: "隔离商业银行与投资银行，成立证券交易委员会(SEC)打压内幕交易。" },
+                    { year: "1944年", event: "布雷顿森林协议 (Bretton Woods)", detail: "44国代表规定：35美元换1盎司黄金，其他国家货币与美元挂钩。美元成为‘世界货币’。" },
+                    { year: "1971年", event: "尼克松冲击 (Nixon Shock)", detail: "黄金不够用了，尼克松宣布美元脱离金本位，进入纯信用货币时代（Petrodollar时代开启）。" }
+                ],
+                feynmanTakeaway: "大萧条塑造了现代金融监管框架；而脱离金本位后，美联储获得了无中生有印钞的超级权力。"
+            },
+            4: {
+                title: "阶段四：放松监管、2008次贷风暴与FinTech时代 (1980s - 至今)",
+                subtitle: "沃尔克治通胀、华尔街金融工程、量化宽松(QE)与加密货币",
+                feynmanBreakdown: "1990年代华尔街拆除了防火墙，把房子贷款打包成复杂的‘衍生品’卖给全世界。2008年房价一跌，整个链条炸裂。美联储开启**开启无限印钞模式 (QE)**，如今又迎来加密货币与AI金融挑战。",
+                keyEvents: [
+                    { year: "1999年", event: "废除《玻璃-斯蒂格尔法案》", detail: "金融自由化浪潮达顶峰，诞生了花旗等‘大到不能倒’(Too Big to Fail) 的超级金融巨鳄。" },
+                    { year: "2008年", event: "次贷危机与雷曼兄弟倒闭", detail: "不合规房贷引发全球金融海啸，美联储将利率降至零并首次启动量化宽松(QE)买国债。" },
+                    { year: "2009-2020s", title: "比特币诞生、FinTech与高频交易", detail: "中本聪提出去中心化加密货币；移动支付与算法量化交易充斥华尔街。" },
+                    { year: "2023年", event: "硅谷银行(SVB)爆雷与AI金融", detail: "加息周期下流动性骤紧，极速提现引发新型数字挤兑；AI风险定价成为新前沿。" }
+                ],
+                feynmanTakeaway: "金融创新总是跑在监管前面。当危机到来时，央行只能靠印钞救火，这又导致资产价格飙升与贫富分化。"
+            }
+        };
+
+        // FEYNMAN QUIZ DATA FOR FINANCIAL HISTORY
+        const financeFeynmanQuiz = [
+            {
+                q: "为什么汉密尔顿说‘适度的国债是国家的神赐礼物’？",
+                simplifiedAns: "因为国债就像是国家的‘信用建立卡’。只有你借了钱并且每次都按时还利息，全世界的富人和外国政府才会相信你的国家不会倒闭，从而愿意把资金源源不断投入你的国家建设中。",
+                tag: "第一原理：信用创造"
+            },
+            {
+                q: "什么是美联储的‘量化宽松 (QE)’？用大白话怎么解释？",
+                simplifiedAns: "量化宽松就像是美联储直接开着直升机往市场上‘撒钱’。它通过向商业银行购买他们手里的国债，把电子数字货币直接注入银行账户，强迫银行把钱借给企业和个人去消费和投资。",
+                tag: "大白话：极速印钞"
+            },
+            {
+                q: "2008年次贷危机是怎么爆发的？简单类比是什么？",
+                simplifiedAns: "就像是一个水果摊主把烂苹果（坏账房贷）切成块，混在一堆好苹果里做成‘高级水果罐头’（MBS/CDO），还请专家贴上最高品质标签卖给不知情的人。当大家发现罐头里全是烂苹果时，没人再敢买任何水果，全场崩盘。",
+                tag: "形象类比：毒罐头"
+            },
+            {
+                q: "“商业银行”和“投资银行”有啥区别？",
+                simplifiedAns: "商业银行是‘资金保管箱和储蓄所’（只许稳健存贷款，不能打水漂）；投资银行是‘企业的上市中介与资本赌场’（帮公司发股票、搞并购、玩高风险衍生品）。",
+                tag: "概念拆解"
+            }
+        ];
+
+        // =========================================================================
+        // APP CONTROLLER & STATE
+        // =========================================================================
+        let currentSectorFilter = 'all';
+
+        function setSidebarOverviewActive(isActive) {
+            const overviewBtn = document.getElementById('sidebar-btn-overview');
+            if (!overviewBtn) return;
+            overviewBtn.className = isActive
+                ? 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-indigo-600/30 text-indigo-300 border border-indigo-500/30'
+                : 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/70 hover:text-white border border-transparent';
+        }
+
+        function renderSidebarSectorLinks(activeSectorId = null) {
+            const container = document.getElementById('sidebar-sector-links');
+            if (!container) return;
+
+            container.innerHTML = sectorsData.map((sector) => {
+                const isActive = activeSectorId === sector.id;
+                const navLabel = sector.name.split(' (')[0];
+                const buttonClass = isActive
+                    ? 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-indigo-600/30 text-indigo-300 border border-indigo-500/30'
+                    : 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/70 hover:text-white border border-transparent';
+
+                return `
+                    <button onclick="switchView('detail', '${sector.id}')" class="${buttonClass}">
+                        <span class="flex items-center gap-2">
+                            <i class="${sector.icon} w-4 text-center ${isActive ? 'text-amber-300' : 'text-indigo-400'}"></i>
+                            <span class="text-xs leading-snug">${navLabel}</span>
+                        </span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function closeSidebarOnMobile() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar || window.innerWidth >= 768) return;
+            sidebar.classList.add('hidden');
+            sidebar.classList.remove('flex');
+        }
+
+        function getSectorNavLabel(sectorName) {
+            return sectorName.split(' (')[0];
+        }
+
+        function renderTopSectorDropdown(activeSectorId = null) {
+            const menu = document.getElementById('nav-sector-dropdown-menu');
+            if (!menu) return;
+
+            menu.innerHTML = sectorsData.map((sector) => {
+                const isActive = activeSectorId === sector.id;
+                const itemClass = isActive
+                    ? 'w-full text-left px-3 py-2 rounded-lg text-xs font-medium bg-indigo-600/20 text-indigo-200 border border-indigo-500/40'
+                    : 'w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white border border-transparent';
+
+                return `
+                    <button type="button" class="${itemClass}" onclick="switchView('detail', '${sector.id}'); closeTopSectorDropdown();">
+                        <span class="flex items-center gap-2">
+                            <i class="${sector.icon} w-4 text-center ${isActive ? 'text-amber-300' : 'text-indigo-400'}"></i>
+                            <span class="leading-snug">${getSectorNavLabel(sector.name)}</span>
+                        </span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function closeTopSectorDropdown() {
+            const dropdown = document.getElementById('nav-sector-dropdown');
+            const trigger = document.getElementById('nav-btn-theme');
+            if (!dropdown) return;
+            dropdown.classList.add('hidden');
+            trigger?.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleTopSectorDropdown() {
+            const dropdown = document.getElementById('nav-sector-dropdown');
+            const trigger = document.getElementById('nav-btn-theme');
+            if (!dropdown) return;
+            const isOpen = !dropdown.classList.contains('hidden');
+            dropdown.classList.toggle('hidden', isOpen);
+            trigger?.setAttribute('aria-expanded', String(!isOpen));
+        }
+
+        function setTopNavThemeState(isActive, activeSectorId = null) {
+            const themeBtn = document.getElementById('nav-btn-theme');
+            const currentLabel = document.getElementById('nav-current-sector-label');
+
+            if (themeBtn) {
+                themeBtn.className = isActive
+                    ? 'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 flex items-center gap-1.5'
+                    : 'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5';
+            }
+
+            if (currentLabel) {
+                const activeSector = sectorsData.find((s) => s.id === activeSectorId);
+                currentLabel.innerText = activeSector ? getSectorNavLabel(activeSector.name) : '主题展馆';
+            }
+
+            renderTopSectorDropdown(activeSectorId);
+        }
+
+        function scrollContentToTop() {
+            const shell = document.getElementById('content-shell');
+            if (shell) {
+                shell.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // INITIALIZATION
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+
+            document.addEventListener('click', (event) => {
+                const dropdown = document.getElementById('nav-sector-dropdown');
+                const trigger = document.getElementById('nav-btn-theme');
+                if (!dropdown || !trigger) return;
+                if (dropdown.contains(event.target) || trigger.contains(event.target)) return;
+                closeTopSectorDropdown();
+            });
+
+            renderSectorGrid();
+            renderEraContent(1); // Default to Era 1 in detail view
+            renderFeynmanQuiz();
+            setSidebarOverviewActive(true);
+            renderSidebarSectorLinks();
+            setTopNavThemeState(false);
+        };
+
+        // VIEW SWITCHER
+        function switchView(viewName, sectorId = null) {
+            const dashboardView = document.getElementById('view-dashboard');
+            const detailView = document.getElementById('view-detail');
+            const btnDash = document.getElementById('nav-btn-dashboard');
+            const currentSectorId = sectorId || 'finance';
+
+            if (viewName === 'dashboard') {
+                dashboardView.classList.remove('hidden');
+                detailView.classList.add('hidden');
+                btnDash.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-indigo-600/30 text-indigo-300 border border-indigo-500/30";
+                setTopNavThemeState(false);
+                setSidebarOverviewActive(true);
+                renderSidebarSectorLinks();
+                closeTopSectorDropdown();
+                closeSidebarOnMobile();
+                scrollContentToTop();
+            } else if (viewName === 'detail') {
+                dashboardView.classList.add('hidden');
+                detailView.classList.remove('hidden');
+                setSidebarOverviewActive(false);
+                btnDash.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors text-slate-400 hover:text-white hover:bg-slate-800";
+                setTopNavThemeState(true, currentSectorId);
+
+                if (sectorId === 'finance' || !sectorId) {
+                    document.getElementById('sector-detail-finance').classList.remove('hidden');
+                    document.getElementById('sector-detail-generic').classList.add('hidden');
+                    document.getElementById('detail-breadcrumb-title').innerText = "美国金融发展史";
+                    renderSidebarSectorLinks('finance');
+                } else {
+                    document.getElementById('sector-detail-finance').classList.add('hidden');
+                    document.getElementById('sector-detail-generic').classList.remove('hidden');
+                    renderGenericSectorDetail(sectorId);
+                    renderSidebarSectorLinks(sectorId);
+                }
+                closeTopSectorDropdown();
+                closeSidebarOnMobile();
+                scrollContentToTop();
+            }
+        }
+
+        // SECTOR GRID RENDERER
+        function renderSectorGrid() {
+            const gridContainer = document.getElementById('sectors-grid');
+            const searchVal = document.getElementById('sector-search').value.toLowerCase();
+            gridContainer.innerHTML = '';
+
+            const filtered = sectorsData.filter(item => {
+                const matchesCategory = (currentSectorFilter === 'all') || (item.category === currentSectorFilter);
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || 
+                                      item.brief.toLowerCase().includes(searchVal) ||
+                                      item.feynmanSummary.toLowerCase().includes(searchVal);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                gridContainer.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3 opacity-50"></i>
+                        <p class="text-sm">未找到匹配的行业板块，请尝试更改搜索词。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(sector => {
+                const isHighlight = sector.isHighlight;
+                const card = document.createElement('div');
+                card.className = `group relative rounded-2xl bg-slate-900/80 border ${isHighlight ? 'border-amber-500/40 shadow-lg shadow-amber-500/5' : 'border-slate-800/80'} p-6 hover:border-indigo-500/50 hover:bg-slate-900 transition-all duration-300 flex flex-col justify-between cursor-pointer`;
+                card.onclick = () => switchView('detail', sector.id);
+
+                card.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-xl ${isHighlight ? 'bg-amber-500/20 border border-amber-500/30 text-amber-400' : 'bg-indigo-600/20 border border-indigo-500/30 text-indigo-400'} flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+                                <i class="${sector.icon}"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${isHighlight ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-400'}">
+                                ${sector.tag}
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors">${sector.name}</h3>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">${sector.brief}</p>
+                        </div>
+
+                        <!-- Feynman Summary Box inside card -->
+                        <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80 space-y-1">
+                            <div class="text-[11px] font-semibold text-amber-400 flex items-center gap-1">
+                                <i class="fa-solid fa-lightbulb"></i> 费曼一句话解密:
+                            </div>
+                            <p class="text-xs text-slate-300 italic">${sector.feynmanSummary}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400">
+                        <span class="truncate max-w-[200px] text-[11px]"><i class="fa-solid fa-building mr-1"></i> ${sector.keyCompanies.split(',')[0]} 等</span>
+                        <span class="text-indigo-400 font-medium group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                            展开深度剖析 <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </span>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        // CATEGORY FILTER
+        function setCategoryFilter(category) {
+            currentSectorFilter = category;
+            const buttons = document.querySelectorAll('.cat-filter-btn');
+            buttons.forEach(btn => {
+                if (btn.dataset.cat === category) {
+                    btn.className = "cat-filter-btn active-cat px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-indigo-600 text-white";
+                } else {
+                    btn.className = "cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent";
+                }
+            });
+            renderSectorGrid();
+        }
+
+        // SEARCH FILTER
+        function filterSectors() {
+            renderSectorGrid();
+        }
+
+        // FINANCE ERA CONTENT DISPLAY LOGIC
+        function showEraDetail(eraNum) {
+            // Update buttons styling
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`era-tab-${i}`);
+                if (i === eraNum) {
+                    btn.className = "era-tab-btn active-era text-left p-4 rounded-xl border transition-all bg-indigo-950/60 border-indigo-500/50 text-white shadow-lg";
+                } else {
+                    btn.className = "era-tab-btn text-left p-4 rounded-xl border transition-all bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700";
+                }
+            }
+            renderEraContent(eraNum);
+        }
+
+        function renderEraContent(eraNum) {
+            const container = document.getElementById('era-content-display');
+            const data = financeErasDetails[eraNum];
+
+            let eventsHtml = '';
+            data.keyEvents.forEach(evt => {
+                eventsHtml += `
+                    <div class="relative pl-6 border-l-2 border-indigo-500/40 space-y-1">
+                        <div class="absolute -left-[7px] top-0 w-3 h-3 rounded-full bg-indigo-500"></div>
+                        <div class="text-xs font-bold text-amber-400">${evt.year}</div>
+                        <div class="text-sm font-semibold text-white">${evt.event}</div>
+                        <div class="text-xs text-slate-300 leading-relaxed">${evt.impact || evt.detail}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div>
+                        <span class="text-xs text-amber-400 font-semibold uppercase tracking-wider">历史阶段剖析</span>
+                        <h3 class="text-2xl font-bold text-white mt-1">${data.title}</h3>
+                        <p class="text-sm text-slate-400 italic">${data.subtitle}</p>
+                    </div>
+
+                    <!-- Feynman Breakdown Box -->
+                    <div class="bg-indigo-950/30 border border-indigo-500/30 p-4 rounded-xl space-y-1">
+                        <div class="text-xs font-semibold text-indigo-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-mug-hot text-amber-400"></i> 费曼通俗解读：
+                        </div>
+                        <p class="text-xs md:text-sm text-slate-200 leading-relaxed">${data.feynmanBreakdown}</p>
+                    </div>
+
+                    <!-- Key Timeline Events -->
+                    <div class="space-y-4 pt-2">
+                        <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">关键转折性事件</h4>
+                        <div class="space-y-6">
+                            ${eventsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Era Takeaway -->
+                    <div class="pt-4 border-t border-slate-800 text-xs text-slate-400 flex items-start gap-2">
+                        <i class="fa-solid fa-quote-left text-amber-400 text-sm shrink-0 mt-0.5"></i>
+                        <span><strong class="text-white">本阶段核心启示：</strong> ${data.feynmanTakeaway}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // FEYNMAN QUIZ RENDERER
+        function renderFeynmanQuiz() {
+            const quizContainer = document.getElementById('feynman-quiz-container');
+            quizContainer.innerHTML = '';
+
+            financeFeynmanQuiz.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-950/80 rounded-xl p-5 border border-slate-800/80 space-y-3 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">${item.tag}</span>
+                            <span class="text-xs text-slate-500">卡片 0${index + 1}</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-white leading-snug">${item.q}</h4>
+                    </div>
+
+                    <div id="quiz-ans-${index}" class="hidden pt-3 border-t border-slate-800 text-xs text-slate-300 bg-indigo-950/20 p-3 rounded-lg border border-indigo-500/20">
+                        <span class="text-amber-400 font-semibold block mb-1"><i class="fa-solid fa-check-circle mr-1"></i> 费曼式大白话解答:</span>
+                        ${item.simplifiedAns}
+                    </div>
+
+                    <button onclick="toggleQuizAnswer(${index})" id="quiz-btn-${index}" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-indigo-300 rounded-lg border border-slate-700 transition-colors flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-eye text-xs"></i> 点击翻转显示费曼解析
+                    </button>
+                `;
+                quizContainer.appendChild(card);
+            });
+        }
+
+        function toggleQuizAnswer(index) {
+            const ansBox = document.getElementById(`quiz-ans-${index}`);
+            const btn = document.getElementById(`quiz-btn-${index}`);
+            if (ansBox.classList.contains('hidden')) {
+                ansBox.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-eye-slash text-xs"></i> 隐藏解答`;
+                btn.className = "w-full py-2 bg-indigo-950/60 hover:bg-indigo-900/60 text-xs font-medium text-amber-300 rounded-lg border border-indigo-500/40 transition-colors flex items-center justify-center gap-1.5";
+            } else {
+                ansBox.classList.add('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-eye text-xs"></i> 点击翻转显示费曼解析`;
+                btn.className = "w-full py-2 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-indigo-300 rounded-lg border border-slate-700 transition-colors flex items-center justify-center gap-1.5";
+            }
+        }
+
+        // RENDER GENERIC SECTOR DETAIL PAGE
+        function renderGenericSectorDetail(sectorId) {
+            const sector = sectorsData.find(s => s.id === sectorId);
+            if (!sector) return;
+
+            document.getElementById('detail-breadcrumb-title').innerText = sector.name;
+            const container = document.getElementById('sector-detail-generic');
+
+            let erasHtml = '';
+            if (sector.content && sector.content.eras) {
+                sector.content.eras.forEach((e, idx) => {
+                    erasHtml += `
+                        <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-amber-400">${e.era}</span>
+                                <span class="text-[10px] text-slate-500">阶段 0${idx+1}</span>
+                            </div>
+                            <h4 class="text-base font-bold text-white">${e.title}</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">${e.detail}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            container.innerHTML = `
+                <!-- Sector Hero -->
+                <div class="relative rounded-3xl bg-slate-900 border border-slate-800 p-8 shadow-xl space-y-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-2xl font-bold">
+                            <i class="${sector.icon}"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">${sector.tag}</span>
+                            <h1 class="text-3xl font-extrabold text-white mt-1">${sector.name}</h1>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-sm max-w-3xl leading-relaxed">${sector.brief}</p>
+                </div>
+
+                <!-- Feynman Analogy Box -->
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 md:p-8 space-y-4">
+                    <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl font-bold">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-white">费曼极简大白话拆解</h2>
+                            <p class="text-xs text-slate-400">用第一原理与生活类比理解该行业核心本质</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 p-5 rounded-xl border border-slate-800 text-sm text-slate-200 leading-relaxed italic">
+                        "${sector.content ? sector.content.feynmanAnalogy : sector.feynmanSummary}"
+                    </div>
+                </div>
+
+                <!-- Eras Grid -->
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-timeline text-indigo-400"></i> 历史演进四大里程碑
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${erasHtml}
+                    </div>
+                </div>
+
+                <!-- Key Companies -->
+                <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h4 class="text-sm font-bold text-white">代表性龙头巨头企业</h4>
+                        <p class="text-xs text-slate-400 mt-0.5">${sector.keyCompanies}</p>
+                    </div>
+                    <button onclick="switchView('detail', 'finance')" class="px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-xl text-xs font-medium transition-colors shrink-0">
+                        查看金融主展厅 <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        // FEYNMAN MODAL CONTROLLER
+        function openFeynmanModal() {
+            const modal = document.getElementById('feynman-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeFeynmanModal() {
+            const modal = document.getElementById('feynman-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        let isRagdollCatLying = false;
+        function toggleRagdollCatPose() {
+            isRagdollCatLying = !isRagdollCatLying;
+            const sitPose = document.getElementById('ragdoll-cat-sit');
+            const liePose = document.getElementById('ragdoll-cat-lie');
+            const catBtn = document.getElementById('ragdoll-cat-toggle');
+
+            if (sitPose && liePose) {
+                sitPose.classList.toggle('hidden', isRagdollCatLying);
+                liePose.classList.toggle('hidden', !isRagdollCatLying);
+            }
+
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isRagdollCatLying));
+                catBtn.title = isRagdollCatLying ? 'Benji 正在趴着，再点会坐好' : '点击让 Benji 趴下，再点会坐好';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国杰出人物全景图 - 费曼学习法</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 40;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .ragdoll-cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 40;
+            user-select: none;
+        }
+        .ragdoll-pose {
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            transform-origin: center;
+        }
+
+        body.light-theme,
+        body.light-theme #content-shell,
+        body.light-theme #sidebar,
+        body.light-theme main {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col md:flex-row">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="index.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 via-indigo-500 to-sky-500 flex items-center justify-center text-white font-bold">
+                <i class="fa-solid fa-flag-usa text-sm"></i>
+            </div>
+            <span class="font-bold text-base text-slate-100 tracking-wide">美国杰出人物</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center space-x-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-sky-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-flag-usa text-lg"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold text-slate-100 tracking-wide leading-tight">美国杰出人物</h1>
+                <p class="text-xs text-sky-300 font-medium">费曼学习法人物馆</p>
+            </div>
+            <i class="fa-solid fa-house text-xs text-slate-500"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2">
+            <button onclick="switchView('dashboard')" id="sidebar-btn-overview" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-sky-500/20 text-sky-200 border border-sky-400/30">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-compass w-5 text-center"></i>
+                    <span>人物总览</span>
+                </span>
+            </button>
+            <p class="px-3 pt-3 text-[10px] font-semibold tracking-wider text-slate-500 uppercase">Figures</p>
+            <div id="sidebar-figure-links" class="space-y-1"></div>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800/80 bg-slate-900/50 text-xs text-slate-400">
+            <div class="flex items-center justify-between text-xs">
+                <span class="flex items-center space-x-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                    <span>历史人物图谱</span>
+                </span>
+                <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
+            </div>
+        </div>
+    </aside>
+
+    <div id="content-shell" class="flex-1 md:overflow-y-auto bg-slate-950">
+        <header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+            <div class="max-w-7xl mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('dashboard')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-sky-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+                        <i class="fa-solid fa-user-group"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-indigo-300">美国杰出人物全景图</span>
+                        <span class="hidden sm:inline-block ml-2 px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-xs text-sky-300">总览 + 人物页面</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="switchView('dashboard')" id="nav-btn-dashboard" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-sky-500/20 text-sky-200 border border-sky-400/30">
+                        <i class="fa-solid fa-house mr-1.5"></i>总览
+                    </button>
+                    <button onclick="openFeynmanModal()" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/20 transition-colors">
+                        <i class="fa-solid fa-brain mr-1.5"></i>费曼法
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            <section id="view-dashboard" class="space-y-8">
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950/40 to-slate-900 border border-blue-500/20 p-8 md:p-10">
+                    <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-16 -top-16 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="relative z-10 max-w-3xl space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 border border-blue-500/20 text-blue-300">
+                            <i class="fa-solid fa-landmark"></i> 美国历史人物认知地图
+                        </div>
+                        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+                            从建国革命到全球时代<br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-sky-200 to-indigo-300">11 位杰出人物主题展馆</span>
+                        </h1>
+                        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                            用费曼学习法理解美国历史人物：每个人物页面都拆解为「时代背景 -> 关键行动 -> 历史影响」，快速抓住其在国家发展中的作用。
+                        </p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-800">
+                            <div><div class="text-xs text-slate-400">覆盖人物</div><div class="text-xl font-bold text-white">11 位</div></div>
+                            <div><div class="text-xs text-slate-400">时间跨度</div><div class="text-xl font-bold text-sky-300">18-21世纪</div></div>
+                            <div><div class="text-xs text-slate-400">重点主题</div><div class="text-xl font-bold text-indigo-300">建国与改革</div></div>
+                            <div><div class="text-xs text-slate-400">学习模式</div><div class="text-xl font-bold text-emerald-300">费曼拆解</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/70 rounded-2xl border border-slate-800 p-4 flex flex-col md:flex-row md:items-center gap-3 md:justify-between">
+                    <div class="relative w-full md:w-96">
+                        <label for="figure-search" class="sr-only">搜索人物</label>
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                        <input id="figure-search" type="text" placeholder="搜索人物（如：林肯、罗斯福、金）" oninput="renderFigureGrid()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+                    </div>
+                    <p class="text-xs text-slate-400">点击卡片进入人物页面</p>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-layer-group text-sky-400"></i> 人物总览</h2>
+                        <span class="text-xs text-slate-400">共 11 位人物</span>
+                    </div>
+                    <div id="figures-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+                </div>
+            </section>
+
+            <section id="view-detail" class="hidden space-y-8">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <button onclick="switchView('dashboard')" class="inline-flex items-center text-sm text-slate-400 hover:text-sky-300 transition-colors">
+                        <i class="fa-solid fa-arrow-left mr-2"></i>返回人物总览
+                    </button>
+                    <div class="text-xs text-slate-400 flex items-center gap-2">
+                        <span>总览</span><i class="fa-solid fa-chevron-right text-[10px]"></i><span class="text-slate-200" id="detail-breadcrumb-title">人物页面</span>
+                    </div>
+                </div>
+
+                <div id="figure-detail-container" class="space-y-8"></div>
+            </section>
+        </main>
+    </div>
+
+    <div id="feynman-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 bg-slate-950/80 backdrop-blur-md p-4 flex items-center justify-center">
+        <div class="max-w-lg w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 relative space-y-4">
+            <button onclick="closeFeynmanModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">费曼学习法速览</h3>
+                    <p class="text-xs text-indigo-300">把复杂人物史讲给 10 岁孩子听</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">解释历史人物时，先讲他面对的时代难题，再讲他做了什么，最后讲这些行动如何改变国家与世界，这就是最有效的费曼拆解路径。</p>
+            <button onclick="closeFeynmanModal()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium">知道了</button>
+        </div>
+    </div>
+
+    <button id="ragdoll-cat-toggle" type="button" class="ragdoll-cat-btn flex flex-col items-center gap-1 rounded-xl border border-pink-400/40 bg-slate-900/90 px-2 py-1.5 hover:border-pink-300/70" onclick="toggleRagdollCatPose()" aria-pressed="false" title="点击让 Benji 趴下，再点会坐好">
+        <svg width="86" height="66" viewBox="0 0 172 132" aria-hidden="true">
+            <g id="ragdoll-cat-sit" class="ragdoll-pose">
+                <ellipse cx="86" cy="94" rx="34" ry="22" fill="#e8d8c8"></ellipse>
+                <ellipse cx="86" cy="98" rx="20" ry="12" fill="#f7efe6"></ellipse>
+                <circle cx="86" cy="58" r="24" fill="#f1dfcf"></circle>
+                <polygon points="68,42 77,24 84,44" fill="#d8beaa"></polygon>
+                <polygon points="104,42 95,24 88,44" fill="#d8beaa"></polygon>
+                <circle cx="78" cy="56" r="4" fill="#334155"></circle>
+                <circle cx="94" cy="56" r="4" fill="#334155"></circle>
+                <ellipse cx="86" cy="65" rx="4" ry="3" fill="#f9a8d4"></ellipse>
+                <path d="M 80 72 Q 86 76 92 72" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                <ellipse cx="61" cy="93" rx="8" ry="7" fill="#f1dfcf"></ellipse>
+                <ellipse cx="111" cy="93" rx="8" ry="7" fill="#f1dfcf"></ellipse>
+                <path d="M 116 94 Q 135 96 146 84" stroke="#d8beaa" stroke-width="6" fill="none" stroke-linecap="round"></path>
+            </g>
+            <g id="ragdoll-cat-lie" class="ragdoll-pose hidden">
+                <ellipse cx="88" cy="88" rx="46" ry="17" fill="#e8d8c8"></ellipse>
+                <ellipse cx="88" cy="92" rx="30" ry="10" fill="#f7efe6"></ellipse>
+                <circle cx="52" cy="80" r="19" fill="#f1dfcf"></circle>
+                <polygon points="39,70 47,56 52,72" fill="#d8beaa"></polygon>
+                <polygon points="61,71 55,56 50,72" fill="#d8beaa"></polygon>
+                <circle cx="46" cy="79" r="3.5" fill="#334155"></circle>
+                <circle cx="58" cy="79" r="3.5" fill="#334155"></circle>
+                <ellipse cx="52" cy="86" rx="3.5" ry="2.8" fill="#f9a8d4"></ellipse>
+                <path d="M 48 91 Q 52 94 56 91" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                <ellipse cx="95" cy="95" rx="9" ry="5" fill="#f1dfcf"></ellipse>
+                <ellipse cx="110" cy="95" rx="9" ry="5" fill="#f1dfcf"></ellipse>
+                <path d="M 124 90 Q 148 87 156 98" stroke="#d8beaa" stroke-width="6" fill="none" stroke-linecap="round"></path>
+            </g>
+        </svg>
+        <span class="text-[10px] font-bold text-pink-200">Fia & Benji</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        const figuresData = [
+            {
+                id: 'washington',
+                name: '乔治·华盛顿 (George Washington)',
+                era: '建国时期',
+                icon: 'fa-solid fa-shield',
+                tag: '开国奠基',
+                brief: '大陆军总司令与首任总统，奠定了美国政体运作的基本规范。',
+                background: '独立战争时期，北美殖民地缺乏稳定中央权威，财政与军队组织都极其脆弱。',
+                timeline: [
+                    { year: '1775', event: '担任大陆军总司令', impact: '将松散民兵整合为可持续作战力量。' },
+                    { year: '1787', event: '主持制宪会议', impact: '推动联邦宪制框架落地。' },
+                    { year: '1789-1797', event: '担任首任总统', impact: '建立内阁、任期与权力克制惯例。' }
+                ],
+                impact: '他最重要的历史贡献是“可复制的权力交接范式”，让新国家避免陷入个人统治。'
+            },
+            {
+                id: 'jefferson',
+                name: '托马斯·杰斐逊 (Thomas Jefferson)',
+                era: '共和国早期',
+                icon: 'fa-solid fa-feather-pointed',
+                tag: '思想建国',
+                brief: '《独立宣言》主要起草者，扩展了美国的政治理念与领土版图。',
+                background: '新国家需要明确合法性叙事，同时在欧洲列强夹缝中寻求生存空间。',
+                timeline: [
+                    { year: '1776', event: '起草《独立宣言》', impact: '确立自然权利与人民主权叙事。' },
+                    { year: '1801-1809', event: '担任总统', impact: '降低联邦债务，强调有限政府理念。' },
+                    { year: '1803', event: '路易斯安那购地', impact: '美国领土规模接近翻倍。' }
+                ],
+                impact: '他把“理念建国”和“地缘扩张”结合起来，深刻影响美国国家性格。'
+            },
+            {
+                id: 'hamilton',
+                name: '亚历山大·汉密尔顿 (Alexander Hamilton)',
+                era: '财政国家构建',
+                icon: 'fa-solid fa-coins',
+                tag: '金融体系',
+                brief: '首任财政部长，设计联邦债务、国库和信用体系。',
+                background: '战后美国财政破产、货币混乱，若无稳定信用体系，联邦难以存续。',
+                timeline: [
+                    { year: '1790', event: '提交公共信用报告', impact: '联邦接管州债，建立统一国债信用。' },
+                    { year: '1791', event: '推动第一美国银行', impact: '提升中央财政与货币调度能力。' },
+                    { year: '1790s', event: '构建税收与海关体系', impact: '让联邦财政具备可持续收入。' }
+                ],
+                impact: '汉密尔顿将美国从“革命联盟”推向“信用国家”，奠定现代金融国家基础。'
+            },
+            {
+                id: 'lincoln',
+                name: '亚伯拉罕·林肯 (Abraham Lincoln)',
+                era: '内战与重建起点',
+                icon: 'fa-solid fa-scale-balanced',
+                tag: '统一与解放',
+                brief: '在内战中维护联邦统一，并推动废奴转型。',
+                background: '南北在奴隶制度、经济结构与联邦权力范围上冲突激化至战争。',
+                timeline: [
+                    { year: '1861', event: '就任总统并应对内战爆发', impact: '将“维护联邦”设为核心战略。' },
+                    { year: '1863', event: '发布《解放宣言》', impact: '重塑战争道义目标与国际舆论格局。' },
+                    { year: '1865', event: '推动第十三修正案', impact: '在宪法层面废除奴隶制。' }
+                ],
+                impact: '林肯的决策把美国从分裂边缘拉回，并为后续公民权演进开启制度路径。'
+            },
+            {
+                id: 'tr',
+                name: '西奥多·罗斯福 (Theodore Roosevelt)',
+                era: '进步主义时代',
+                icon: 'fa-solid fa-gavel',
+                tag: '改革与监管',
+                brief: '强化联邦监管能力，推动反托拉斯与国家公园体系。',
+                background: '镀金时代后，巨型托拉斯和劳资冲突让社会不平衡问题突出。',
+                timeline: [
+                    { year: '1901-1909', event: '担任总统', impact: '提升总统在国内治理中的主动性。' },
+                    { year: '1902', event: '介入煤矿罢工调停', impact: '联邦首次以中立仲裁者方式干预劳资冲突。' },
+                    { year: '1900s', event: '推进反托拉斯诉讼与环保政策', impact: '限制垄断并确立现代保育框架。' }
+                ],
+                impact: '他推动美国从“放任资本主义”转向“受监管的现代工业国家”。'
+            },
+            {
+                id: 'fdr',
+                name: '富兰克林·罗斯福 (Franklin D. Roosevelt)',
+                era: '大萧条与二战',
+                icon: 'fa-solid fa-people-roof',
+                tag: '新政转型',
+                brief: '通过新政重构国家与市场关系，并领导美国进入二战胜利阵营。',
+                background: '大萧条导致失业、银行危机与社会信任崩塌，美国需要系统性重建。',
+                timeline: [
+                    { year: '1933', event: '启动新政', impact: '通过公共工程和金融改革稳定社会。' },
+                    { year: '1935', event: '社会保障法', impact: '建立联邦层面福利安全网。' },
+                    { year: '1941-1945', event: '领导二战时期美国', impact: '确立战后美国全球主导地位。' }
+                ],
+                impact: 'FDR把联邦政府从“夜警角色”转为“风险管理者”，深刻改变美国治理逻辑。'
+            },
+            {
+                id: 'eisenhower',
+                name: '德怀特·艾森豪威尔 (Dwight D. Eisenhower)',
+                era: '冷战早期',
+                icon: 'fa-solid fa-road',
+                tag: '基础设施',
+                brief: '二战盟军统帅出身，任内推进州际高速公路与冷战稳定策略。',
+                background: '战后美国面对冷战军事压力，同时需要承接大规模经济与人口流动。',
+                timeline: [
+                    { year: '1944-1945', event: '担任盟军最高司令', impact: '协调多国作战完成欧洲战场关键胜利。' },
+                    { year: '1953-1961', event: '担任总统', impact: '在冷战中维持相对克制与威慑平衡。' },
+                    { year: '1956', event: '签署联邦高速公路法', impact: '重塑物流、城市化和国防机动体系。' }
+                ],
+                impact: '他把“国家安全”和“经济动脉”联结起来，塑造了现代美国空间结构。'
+            },
+            {
+                id: 'jfk',
+                name: '约翰·肯尼迪 (John F. Kennedy)',
+                era: '冷战高压期',
+                icon: 'fa-solid fa-rocket',
+                tag: '太空与愿景',
+                brief: '在古巴导弹危机中处理核对抗，并推动登月国家愿景。',
+                background: '美苏核军备竞争加速，公众对安全与领导力的期待同步上升。',
+                timeline: [
+                    { year: '1961', event: '就任总统', impact: '以新一代领导形象重塑公众政治想象。' },
+                    { year: '1962', event: '古巴导弹危机应对', impact: '在核边缘博弈中实现危机降级。' },
+                    { year: '1961-1963', event: '提出登月目标', impact: '推动科技、教育与国家动员升级。' }
+                ],
+                impact: '肯尼迪把地缘危机管理与科技愿景叙事结合，强化了美国的制度自信。'
+            },
+            {
+                id: 'mlk',
+                name: '马丁·路德·金 (Martin Luther King Jr.)',
+                era: '民权运动',
+                icon: 'fa-solid fa-hand-holding-heart',
+                tag: '公民权',
+                brief: '以非暴力抗争推动美国民权制度突破。',
+                background: '种族隔离与投票权障碍长期存在，法律平等与现实平等差距巨大。',
+                timeline: [
+                    { year: '1955', event: '参与蒙哥马利抵制运动', impact: '非暴力抗争成为全国性范式。' },
+                    { year: '1963', event: '华盛顿大游行与演讲', impact: '将民权议题推向国家中心舞台。' },
+                    { year: '1964-1965', event: '推动关键民权立法氛围', impact: '民权法与投票权法相继通过。' }
+                ],
+                impact: '他把道德诉求、社会运动与法律变革连接起来，改变了美国民主边界。'
+            },
+            {
+                id: 'reagan',
+                name: '罗纳德·里根 (Ronald Reagan)',
+                era: '保守主义回潮',
+                icon: 'fa-solid fa-chart-column',
+                tag: '政策转向',
+                brief: '推动减税与去监管路线，并在冷战后期强化战略竞争。',
+                background: '1970年代美国面临滞胀、信心不足和国际竞争压力。',
+                timeline: [
+                    { year: '1981', event: '就任总统并推动减税', impact: '供给侧政策成为经济讨论核心。' },
+                    { year: '1980s', event: '强化军备与对苏施压', impact: '提升美国在冷战后期谈判筹码。' },
+                    { year: '1987', event: '与戈尔巴乔夫推进军控', impact: '为冷战结束创造环境。' }
+                ],
+                impact: '里根时代重塑了美国财政、监管与外交政策讨论框架。'
+            },
+            {
+                id: 'obama',
+                name: '贝拉克·奥巴马 (Barack Obama)',
+                era: '危机后治理',
+                icon: 'fa-solid fa-scale-unbalanced-flip',
+                tag: '制度修复',
+                brief: '在金融危机后推动复苏政策与医保改革，强调多边外交。',
+                background: '2008年后美国面临金融失序、就业压力和社会撕裂。',
+                timeline: [
+                    { year: '2009', event: '推出经济刺激计划', impact: '缓解衰退冲击并稳定就业预期。' },
+                    { year: '2010', event: '推动医保改革法案', impact: '扩大医保覆盖并重塑联邦与州的政策协作。' },
+                    { year: '2010s', event: '强调多边合作与气候议题', impact: '拓展美国全球议程中的制度性议题。' }
+                ],
+                impact: '奥巴马时期的关键贡献是危机后制度修复与社会政策扩容的框架建设。'
+            }
+        ];
+
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        let isRagdollCatLying = false;
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        function toggleRagdollCatPose() {
+            isRagdollCatLying = !isRagdollCatLying;
+            const sitPose = document.getElementById('ragdoll-cat-sit');
+            const liePose = document.getElementById('ragdoll-cat-lie');
+            const catBtn = document.getElementById('ragdoll-cat-toggle');
+
+            if (sitPose && liePose) {
+                sitPose.classList.toggle('hidden', isRagdollCatLying);
+                liePose.classList.toggle('hidden', !isRagdollCatLying);
+            }
+
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isRagdollCatLying));
+                catBtn.title = isRagdollCatLying ? 'Benji 正在趴着，再点会坐好' : '点击让 Benji 趴下，再点会坐好';
+            }
+        }
+
+        function switchView(viewName, figureId = null) {
+            const dashboardView = document.getElementById('view-dashboard');
+            const detailView = document.getElementById('view-detail');
+            const navDashboardBtn = document.getElementById('nav-btn-dashboard');
+
+            if (viewName === 'dashboard') {
+                dashboardView.classList.remove('hidden');
+                detailView.classList.add('hidden');
+                navDashboardBtn.className = 'px-3 py-1.5 rounded-lg text-sm font-medium bg-sky-500/20 text-sky-200 border border-sky-400/30';
+                renderSidebarFigureLinks();
+                updateSidebarOverviewButton(true);
+            } else {
+                dashboardView.classList.add('hidden');
+                detailView.classList.remove('hidden');
+                navDashboardBtn.className = 'px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800';
+                renderFigureDetail(figureId);
+                renderSidebarFigureLinks(figureId);
+                updateSidebarOverviewButton(false);
+            }
+
+            closeSidebarOnMobile();
+            scrollContentToTop();
+        }
+
+        function updateSidebarOverviewButton(active) {
+            const btn = document.getElementById('sidebar-btn-overview');
+            btn.className = active
+                ? 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-sky-500/20 text-sky-200 border border-sky-400/30'
+                : 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/70 hover:text-white border border-transparent';
+        }
+
+        function renderSidebarFigureLinks(currentId = null) {
+            const container = document.getElementById('sidebar-figure-links');
+            container.innerHTML = figuresData.map((f) => {
+                const active = f.id === currentId;
+                const klass = active
+                    ? 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-sky-500/20 text-sky-200 border border-sky-400/30'
+                    : 'w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-300 hover:bg-slate-800/70 hover:text-white border border-transparent';
+                return `
+                    <button onclick="switchView('detail', '${f.id}')" class="${klass}">
+                        <span class="flex items-center gap-2">
+                            <i class="${f.icon} w-4 text-center ${active ? 'text-indigo-300' : 'text-sky-400'}"></i>
+                            <span class="text-xs leading-snug">${f.name.split(' (')[0]}</span>
+                        </span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderFigureGrid() {
+            const grid = document.getElementById('figures-grid');
+            const query = (document.getElementById('figure-search').value || '').toLowerCase();
+            const filtered = figuresData.filter((f) => {
+                return (
+                    f.name.toLowerCase().includes(query) ||
+                    f.brief.toLowerCase().includes(query) ||
+                    f.tag.toLowerCase().includes(query)
+                );
+            });
+
+            if (!filtered.length) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3 opacity-50"></i>
+                        <p class="text-sm">没有找到匹配人物，请换一个关键词。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map((f) => `
+                <div onclick="switchView('detail', '${f.id}')" class="group rounded-2xl bg-slate-900/80 border border-slate-800 p-5 hover:border-sky-500/50 transition-all cursor-pointer flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-11 h-11 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-300 flex items-center justify-center text-xl">
+                                <i class="${f.icon}"></i>
+                            </div>
+                            <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">${f.tag}</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-sky-200 transition-colors">${f.name}</h3>
+                            <p class="text-xs text-slate-400 mt-1">${f.era}</p>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">${f.brief}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-sky-300 font-medium flex items-center justify-between">
+                        <span>进入人物页面</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFigureDetail(figureId) {
+            const figure = figuresData.find((f) => f.id === figureId);
+            if (!figure) return;
+
+            document.getElementById('detail-breadcrumb-title').innerText = figure.name;
+            const container = document.getElementById('figure-detail-container');
+
+            const timelineHtml = figure.timeline.map((item, idx) => `
+                <div class="relative pl-6 border-l-2 border-sky-500/30">
+                    <div class="absolute -left-[6px] top-1 w-2.5 h-2.5 rounded-full bg-sky-400"></div>
+                    <div class="text-[11px] text-slate-500 mb-0.5">节点 0${idx + 1} · ${item.year}</div>
+                    <div class="text-sm font-semibold text-white">${item.event}</div>
+                    <div class="text-sm text-slate-300 mt-1">${item.impact}</div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950/30 to-slate-900 border border-blue-500/20 p-7 md:p-8">
+                    <div class="flex flex-col md:flex-row md:items-center gap-5 md:justify-between">
+                        <div class="space-y-2 max-w-3xl">
+                            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs bg-blue-500/10 border border-blue-500/30 text-blue-300">人物页面</div>
+                            <h1 class="text-3xl font-extrabold text-white flex items-center gap-3"><i class="${figure.icon} text-sky-300"></i>${figure.name}</h1>
+                            <p class="text-sm text-slate-300">${figure.brief}</p>
+                        </div>
+                        <div class="shrink-0 bg-slate-950/70 border border-slate-800 rounded-xl p-4 w-full md:w-64">
+                            <div class="text-[11px] text-slate-400">历史阶段</div>
+                            <div class="text-base text-white font-bold mt-1">${figure.era}</div>
+                            <div class="text-[11px] text-slate-400 mt-3">人物标签</div>
+                            <div class="text-sm text-sky-300 font-semibold mt-1">${figure.tag}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-5">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-landmark text-sky-400"></i>时代背景</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">${figure.background}</p>
+                </div>
+
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-5">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-timeline text-sky-400"></i>关键行动与历史过程</h2>
+                    <div class="space-y-5">${timelineHtml}</div>
+                </div>
+
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 space-y-3">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-lightbulb text-sky-400"></i>历史影响（费曼总结）</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">${figure.impact}</p>
+                </div>
+            `;
+        }
+
+        function openFeynmanModal() {
+            const modal = document.getElementById('feynman-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeFeynmanModal() {
+            const modal = document.getElementById('feynman-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function closeSidebarOnMobile() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('flex');
+            }
+        }
+
+        function scrollContentToTop() {
+            const shell = document.getElementById('content-shell');
+            if (shell) {
+                shell.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+
+            applyTheme(currentTheme);
+            renderFigureGrid();
+            renderSidebarFigureLinks();
+            updateSidebarOverviewButton(true);
+        };
+    </script>
+</body>
+</html>
+

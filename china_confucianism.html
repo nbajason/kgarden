@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full bg-slate-950 text-slate-100 dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>儒家专题 | 中国文化总览</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif']
+                    },
+                    colors: {
+                        confucian: {
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.9); border-radius: 999px; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.58);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.42);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            transition: all 0.25s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(248, 113, 113, 0.5);
+            background: rgba(30, 41, 59, 0.72);
+        }
+        .tree-visual {
+            position: relative;
+            min-height: 400px;
+            border-radius: 1rem;
+            background: radial-gradient(circle at 50% 12%, rgba(248, 113, 113, 0.12), rgba(15, 23, 42, 0.06) 58%), rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(248, 113, 113, 0.28);
+            overflow: hidden;
+        }
+        .tree-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .tree-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            white-space: nowrap;
+            backdrop-filter: blur(2px);
+        }
+        .tree-label-crown {
+            top: 16%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fecaca;
+            border-color: rgba(248, 113, 113, 0.45);
+        }
+        .tree-label-trunk {
+            top: 52%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fde68a;
+            border-color: rgba(251, 191, 36, 0.45);
+        }
+        .tree-label-root {
+            bottom: 6%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fcd34d;
+            border-color: rgba(251, 191, 36, 0.45);
+        }
+        .tree-season {
+            position: absolute;
+            font-size: 11px;
+            line-height: 1.2;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            background: rgba(15, 23, 42, 0.84);
+            color: #fcd34d;
+        }
+        .tree-season-spring { top: 7%; left: 7%; }
+        .tree-season-summer { top: 7%; right: 7%; }
+        .tree-season-autumn { top: 42%; right: 4%; }
+        .tree-season-winter { top: 42%; left: 4%; }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        .virtue-diagram-wrap {
+            position: relative;
+            border-radius: 1rem;
+            background: radial-gradient(circle at 50% 35%, rgba(248, 113, 113, 0.14), rgba(15, 23, 42, 0.1) 58%), rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(248, 113, 113, 0.26);
+            min-height: 360px;
+            overflow: hidden;
+        }
+        .virtue-diagram-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .virtue-chip {
+            position: absolute;
+            font-size: 11px;
+            line-height: 1.2;
+            border-radius: 999px;
+            padding: 4px 9px;
+            border: 1px solid rgba(251, 191, 36, 0.45);
+            color: #fef3c7;
+            background: rgba(15, 23, 42, 0.84);
+            backdrop-filter: blur(2px);
+            white-space: nowrap;
+        }
+        .virtue-chip-ren { top: 7%; left: 50%; transform: translateX(-50%); }
+        .virtue-chip-yi { top: 30%; right: 6%; }
+        .virtue-chip-li { bottom: 9%; right: 20%; }
+        .virtue-chip-zhi { bottom: 9%; left: 20%; }
+        .virtue-chip-xin { top: 30%; left: 6%; }
+        .element-chip {
+            position: absolute;
+            font-size: 11px;
+            line-height: 1.2;
+            border-radius: 999px;
+            padding: 4px 9px;
+            border: 1px solid rgba(125, 211, 252, 0.45);
+            color: #e0f2fe;
+            background: rgba(15, 23, 42, 0.84);
+            backdrop-filter: blur(2px);
+            white-space: nowrap;
+        }
+        .element-chip-wood { top: 1.5%; left: 50%; transform: translateX(-50%); }
+        .element-chip-metal { top: 22%; right: 0.8rem; }
+        .element-chip-fire { bottom: 1.2%; right: 18%; }
+        .element-chip-water { bottom: 1.2%; left: 18%; }
+        .element-chip-earth { top: 22%; left: 0.8rem; }
+        .virtue-center-note {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 11px;
+            color: #fca5a5;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            pointer-events: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme .glass-panel,
+        body.light-theme .glass-card,
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden font-sans antialiased bg-slate-950 text-slate-100">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="china_culture_overview.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-confucian-500 to-amber-500 flex items-center justify-center text-white">
+                <i class="fa-solid fa-book"></i>
+            </div>
+            <span class="font-bold text-slate-100">儒家专题</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-confucian-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-500/20">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-scroll w-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">思想分支专题</p>
+            <a href="china_confucianism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-red-500/15 text-red-300 border border-red-500/30">
+                <i class="fa-solid fa-book w-5 text-center"></i>
+                <span>儒家专题</span>
+            </a>
+            <a href="china_taoism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-leaf w-5 text-center text-emerald-300"></i>
+                <span>道家专题</span>
+            </a>
+            <a href="china_chan_buddhism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-spa w-5 text-center text-purple-300"></i>
+                <span>禅宗专题</span>
+            </a>
+
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                儒家费曼模式
+            </span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-slate-950 p-4 md:p-8">
+        <section class="max-w-7xl mx-auto space-y-8">
+            <div class="glass-panel rounded-2xl p-6 md:p-8 border-red-500/20">
+                <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-book text-red-300"></i>
+                    儒家专题：从修身到治理的长链条
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base mt-3 max-w-4xl leading-relaxed">
+                    把儒家想成一棵巨树：根是文字与记忆，干是制度与伦理，枝叶是艺术与日常，四季变化是交流与创新。
+                    它不怕叶落，只要根深干稳，就能持续长出新叶。
+                </p>
+            </div>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-tree text-red-300"></i> 图解：儒家巨树模型</h3>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                    <div class="tree-visual p-4">
+                        <svg class="tree-svg" viewBox="0 0 1000 660" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="trunkLine" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#a16207" stop-opacity="0.95" />
+                                    <stop offset="100%" stop-color="#78350f" stop-opacity="0.92" />
+                                </linearGradient>
+                                <linearGradient id="branchLine" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#b45309" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="#78350f" stop-opacity="0.86" />
+                                </linearGradient>
+                            </defs>
+
+                            <line x1="145" y1="465" x2="855" y2="465" stroke="#fbbf24" stroke-opacity="0.22" stroke-width="2" />
+
+                            <path d="M500 100
+                                     C405 92, 324 138, 292 218
+                                     C264 292, 314 360, 386 382
+                                     C428 398, 468 392, 500 372
+                                     C532 392, 572 398, 614 382
+                                     C686 360, 736 292, 708 218
+                                     C676 138, 595 92, 500 100 Z"
+                                  fill="rgba(74, 222, 128, 0.2)"
+                                  stroke="#4ade80"
+                                  stroke-opacity="0.7"
+                                  stroke-width="3" />
+
+                            <path d="M500 446
+                                     C478 446, 462 430, 464 404
+                                     L470 306
+                                     C472 282, 484 264, 500 258
+                                     C516 264, 528 282, 530 306
+                                     L536 404
+                                     C538 430, 522 446, 500 446 Z"
+                                  fill="url(#trunkLine)"
+                                  stroke="#92400e"
+                                  stroke-opacity="0.72"
+                                  stroke-width="2.5" />
+
+                            <path d="M488 320 C458 298, 420 274, 352 242" stroke="url(#branchLine)" stroke-width="8" stroke-linecap="round" fill="none" />
+                            <path d="M512 320 C542 298, 580 274, 648 242" stroke="url(#branchLine)" stroke-width="8" stroke-linecap="round" fill="none" />
+                            <path d="M482 300 C450 270, 420 236, 390 188" stroke="url(#branchLine)" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <path d="M518 300 C550 270, 580 236, 610 188" stroke="url(#branchLine)" stroke-width="5" stroke-linecap="round" fill="none" />
+                            <path d="M448 282 C424 258, 402 238, 376 220" stroke="url(#branchLine)" stroke-width="4" stroke-linecap="round" fill="none" />
+                            <path d="M552 282 C576 258, 598 238, 624 220" stroke="url(#branchLine)" stroke-width="4" stroke-linecap="round" fill="none" />
+
+                            <path d="M500 446 C474 462, 448 476, 422 494 C396 512, 384 526, 372 544 C364 556, 352 562, 338 568" stroke="#fbbf24" stroke-opacity="0.85" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 7" fill="none" />
+                            <path d="M500 446 C468 468, 444 488, 424 510 C410 526, 404 542, 398 560 C394 572, 384 582, 370 590" stroke="#fbbf24" stroke-opacity="0.8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 8" fill="none" />
+                            <path d="M500 446 C526 462, 552 476, 578 494 C604 512, 616 526, 628 544 C636 556, 648 562, 662 568" stroke="#fbbf24" stroke-opacity="0.85" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 7" fill="none" />
+                            <path d="M500 446 C532 468, 556 488, 576 510 C590 526, 596 542, 602 560 C606 572, 616 582, 630 590" stroke="#fbbf24" stroke-opacity="0.8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 8" fill="none" />
+                            <path d="M500 446 C500 472, 496 494, 500 516 C504 538, 496 556, 500 578" stroke="#fbbf24" stroke-opacity="0.82" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="5 7" fill="none" />
+
+                            <circle cx="352" cy="242" r="7" fill="#86efac" />
+                            <circle cx="390" cy="188" r="6" fill="#86efac" />
+                            <circle cx="610" cy="188" r="6" fill="#86efac" />
+                            <circle cx="648" cy="242" r="7" fill="#86efac" />
+                            <circle cx="378" cy="535" r="6" fill="#fcd34d" />
+                            <circle cx="500" cy="560" r="6" fill="#fcd34d" />
+                            <circle cx="622" cy="535" r="6" fill="#fcd34d" />
+                        </svg>
+
+                        <div class="tree-season tree-season-spring">春：吸收新知</div>
+                        <div class="tree-season tree-season-summer">夏：制度生长</div>
+                        <div class="tree-season tree-season-autumn">秋：反思修正</div>
+                        <div class="tree-season tree-season-winter">冬：守正蓄力</div>
+                        <div class="tree-label tree-label-crown">枝叶：礼乐文艺与日常风俗</div>
+                        <div class="tree-label tree-label-trunk">主干：制度伦理与角色责任</div>
+                        <div class="tree-label tree-label-root">根系：经典文字与历史记忆</div>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-red-300 font-semibold">根：文字和记忆</p>
+                            <p class="text-slate-300 mt-1">《论语》《孟子》、家训与注疏是根系。它们把价值观做成代际可复制的“公共语言”。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-orange-300 font-semibold">干：制度和伦理</p>
+                            <p class="text-slate-300 mt-1">从修身齐家到治国理政，儒家把德性转成规则，让组织协作有边界、有责任、有秩序。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-rose-300 font-semibold">枝叶：艺术与日常</p>
+                            <p class="text-slate-300 mt-1">礼乐、书法、诗文、节庆礼仪是可见枝叶，让抽象伦理落在可体验的生活审美里。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-amber-300 font-semibold">四季：交流与时代创新</p>
+                            <p class="text-slate-300 mt-1">儒家在每个时代都要“守正+更新”：吸收外来经验，再转译为本土治理与公民伦理能力。</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-timeline text-red-300"></i> 发展历史（四段）</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 text-sm">
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-red-300">先秦奠基</p><p class="font-semibold mt-1">孔孟荀形成核心命题</p><p class="text-slate-300 mt-2 text-xs">围绕仁、义、礼、智、信回答社会如何稳定协作。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-red-300">汉唐制度化</p><p class="font-semibold mt-1">经学进入国家治理</p><p class="text-slate-300 mt-2 text-xs">礼法并用，儒学成为行政伦理和人才选拔的重要依据。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-red-300">宋明深化</p><p class="font-semibold mt-1">理学与心学并进</p><p class="text-slate-300 mt-2 text-xs">强调内在修养与外在秩序统一，形成更强的自我约束机制。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-red-300">近现代转译</p><p class="font-semibold mt-1">传统伦理与现代制度对接</p><p class="text-slate-300 mt-2 text-xs">以公民责任、公共服务和组织文化等形式继续影响社会。</p></article>
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6 border-red-500/25">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-yin-yang text-amber-300"></i> 图解：仁义礼智信、阴阳与五行关系</h3>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                    <div class="virtue-diagram-wrap p-3">
+                        <svg class="virtue-diagram-svg" viewBox="0 0 760 500" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="ringStroke" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#fca5a5" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.9" />
+                                </linearGradient>
+                                <radialGradient id="bgCore" cx="50%" cy="50%" r="65%">
+                                    <stop offset="0%" stop-color="#1e293b" stop-opacity="0.15" />
+                                    <stop offset="100%" stop-color="#0f172a" stop-opacity="0.42" />
+                                </radialGradient>
+                                <linearGradient id="yangPart" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#fef3c7" />
+                                    <stop offset="100%" stop-color="#fcd34d" />
+                                </linearGradient>
+                                <linearGradient id="yinPart" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#334155" />
+                                    <stop offset="100%" stop-color="#0f172a" />
+                                </linearGradient>
+                            </defs>
+
+                            <circle cx="380" cy="250" r="190" fill="url(#bgCore)" stroke="url(#ringStroke)" stroke-width="3" stroke-opacity="0.85" />
+                            <circle cx="380" cy="250" r="156" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-opacity="0.45" stroke-dasharray="6 8" />
+                            <circle cx="380" cy="250" r="220" fill="none" stroke="#7dd3fc" stroke-width="1.6" stroke-opacity="0.52" stroke-dasharray="4 9" />
+
+                            <line x1="380" y1="250" x2="380" y2="94" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="2" />
+                            <line x1="380" y1="250" x2="528" y2="200" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="2" />
+                            <line x1="380" y1="250" x2="472" y2="378" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="2" />
+                            <line x1="380" y1="250" x2="288" y2="378" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="2" />
+                            <line x1="380" y1="250" x2="232" y2="200" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="2" />
+
+                            <line x1="380" y1="90" x2="380" y2="34" stroke="#7dd3fc" stroke-opacity="0.65" stroke-width="1.8" />
+                            <line x1="534" y1="200" x2="610" y2="178" stroke="#7dd3fc" stroke-opacity="0.65" stroke-width="1.8" />
+                            <line x1="475" y1="384" x2="525" y2="456" stroke="#7dd3fc" stroke-opacity="0.65" stroke-width="1.8" />
+                            <line x1="285" y1="384" x2="235" y2="456" stroke="#7dd3fc" stroke-opacity="0.65" stroke-width="1.8" />
+                            <line x1="226" y1="200" x2="150" y2="178" stroke="#7dd3fc" stroke-opacity="0.65" stroke-width="1.8" />
+
+                            <circle cx="380" cy="250" r="92" fill="url(#yinPart)" />
+                            <path d="M380 158
+                                     A92 92 0 0 1 380 342
+                                     A46 46 0 0 0 380 250
+                                     A46 46 0 0 1 380 158 Z"
+                                  fill="url(#yangPart)" />
+                            <path d="M380 342
+                                     A92 92 0 0 1 380 158
+                                     A46 46 0 0 0 380 250
+                                     A46 46 0 0 1 380 342 Z"
+                                  fill="url(#yinPart)" />
+                            <circle cx="380" cy="204" r="10" fill="#0f172a" stroke="#f8fafc" stroke-opacity="0.6" stroke-width="1" />
+                            <circle cx="380" cy="296" r="10" fill="#f8fafc" stroke="#0f172a" stroke-opacity="0.6" stroke-width="1" />
+                            <circle cx="380" cy="250" r="92" fill="none" stroke="url(#ringStroke)" stroke-width="2.2" stroke-opacity="0.9" />
+
+                            <g fill="#fde68a" stroke="#b45309" stroke-width="1.5">
+                                <circle cx="380" cy="90" r="14" />
+                                <circle cx="534" cy="200" r="14" />
+                                <circle cx="475" cy="384" r="14" />
+                                <circle cx="285" cy="384" r="14" />
+                                <circle cx="226" cy="200" r="14" />
+                            </g>
+
+                            <g font-size="12" fill="#0f172a" font-weight="700" text-anchor="middle">
+                                <text x="380" y="95">仁</text>
+                                <text x="534" y="205">义</text>
+                                <text x="475" y="389">礼</text>
+                                <text x="285" y="389">智</text>
+                                <text x="226" y="205">信</text>
+                            </g>
+
+                            <g fill="#bfdbfe" stroke="#0369a1" stroke-width="1.6">
+                                <circle cx="380" cy="34" r="13" />
+                                <circle cx="610" cy="178" r="13" />
+                                <circle cx="525" cy="456" r="13" />
+                                <circle cx="235" cy="456" r="13" />
+                                <circle cx="150" cy="178" r="13" />
+                            </g>
+                            <g font-size="11" fill="#082f49" font-weight="700" text-anchor="middle">
+                                <text x="380" y="38">木</text>
+                                <text x="610" y="182">金</text>
+                                <text x="525" y="460">火</text>
+                                <text x="235" y="460">水</text>
+                                <text x="150" y="182">土</text>
+                            </g>
+                        </svg>
+
+                        <div class="virtue-center-note">太极生两仪<br/>两仪化五常<br/>五常通五行</div>
+                        <div class="virtue-chip virtue-chip-ren">仁：生生之德</div>
+                        <div class="virtue-chip virtue-chip-yi">义：裁断之宜</div>
+                        <div class="virtue-chip virtue-chip-li">礼：秩序之文</div>
+                        <div class="virtue-chip virtue-chip-zhi">智：明辨之用</div>
+                        <div class="virtue-chip virtue-chip-xin">信：关系之本</div>
+                        <div class="element-chip element-chip-wood">木：生发</div>
+                        <div class="element-chip element-chip-metal">金：收敛</div>
+                        <div class="element-chip element-chip-fire">火：明盛</div>
+                        <div class="element-chip element-chip-water">水：涵润</div>
+                        <div class="element-chip element-chip-earth">土：中和</div>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-amber-300 font-semibold">关系主线：一体两面，化为五常</p>
+                            <p class="text-slate-300 mt-1">周敦颐以“太极动静”说明世界运行：动而生阳，静而生阴，阴阳互感不息。儒家把这套宇宙秩序转成可实践的人伦秩序，即仁义礼智信。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-sky-300 font-semibold">重点一：五常与五行的对应关系</p>
+                            <p class="text-slate-300 mt-1">图中采用常见理学映射：仁-木、义-金、礼-火、智-水、信-土。内圈是德性结构，外圈是运行气象，强调“品德不是静止概念，而有生发、收敛、明盛、涵润、中和的动态”。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-red-300 font-semibold">重点二：从判断到行动的伦理链</p>
+                            <p class="text-slate-300 mt-1">义判断“当不当”，礼规范“怎么做”，智校准“做到几分”，仁给出“为何而做”，信保证“长期可托付”，五者共同构成稳定而有温度的社会协作机制。</p>
+                        </article>
+                        <article class="glass-card rounded-xl p-4">
+                            <p class="text-rose-300 font-semibold">重点三：读图方式与现实落点</p>
+                            <p class="text-slate-300 mt-1">读图顺序是“中心太极 -> 中圈五常 -> 外圈五行”。在家庭、组织与公共生活中，它提示我们：先稳心性，再定规则，最后让行为在变化环境里保持平衡与韧性。</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-red-300">治理模型</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">用“修身-齐家-治国-平天下”建立多层责任链：个人先自律，家庭稳伦理，组织重名分，国家重公义。</p>
+                </article>
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-red-300">艺术审美</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">礼乐之美强调中和、节制、秩序与文脉延续，书法、诗文与建筑都追求“有法度的雅正”。</p>
+                </article>
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-red-300">统计视角</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">儒家模型降低高频冲突概率、提升协作稳定性，核心机制是共享规范带来的沟通成本下降。</p>
+                </article>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-hand-holding-heart text-amber-300"></i> 平常心日常：道与布施积德的影响</h3>
+                <ul class="space-y-2 text-sm text-slate-200 leading-relaxed">
+                    <li>1) 在关系中守信、守时、守分寸，让微小善行持续累积为长期信誉。</li>
+                    <li>2) 把布施理解为多维投入：施财、施力、施智、施言，强化共同体互助网络。</li>
+                    <li>3) 面对压力时先稳心后决策，以克己复礼减少情绪化损耗。</li>
+                    <li>4) 用“今天比昨天更有德性一点”作为可执行目标，形成自我改进闭环。</li>
+                </ul>
+            </section>
+        </section>
+    </main>
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+        };
+    </script>
+</body>
+</html>
+
