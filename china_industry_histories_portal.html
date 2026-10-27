@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="以历史、金融与产业链视角，纵览中国农业、能源、制造、交通、金融、数字科技、建筑与消费行业的发展。">
+    <title>中国行业发展史全景图 - 产业与时代</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 500: '#c2413b', 600: '#b73530', 700: '#922c2a' },
+                        gold: { 400: '#f5c46a', 500: '#dfaa45' }
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .timeline-line { background: linear-gradient(90deg, #c2413b, #dfaa45, #38bdf8, #34d399); }
+        .flow-arrow { color: #dfaa45; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-red-500 selection:text-white">
+    <div class="md:hidden flex items-center justify-between border-b border-slate-800 bg-slate-900 p-4">
+        <a href="index.html" class="flex items-center gap-3">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-red-700 to-amber-500 text-white"><i class="fa-solid fa-mountain-sun"></i></span>
+            <span class="font-bold">个人知识花园</span>
+        </a>
+        <button id="mobileMenuBtn" class="p-2 text-slate-300" aria-label="打开菜单"><i class="fa-solid fa-bars text-xl"></i></button>
+    </div>
+    <div class="flex min-h-screen flex-col md:flex-row">
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-full flex-col overflow-y-auto border-r border-slate-800 bg-slate-900 md:sticky md:top-0 md:flex md:h-screen md:w-64 md:shrink-0">
+            <a href="index.html" class="flex items-center gap-3 border-b border-slate-800 p-5 hover:bg-slate-800/50">
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-700 to-amber-500 text-white"><i class="fa-solid fa-mountain-sun text-lg"></i></span>
+                <span><strong class="block text-sm">个人知识花园</strong><small class="text-xs text-amber-400">费曼高效学习法</small></span>
+            </a>
+            <nav class="flex-1 space-y-2 overflow-y-auto p-3">
+                <button onclick="showOverview()" id="sidebar-overview" class="w-full rounded-lg border border-red-500/30 bg-red-600/20 px-3 py-2.5 text-left text-sm text-red-200">
+                    <i class="fa-solid fa-compass mr-2 w-5 text-center"></i>中国行业全景
+                </button>
+                <p class="px-3 pt-4 text-[10px] font-semibold uppercase tracking-wider text-slate-500">产业主题</p>
+                <div id="sidebar-sectors" class="space-y-1"></div>
+            </nav>
+            <div class="border-t border-slate-800 p-4 text-xs leading-relaxed text-slate-500">
+                以历史脉络理解产业变迁<br>统计口径与示意图分开展示
+            </div>
+        </aside>
+
+        <div id="content-shell" class="min-w-0 flex-1 md:h-screen md:overflow-y-auto">
+            <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900/85 backdrop-blur-md">
+                <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                    <button onclick="showOverview()" class="flex items-center gap-3 text-left">
+                        <span class="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-red-700 to-amber-500 sm:flex"><i class="fa-solid fa-landmark text-white"></i></span>
+                        <span class="text-lg font-bold">中国行业发展史 <span class="hidden text-xs font-medium text-amber-400 sm:inline">产业与时代</span></span>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="showOverview()" class="rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-300 transition hover:border-red-500/50 hover:text-white"><i class="fa-solid fa-house mr-1"></i>全景总览</button>
+                        <a href="us_industry_histories_portal.html" class="hidden rounded-lg px-3 py-2 text-xs text-slate-400 transition hover:bg-slate-800 hover:text-white sm:block">对照美国行业史 <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i></a>
+                    </div>
+                </div>
+            </header>
+
+            <main class="mx-auto max-w-7xl space-y-10 px-4 py-8 sm:px-6 lg:px-8">
+                <section id="view-overview" class="space-y-9">
+                    <div class="relative overflow-hidden rounded-3xl border border-red-500/20 bg-gradient-to-br from-red-950/60 via-slate-900 to-amber-950/30 p-6 sm:p-9">
+                        <div class="pointer-events-none absolute -right-10 -top-20 h-72 w-72 rounded-full bg-red-500/10 blur-3xl"></div>
+                        <div class="relative max-w-4xl">
+                            <span class="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-300"><i class="fa-solid fa-chart-line"></i> 一幅产业变迁的长卷</span>
+                            <h1 class="text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">从农耕文明到<span class="bg-gradient-to-r from-red-300 via-amber-200 to-sky-300 bg-clip-text text-transparent">现代产业体系</span></h1>
+                            <p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">沿着土地、能源、资本、技术与市场这几条线索，读懂中国行业如何在制度变迁、人口流动和全球贸易中生长。既看产业如何创造财富，也看效率、周期与风险如何彼此牵引。</p>
+                            <div class="mt-7 grid grid-cols-2 gap-4 border-t border-slate-700/70 pt-6 sm:grid-cols-4">
+                                <div><p class="text-xs text-slate-400">产业观察窗口</p><p class="mt-1 text-xl font-bold text-white">古今相续</p></div>
+                                <div><p class="text-xs text-slate-400">重点产业板块</p><p class="mt-1 text-xl font-bold text-red-300">8 大领域</p></div>
+                                <div><p class="text-xs text-slate-400">统计参照年份</p><p class="mt-1 text-xl font-bold text-amber-300">2023 年</p></div>
+                                <div><p class="text-xs text-slate-400">理解方法</p><p class="mt-1 text-xl font-bold text-emerald-300">历史 × 产业链</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-7" aria-labelledby="macro-title">
+                        <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-widest text-amber-400">Macro lens · 宏观视角</p>
+                                <h2 id="macro-title" class="mt-1 text-xl font-bold">产业结构的时代接力</h2>
+                            </div>
+                            <p class="max-w-xl text-xs leading-5 text-slate-400">农业提供基础，工业扩大生产能力，服务业与数字技术持续重组价值创造方式。下图为历史阶段与产业关系的定性示意，不代表各产业增加值比例。</p>
+                        </div>
+                        <div class="mt-6 overflow-x-auto">
+                            <div class="min-w-[700px]">
+                                <div class="grid grid-cols-4 gap-3 text-center text-xs">
+                                    <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4"><span class="text-emerald-300">传统农耕社会</span><div class="mt-3 text-lg">🌾</div><p class="mt-2 text-slate-400">土地 · 手工业 · 商贸</p></div>
+                                    <div class="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4"><span class="text-amber-300">近代工业萌芽</span><div class="mt-3 text-lg">⚙️</div><p class="mt-2 text-slate-400">机器 · 铁路 · 近代金融</p></div>
+                                    <div class="rounded-xl border border-red-500/20 bg-red-500/5 p-4"><span class="text-red-300">工业化与城镇化</span><div class="mt-3 text-lg">🏭</div><p class="mt-2 text-slate-400">制造 · 基建 · 大市场</p></div>
+                                    <div class="rounded-xl border border-sky-500/20 bg-sky-500/5 p-4"><span class="text-sky-300">数字化与绿色转型</span><div class="mt-3 text-lg">◎</div><p class="mt-2 text-slate-400">数据 · 平台 · 新能源</p></div>
+                                </div>
+                                <div class="timeline-line mt-4 h-1 rounded-full"></div>
+                                <div class="mt-2 flex justify-between text-[10px] text-slate-500"><span>文明积累</span><span>19 世纪中后期</span><span>1949—改革开放</span><span>21 世纪至今</span></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4"><span class="text-xs text-slate-400">2023 年国内生产总值</span><p class="mt-1 text-2xl font-extrabold text-white">126.06 <small class="text-sm font-medium text-slate-400">万亿元</small></p><p class="mt-1 text-[11px] text-slate-500">国家统计局初步核算；名义总量</p></div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4"><span class="text-xs text-slate-400">2023 年第二产业增加值</span><p class="mt-1 text-2xl font-extrabold text-amber-300">48.26 <small class="text-sm font-medium text-slate-400">万亿元</small></p><p class="mt-1 text-[11px] text-slate-500">国家统计局初步核算；当年价</p></div>
+                            <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4"><span class="text-xs text-slate-400">2023 年制造业增加值</span><p class="mt-1 text-2xl font-extrabold text-red-300">约 26.2 <small class="text-sm font-medium text-slate-400">万亿元</small></p><p class="mt-1 text-[11px] text-slate-500">国家统计局数据；现价，取近似值</p></div>
+                        </div>
+                        <div class="mt-4 rounded-xl border border-slate-800 bg-slate-950/70 p-4 sm:p-5" role="img" aria-label="2023年三次产业增加值占国内生产总值比重：第一产业7.1%，第二产业38.3%，第三产业54.6%">
+                            <div class="flex flex-col justify-between gap-1 sm:flex-row sm:items-center"><h3 class="text-sm font-semibold text-slate-200">2023 年三次产业增加值结构</h3><span class="text-[10px] text-slate-500">占 GDP 比重 · 当年价</span></div>
+                            <div class="mt-4 space-y-3">
+                                <div class="grid grid-cols-[4.5rem_1fr_3rem] items-center gap-3 text-xs"><span class="text-slate-400">第一产业</span><div class="h-2.5 overflow-hidden rounded-full bg-slate-800"><div class="h-full rounded-full bg-emerald-400" style="width:7.1%"></div></div><span class="text-right font-semibold text-emerald-300">7.1%</span></div>
+                                <div class="grid grid-cols-[4.5rem_1fr_3rem] items-center gap-3 text-xs"><span class="text-slate-400">第二产业</span><div class="h-2.5 overflow-hidden rounded-full bg-slate-800"><div class="h-full rounded-full bg-amber-400" style="width:38.3%"></div></div><span class="text-right font-semibold text-amber-300">38.3%</span></div>
+                                <div class="grid grid-cols-[4.5rem_1fr_3rem] items-center gap-3 text-xs"><span class="text-slate-400">第三产业</span><div class="h-2.5 overflow-hidden rounded-full bg-slate-800"><div class="h-full rounded-full bg-sky-400" style="width:54.6%"></div></div><span class="text-right font-semibold text-sky-300">54.6%</span></div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-[11px] leading-5 text-slate-500">数据来源：国家统计局《中华人民共和国2023年国民经济和社会发展统计公报》及年度核算数据。历史阶段为概括性分期；不同时期的统计分类不可直接等同。</p>
+                    </section>
+
+                    <section class="space-y-5">
+                        <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+                            <div><p class="text-xs font-semibold uppercase tracking-widest text-red-300">Industry atlas</p><h2 class="mt-1 text-xl font-bold">中国行业全景图谱</h2></div>
+                            <p class="text-xs text-slate-400">选择板块，展开关键阶段、产业链结构与历史视角</p>
+                        </div>
+                        <div class="flex flex-col gap-3 rounded-2xl border border-slate-800 bg-slate-900/70 p-4 lg:flex-row lg:items-center lg:justify-between">
+                            <label class="relative w-full lg:max-w-sm">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-slate-500"></i>
+                                <input id="sector-search" type="search" placeholder="搜索行业、关键词（如：能源、铁路、芯片）" oninput="renderSectors()" class="w-full rounded-xl border border-slate-800 bg-slate-950 py-2.5 pl-10 pr-4 text-sm text-slate-200 placeholder:text-slate-500 focus:border-red-500 focus:outline-none">
+                            </label>
+                            <div id="category-filters" class="flex flex-wrap gap-2"></div>
+                        </div>
+                        <div id="sectors-grid" class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
+                    </section>
+                    <footer class="border-t border-slate-800 pt-5 text-xs leading-6 text-slate-500">
+                        阅读提示：行业发展并非单线进步。技术突破、制度安排、要素价格、外部市场与环境约束共同塑造产业周期；页面中的阶段划分是帮助理解的分析框架。
+                    </footer>
+                </section>
+
+                <section id="view-detail" class="hidden space-y-8">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <button onclick="showOverview()" class="text-sm text-slate-400 transition hover:text-amber-300"><i class="fa-solid fa-arrow-left mr-2"></i>返回行业总览</button>
+                        <span class="text-xs text-slate-500">中国行业图谱 <i class="fa-solid fa-chevron-right mx-1 text-[9px]"></i> <span id="breadcrumb" class="text-slate-300"></span></span>
+                    </div>
+                    <div id="detail-content" class="space-y-8"></div>
+                    <footer class="border-t border-slate-800 pt-5 text-xs leading-6 text-slate-500">行业史是理解产业结构的入口，不是投资建议。引用的现行统计数据均注明年份和口径；图示用于解释结构关系。</footer>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const sectors = [
+            {
+                id: 'agriculture', name: '农业与食品', category: 'foundation', icon: 'fa-solid fa-wheat-awn', tag: '国之根本',
+                intro: '从精耕细作与水利社会，到土地制度变迁、良种与机械化，再到现代食品供应链。农业既是基础产业，也深刻影响人口、财政与城乡关系。',
+                analogy: '把农业看作一张“供给网”：土地和水是底盘，种子与技术提高单产，仓储、加工和物流让收成稳定抵达餐桌。',
+                chain: ['种业 / 农资', '种植 / 养殖', '加工 / 仓储', '流通 / 消费'],
+                eras: [
+                    ['古代至清末', '精耕细作与水利传统', '以家庭经营为基础，形成多样化农耕体系；水利、农具、作物传播和地方市场共同影响农业生产力。'],
+                    ['晚清至1949', '近代冲击与乡村变迁', '条约口岸、铁路和近代企业改变部分地区的农产品贸易；土地关系、灾害与战乱制约农业发展。'],
+                    ['1949—1978', '土地制度与集体化探索', '土地改革重塑农村土地关系；集体化组织生产，水利建设与农业基础设施扩张，同时面临激励与效率问题。'],
+                    ['1978—至今', '家庭经营、技术进步与融合', '家庭联产承包责任制释放生产积极性；良种、农机、灌溉与冷链继续提升生产和流通效率，乡村产业更加多元。']
+                ]
+            },
+            {
+                id: 'energy', name: '能源与电力', category: 'foundation', icon: 'fa-solid fa-bolt', tag: '工业血脉',
+                intro: '能源结构决定工业化的成本与边界。中国能源史从煤炭、电网和水电建设，延伸到油气保障、特高压输电与新能源转型。',
+                analogy: '能源系统像一套“供能与调度网络”：煤、油、气、水、风、光提供不同来源，电网负责把能量按时送到工厂和家庭。',
+                chain: ['资源 / 设备', '发电 / 供能', '电网 / 储能', '工业 / 生活'],
+                eras: [
+                    ['19世纪中后期—1949', '近代矿业与电力萌芽', '近代煤矿、油田和城市电厂逐步出现，铁路与工业对能源的需求增加，但产业规模和覆盖范围有限。'],
+                    ['1949—1978', '重工业与能源基础设施', '国家主导的能源工业和电力系统建设支撑工业化；煤炭长期承担主要能源供给，水电及油气开发同步推进。'],
+                    ['1978—2010年代', '需求扩张与电网互联', '城镇化和制造业扩张带来巨大能源需求；大型电源、电网建设和跨区域输电提高系统供给能力。'],
+                    ['2010年代—至今', '低碳转型与系统灵活性', '风电、光伏快速发展，电力系统更重视消纳、调峰、储能与跨区配置；转型需要兼顾安全、成本和减排。']
+                ]
+            },
+            {
+                id: 'manufacturing', name: '制造业与工业', category: 'production', icon: 'fa-solid fa-industry', tag: '实体引擎',
+                intro: '从近代机器工业到完整工业体系，再到全球供应链中的规模制造与先进制造。制造业的竞争力来自工程能力、配套网络、工艺积累与持续创新。',
+                analogy: '制造业就像一支协同乐队：材料、零部件、设备、工艺和熟练工人各司其职；供应链越稳，复杂产品越能高质量、低成本地交付。',
+                chain: ['原材料 / 设计', '零部件 / 设备', '生产 / 质控', '品牌 / 服务'],
+                eras: [
+                    ['洋务运动—1949', '近代工业起步', '机器制造、纺织、矿冶与铁路等近代工业出现；外资、官办和民族企业并存，产业基础薄弱且地区分布不均。'],
+                    ['1949—1978', '工业体系建设', '围绕重工业和基础工业建设生产能力，逐步形成较为完整的工业门类，为后续扩张积累人才和基础设施。'],
+                    ['1978—2001', '开放、乡镇企业与外向型制造', '改革开放推动乡镇企业发展，经济特区和沿海开放吸引投资，出口加工与配套产业快速成长。'],
+                    ['2001—至今', '全球供应链与产业升级', '加入WTO后深度参与全球贸易；从规模扩张走向自动化、数字化和高端装备等升级，创新与关键环节能力成为重要课题。']
+                ]
+            },
+            {
+                id: 'transport', name: '交通与物流', category: 'infrastructure', icon: 'fa-solid fa-train', tag: '经济动脉',
+                intro: '交通降低空间摩擦，物流连接生产与消费。运河、铁路、公路、港口、航空和快递网络的演进，持续重塑中国的市场半径。',
+                analogy: '交通物流就像经济的“循环系统”：线路是血管，枢纽是节点，货物和人流越顺畅，地区间分工就越容易形成。',
+                chain: ['基础设施', '运输装备', '枢纽 / 调度', '仓储 / 配送'],
+                eras: [
+                    ['古代—清末', '运河、驿道与传统商路', '大运河、驿站和水陆商路连接区域市场，运输条件和地理格局共同影响商品流通与城市兴衰。'],
+                    ['晚清—1949', '铁路与近代港口体系', '铁路、轮船和港口改变长距离运输方式；建设受资本、政治和战争影响，网络发展不均衡。'],
+                    ['1949—1978', '铁路骨干与基础交通建设', '铁路、公路和港口建设服务于工业布局与物资调运，逐步加强内陆地区的交通联系。'],
+                    ['1978—至今', '高速网络与现代物流', '高速公路、高铁、航空枢纽和快递网络扩展；多式联运、供应链管理和数字调度提高运输效率。']
+                ]
+            },
+            {
+                id: 'finance', name: '金融与资本市场', category: 'services', icon: 'fa-solid fa-building-columns', tag: '资源配置',
+                intro: '金融把储蓄转化为投资，也通过信用扩张与风险定价影响产业周期。中国金融史经历传统钱庄、近代银行、计划金融与现代多层次金融体系。',
+                analogy: '金融像经济的“水利系统”：储蓄是水源，银行和市场是渠道，资本流向决定哪些项目能扩建；闸门和规则则帮助控制风险。',
+                chain: ['储蓄 / 资金', '银行 / 市场', '信贷 / 投资', '企业 / 居民'],
+                eras: [
+                    ['古代至清末', '钱庄、票号与传统信用', '钱庄、票号和典当等机构支持汇兑与商贸信用；区域网络与熟人关系是传统金融的重要基础。'],
+                    ['1840年代—1949', '近代银行与金融市场', '外资银行、官办银行和民族银行并存，证券交易和现代货币制度逐渐发展，金融中心与实体产业相互影响。'],
+                    ['1949—1978', '计划金融与集中配置', '金融体系以服务计划经济和国家建设为主，信贷与资金配置渠道集中，资本市场功能有限。'],
+                    ['1978—至今', '商业化改革与多层次市场', '银行体系改革、证券市场建立、保险和资管扩展；金融服务实体经济的同时，也面临杠杆、周期与监管平衡。']
+                ]
+            },
+            {
+                id: 'digital', name: '数字科技与通信', category: 'technology', icon: 'fa-solid fa-microchip', tag: '新质生产力',
+                intro: '从电报电话、计算机和互联网，到移动通信、云服务与人工智能，信息基础设施改变了企业协作方式，也催生新的产业组织和商业模式。',
+                analogy: '数字技术像一层“可编程的连接网”：通信让信息流动，软件把流程写成规则，数据和算力则帮助更快地分析与协同。',
+                chain: ['芯片 / 设备', '网络 / 算力', '软件 / 平台', '场景 / 服务'],
+                eras: [
+                    ['晚清—1949', '电报电话与信息近代化', '电报、电话和广播逐步进入城市与交通系统，信息传递效率提升，但服务范围有限。'],
+                    ['1949—1978', '电子工业与通信基础', '电子工业、科研和通信基础设施逐步建设，为后续计算机应用和通信网络发展积累能力。'],
+                    ['1978—2010年代', '计算机、互联网与移动通信', '个人计算机、互联网和移动通信普及，软件服务与网络平台改变企业经营和居民生活。'],
+                    ['2010年代—至今', '云、数据、人工智能与自主创新', '云计算、移动应用和人工智能扩展数字化边界；数据治理、算力基础设施及核心技术能力日益重要。']
+                ]
+            },
+            {
+                id: 'construction', name: '建筑、房地产与城市', category: 'infrastructure', icon: 'fa-solid fa-city', tag: '空间载体',
+                intro: '建筑与房地产既满足居住和生产空间需求，也与土地、信贷、地方财政和人口流动紧密相连。城镇化改变了行业规模，也带来周期与结构调整。',
+                analogy: '城市像一台长期运转的复杂机器：住房是生活空间，厂房和商业设施承载生产，交通与公共服务则让各部分真正连在一起。',
+                chain: ['土地 / 规划', '建设 / 材料', '住房 / 商业', '运营 / 服务'],
+                eras: [
+                    ['古代—清末', '传统城市与营造体系', '城郭、街市和传统营造技术支撑行政、商业与居住功能，城市发展受交通、政权和区域贸易影响。'],
+                    ['1840年代—1949', '近代城市与建筑工业萌芽', '口岸城市、近代公共建筑和市政设施发展，城市空间呈现传统格局与近代基础设施并存的特征。'],
+                    ['1949—1978', '单位住房与工业城市建设', '住房、厂区和公共设施建设服务于工业化与人口组织，住房供给制度和城市空间结构具有鲜明时代特征。'],
+                    ['1978—至今', '快速城镇化与发展模式转型', '住房商品化和城市建设推动居住条件与城市面貌改变；行业进入从增量扩张转向存量运营、保障与高质量发展的阶段。']
+                ]
+            },
+            {
+                id: 'consumer', name: '消费、零售与服务', category: 'services', icon: 'fa-solid fa-basket-shopping', tag: '需求牵引',
+                intro: '居民收入、人口结构和渠道技术共同决定消费行业的演进。从集市百货到连锁商超、电子商务和即时零售，渠道变化反过来推动供应链升级。',
+                analogy: '零售的任务是把合适的商品，在合适的时间送到需要的人手里。门店、仓库、平台和配送网络，就是不断变化的“最后一公里”。',
+                chain: ['品牌 / 供给', '采购 / 仓储', '门店 / 平台', '消费者 / 服务'],
+                eras: [
+                    ['古代—清末', '集市、商帮与传统商业网络', '周期性集市、商帮和长途贸易连接产地与消费地，传统商贸网络随交通和区域专业化扩展。'],
+                    ['晚清—1949', '近代百货与城市商业', '百货公司、近代商业街和新式服务业出现在城市，传统商号与现代零售业态并存。'],
+                    ['1949—1978', '统购统销与商业供给体系', '商品流通以计划安排和国有商业网络为主，保障基本供给是重要目标，消费选择相对有限。'],
+                    ['1978—至今', '市场化、连锁化与平台零售', '个体商业、连锁经营和电商相继发展；数字支付、仓配体系和即时配送持续重构消费体验与竞争方式。']
+                ]
+            }
+        ];
+
+        const categories = [
+            ['all', '全部领域'], ['foundation', '基础产业'], ['production', '生产制造'],
+            ['infrastructure', '基础设施'], ['services', '金融与消费'], ['technology', '数字科技']
+        ];
+        let activeCategory = 'all';
+
+        function renderCategoryFilters() {
+            document.getElementById('category-filters').innerHTML = categories.map(([id, label]) => `
+                <button onclick="setCategory('${id}')" class="rounded-lg border px-3 py-1.5 text-xs transition ${activeCategory === id ? 'border-red-500 bg-red-600 text-white' : 'border-transparent bg-slate-800 text-slate-400 hover:text-white'}">${label}${id === 'all' ? ` (${sectors.length})` : ''}</button>
+            `).join('');
+        }
+
+        function renderSidebar(activeId = null) {
+            document.getElementById('sidebar-sectors').innerHTML = sectors.map((sector) => `
+                <button onclick="showSector('${sector.id}')" class="w-full rounded-lg px-3 py-2 text-left text-xs transition ${activeId === sector.id ? 'bg-slate-800 text-amber-300' : 'text-slate-400 hover:bg-slate-800/70 hover:text-white'}">
+                    <i class="${sector.icon} mr-2 w-5 text-center"></i>${sector.name}
+                </button>
+            `).join('');
+            const overview = document.getElementById('sidebar-overview');
+            overview.className = `w-full rounded-lg border px-3 py-2.5 text-left text-sm ${activeId ? 'border-transparent text-slate-400 hover:bg-slate-800 hover:text-white' : 'border-red-500/30 bg-red-600/20 text-red-200'}`;
+        }
+
+        function renderSectors() {
+            renderCategoryFilters();
+            const query = document.getElementById('sector-search').value.trim().toLocaleLowerCase('zh-CN');
+            const filtered = sectors.filter((sector) =>
+                (activeCategory === 'all' || sector.category === activeCategory) &&
+                `${sector.name} ${sector.intro} ${sector.analogy} ${sector.eras.map((era) => era.join(' ')).join(' ')}`.toLocaleLowerCase('zh-CN').includes(query)
+            );
+            const grid = document.getElementById('sectors-grid');
+            if (!filtered.length) {
+                grid.innerHTML = '<div class="col-span-full rounded-2xl border border-slate-800 bg-slate-900/60 py-12 text-center text-sm text-slate-400"><i class="fa-solid fa-magnifying-glass mb-3 block text-2xl text-slate-600"></i>没有找到匹配的行业，试试其他关键词。</div>';
+                return;
+            }
+            grid.innerHTML = filtered.map((sector, index) => `
+                <button onclick="showSector('${sector.id}')" class="group flex h-full flex-col rounded-2xl border border-slate-800 bg-slate-900/70 p-5 text-left transition hover:-translate-y-0.5 hover:border-red-500/40 hover:bg-slate-900">
+                    <div class="flex w-full items-center justify-between">
+                        <span class="flex h-12 w-12 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 text-xl text-red-300 transition group-hover:scale-105"><i class="${sector.icon}"></i></span>
+                        <span class="rounded-full border border-slate-700 bg-slate-800 px-2.5 py-1 text-[10px] text-amber-300">${sector.tag}</span>
+                    </div>
+                    <h3 class="mt-4 text-lg font-bold text-white group-hover:text-red-200">${sector.name}</h3>
+                    <p class="mt-2 flex-1 text-xs leading-6 text-slate-400">${sector.intro}</p>
+                    <div class="mt-4 rounded-xl border border-slate-800 bg-slate-950/70 p-3">
+                        <p class="text-[10px] font-semibold text-amber-300"><i class="fa-solid fa-lightbulb mr-1"></i>用一个比喻理解</p>
+                        <p class="mt-1 text-xs leading-5 text-slate-300">${sector.analogy}</p>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-[11px] text-slate-500"><span>${sector.eras.length} 个历史阶段</span><span class="text-red-300 transition group-hover:translate-x-1">进入展厅 <i class="fa-solid fa-arrow-right ml-1"></i></span></div>
+                </button>
+            `).join('');
+        }
+
+        function setCategory(category) {
+            activeCategory = category;
+            renderSectors();
+        }
+
+        function showOverview() {
+            document.getElementById('view-overview').classList.remove('hidden');
+            document.getElementById('view-detail').classList.add('hidden');
+            renderSidebar();
+            closeMobileMenu();
+            scrollToTop();
+        }
+
+        function showSector(id) {
+            const sector = sectors.find((item) => item.id === id);
+            if (!sector) {
+                throw new Error(`Unknown sector: ${id}`);
+            }
+            document.getElementById('view-overview').classList.add('hidden');
+            document.getElementById('view-detail').classList.remove('hidden');
+            document.getElementById('breadcrumb').textContent = sector.name;
+            document.getElementById('detail-content').innerHTML = `
+                <section class="relative overflow-hidden rounded-3xl border border-red-500/20 bg-gradient-to-br from-red-950/50 via-slate-900 to-amber-950/20 p-6 sm:p-8">
+                    <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+                        <div class="max-w-3xl">
+                            <span class="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-500/10 px-3 py-1 text-xs text-amber-300"><i class="${sector.icon}"></i>${sector.tag} · 行业展厅</span>
+                            <h1 class="mt-4 text-3xl font-extrabold sm:text-4xl">${sector.name}</h1>
+                            <p class="mt-3 text-sm leading-7 text-slate-300">${sector.intro}</p>
+                        </div>
+                        <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-red-400/20 bg-red-500/10 text-4xl text-red-300"><i class="${sector.icon}"></i></div>
+                    </div>
+                </section>
+                <section class="grid gap-5 lg:grid-cols-[1.05fr_.95fr]">
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-7">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-4"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-300"><i class="fa-solid fa-lightbulb"></i></span><div><h2 class="font-bold">用一个比喻理解行业本质</h2><p class="mt-1 text-xs text-slate-500">把复杂产业翻译成可观察的日常系统</p></div></div>
+                        <p class="mt-5 rounded-xl border border-amber-500/10 bg-slate-950/70 p-4 text-sm leading-7 text-slate-200">“${sector.analogy}”</p>
+                        <div class="mt-5 rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+                            <div class="flex items-center justify-between"><h3 class="text-sm font-bold text-white"><i class="fa-solid fa-diagram-project mr-2 text-sky-300"></i>产业链结构示意</h3><span class="text-[10px] text-slate-500">定性流程 · 非规模统计</span></div>
+                            <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                                ${sector.chain.map((step, index) => `<div class="relative flex min-h-20 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 px-2 py-3 text-center text-xs font-medium text-slate-200">${index < sector.chain.length - 1 ? '<i class="flow-arrow fa-solid fa-arrow-right absolute -right-2.5 top-1/2 z-10 hidden -translate-y-1/2 text-[10px] sm:block"></i>' : ''}<span><span class="mb-1 block text-[10px] text-slate-500">环节 0${index + 1}</span>${step}</span></div>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-7">
+                        <div class="flex items-center justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-widest text-red-300">Industry evolution</p><h2 class="mt-1 font-bold">历史阶段一览</h2></div><i class="fa-solid fa-timeline text-xl text-red-300"></i></div>
+                        <div class="mt-6 space-y-0">
+                            ${sector.eras.map(([period, title], index) => `<div class="flex gap-3"><div class="flex w-5 shrink-0 flex-col items-center"><span class="mt-1.5 h-2.5 w-2.5 rounded-full ${index === sector.eras.length - 1 ? 'bg-amber-400' : 'bg-red-400'}"></span>${index < sector.eras.length - 1 ? '<span class="my-1 w-px flex-1 bg-slate-700"></span>' : ''}</div><div class="pb-5"><p class="text-[11px] font-semibold text-amber-300">${period}</p><p class="mt-1 text-sm font-semibold text-white">${title}</p></div></div>`).join('')}
+                        </div>
+                    </div>
+                </section>
+                <section class="space-y-4">
+                    <div><p class="text-xs font-semibold uppercase tracking-widest text-amber-400">Historical analysis</p><h2 class="mt-1 text-xl font-bold">四个关键历史阶段</h2></div>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        ${sector.eras.map(([period, title, detail], index) => `
+                            <article class="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
+                                <div class="absolute right-4 top-3 text-4xl font-black text-slate-800">0${index + 1}</div>
+                                <div class="relative"><span class="inline-flex rounded-full border border-red-500/20 bg-red-500/10 px-2.5 py-1 text-[10px] font-semibold text-red-200">${period}</span><h3 class="mt-3 text-base font-bold text-white">${title}</h3><p class="mt-2 text-xs leading-6 text-slate-400">${detail}</p></div>
+                            </article>
+                        `).join('')}
+                    </div>
+                </section>
+                <section class="rounded-2xl border border-amber-500/20 bg-gradient-to-r from-amber-950/30 to-slate-900/80 p-5 sm:p-7">
+                    <div class="flex items-start gap-3"><i class="fa-solid fa-scale-balanced mt-1 text-amber-300"></i><div><h2 class="font-bold text-white">历史学家与金融学家的观察</h2><p class="mt-2 text-sm leading-7 text-slate-300">理解${sector.name}，可以同时追问三个问题：它解决了什么稀缺需求？资本、技术与制度如何改变其成本和组织方式？繁荣产生的收益与风险，又由哪些群体承担？把这三个问题放回具体年代，才能看见产业增长背后的结构变化。</p></div></div>
+                </section>
+            `;
+            renderSidebar(sector.id);
+            closeMobileMenu();
+            scrollToTop();
+        }
+
+        function scrollToTop() {
+            document.getElementById('content-shell').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('flex');
+            }
+        }
+
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('flex');
+        });
+
+        renderSectors();
+        renderSidebar();
+    </script>
+</body>
+</html>
