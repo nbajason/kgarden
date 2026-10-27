@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full bg-slate-950 text-slate-100 dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人知识花园</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif']
+                    },
+                    colors: {
+                        chan: {
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7e22ce'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.9); border-radius: 999px; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.58);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.42);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            transition: all 0.25s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(192, 132, 252, 0.5);
+            background: rgba(30, 41, 59, 0.72);
+        }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme .glass-panel,
+        body.light-theme .glass-card,
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+
+        .chan-core-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 0.9rem;
+        }
+        @media (min-width: 768px) {
+            .chan-core-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        .chan-core-card {
+            position: relative;
+            overflow: hidden;
+            border-color: rgba(192, 132, 252, 0.2);
+        }
+        .chan-core-card::after {
+            content: '';
+            position: absolute;
+            inset: auto -20% -65% -20%;
+            height: 120px;
+            background: radial-gradient(circle, rgba(192, 132, 252, 0.14), transparent 68%);
+            pointer-events: none;
+        }
+        .chan-core-card:hover {
+            border-color: rgba(192, 132, 252, 0.45);
+        }
+        .chan-diagram {
+            margin-top: 0.7rem;
+            border-radius: 0.85rem;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.75), rgba(30, 41, 59, 0.45));
+            padding: 0.45rem;
+        }
+        .chan-diagram svg {
+            width: 100%;
+            height: 110px;
+        }
+        .chan-diagram .awakening-svg {
+            height: 132px;
+        }
+        .chan-diagram .chan-process-svg {
+            height: 132px;
+        }
+        .chan-diagram .chan-process-label {
+            fill: #cbd5e1;
+            font-size: 10px;
+            font-weight: 600;
+            text-anchor: middle;
+        }
+        .chan-diagram .chan-process-line {
+            fill: none;
+            stroke: rgba(196, 181, 253, 0.86);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .chan-diagram .chan-process-accent {
+            fill: none;
+            stroke: rgba(253, 230, 138, 0.9);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .chan-diagram .chan-process-fill {
+            fill: rgba(168, 85, 247, 0.2);
+            stroke: rgba(196, 181, 253, 0.82);
+            stroke-width: 1.5;
+        }
+        .chan-diagram .chan-process-warm {
+            fill: rgba(251, 191, 36, 0.22);
+            stroke: rgba(253, 230, 138, 0.85);
+            stroke-width: 1.5;
+        }
+        body.light-theme .chan-diagram .chan-process-label {
+            fill: #475569;
+        }
+        body.light-theme .chan-diagram .chan-process-line {
+            stroke: rgba(109, 40, 217, 0.82);
+        }
+        body.light-theme .chan-diagram .chan-process-accent {
+            stroke: rgba(180, 83, 9, 0.9);
+        }
+        body.light-theme .chan-diagram .chan-process-fill {
+            fill: rgba(192, 132, 252, 0.2);
+            stroke: rgba(109, 40, 217, 0.76);
+        }
+        body.light-theme .chan-diagram .chan-process-warm {
+            fill: rgba(251, 191, 36, 0.2);
+            stroke: rgba(180, 83, 9, 0.78);
+        }
+        .chan-diagram .awakening-label {
+            fill: #cbd5e1;
+            font-size: 10px;
+            font-weight: 600;
+            text-anchor: middle;
+        }
+        .chan-diagram .awakening-knot {
+            fill: none;
+            stroke: rgba(167, 139, 250, 0.72);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .chan-diagram .awakening-clearing {
+            fill: url(#awakening-clearing);
+        }
+        .chan-diagram .awakening-way {
+            fill: none;
+            stroke: rgba(253, 230, 138, 0.9);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .chan-diagram .awakening-light {
+            fill: url(#awakening-light);
+        }
+        body.light-theme .chan-diagram .awakening-label {
+            fill: #475569;
+        }
+        body.light-theme .chan-diagram .awakening-knot {
+            stroke: rgba(109, 40, 217, 0.65);
+        }
+        body.light-theme .chan-diagram .awakening-way {
+            stroke: rgba(180, 83, 9, 0.9);
+        }
+        .chan-diagram .line {
+            stroke: rgba(196, 181, 253, 0.9);
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .chan-diagram .soft {
+            stroke: rgba(148, 163, 184, 0.65);
+            stroke-width: 1.3;
+            fill: none;
+        }
+        .chan-diagram .fill-main {
+            fill: rgba(168, 85, 247, 0.22);
+        }
+        .chan-diagram .fill-sub {
+            fill: rgba(251, 191, 36, 0.18);
+        }
+        .chan-chip {
+            border: 1px solid rgba(192, 132, 252, 0.35);
+            background: rgba(168, 85, 247, 0.12);
+            color: #e9d5ff;
+            font-size: 11px;
+            padding: 0.1rem 0.5rem;
+            border-radius: 999px;
+        }
+        body.light-theme .chan-diagram {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.9));
+            border-color: rgba(148, 163, 184, 0.4);
+        }
+        body.light-theme .chan-diagram .line {
+            stroke: rgba(109, 40, 217, 0.85);
+        }
+        body.light-theme .chan-diagram .soft {
+            stroke: rgba(71, 85, 105, 0.75);
+        }
+        body.light-theme .chan-chip {
+            color: #6d28d9;
+            background: rgba(192, 132, 252, 0.12);
+            border-color: rgba(147, 51, 234, 0.35);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden font-sans antialiased bg-slate-950 text-slate-100">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="index.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-chan-500 to-amber-500 flex items-center justify-center text-white">
+                <i class="fa-solid fa-spa"></i>
+            </div>
+            <span class="font-bold text-slate-100">个人知识花园</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-chan-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
+                <i class="fa-solid fa-spa"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-scroll w-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">思想分支专题</p>
+            <a href="china_confucianism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-book w-5 text-center text-red-300"></i>
+                <span>儒家专题</span>
+            </a>
+            <a href="china_taoism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-leaf w-5 text-center text-emerald-300"></i>
+                <span>道家专题</span>
+            </a>
+            <a href="china_chan_buddhism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                <i class="fa-solid fa-spa w-5 text-center"></i>
+                <span>禅宗专题</span>
+            </a>
+
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                禅宗费曼模式
+            </span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-slate-950 p-4 md:p-8">
+        <section class="max-w-7xl mx-auto space-y-8">
+            <div class="glass-panel rounded-2xl p-6 md:p-8 border-purple-500/20">
+                <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-spa text-purple-300"></i>
+                    禅宗专题：当下觉知与心性转换
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base mt-3 max-w-4xl leading-relaxed">
+                    禅宗将佛学中国化，强调"不立文字、直指人心"。它的现实价值在于：把抽象真理转化为可实践的觉察训练，
+                    从而影响个体心态、组织氛围和社会审美。
+                </p>
+            </div>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-timeline text-purple-300"></i> 发展历史（四段）</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 text-sm">
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-purple-300">东汉至南北朝</p><p class="font-semibold mt-1">佛学传入与本土吸收</p><p class="text-slate-300 mt-2 text-xs">佛教经典进入中国，与玄学、道家话语不断对话。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-purple-300">隋唐成型</p><p class="font-semibold mt-1">禅宗形成主流谱系</p><p class="text-slate-300 mt-2 text-xs">重视顿悟与日常修行，形成丛林制度和师承网络。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-purple-300">宋元传播</p><p class="font-semibold mt-1">文人社会深度融合</p><p class="text-slate-300 mt-2 text-xs">茶道、园林、书画受禅意影响，"简静"审美成为主流之一。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-purple-300">近现代延展</p><p class="font-semibold mt-1">心理修养价值凸显</p><p class="text-slate-300 mt-2 text-xs">在教育、管理、心理减压领域，禅修实践获得新的表达。</p></article>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-purple-300">治理模型</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">强调"先安其心，再理其事"。组织治理中通过反思、倾听、复盘，减少情绪驱动决策。</p>
+                </article>
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-purple-300">艺术审美</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">审美取向偏向空灵、简素、留白。茶席、枯山水、写意画都呈现"少而深"的体验结构。</p>
+                </article>
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-purple-300">统计视角</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">持续觉察训练可降低冲动反应频率，提高注意力稳定性和压力恢复速度。</p>
+                </article>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6" id="chan-core-visual" aria-labelledby="chan-core-visual-title">
+                <h3 id="chan-core-visual-title" class="text-base font-bold mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-seedling text-purple-300"></i> 图解：核心思想（简洁版）
+                </h3>
+                <p class="text-sm text-slate-300 mb-4">用四张小图把抽象义理变成可感知的结构：少一点概念堆叠，多一点当下体会。</p>
+
+                <div class="chan-core-grid text-sm">
+                    <article class="glass-card chan-core-card rounded-xl p-4">
+                        <h4 class="font-semibold text-purple-200">色即是空，空即是色</h4>
+                        <p class="text-xs text-slate-300 mt-1">花由阳光、水土、种子等因缘暂时成形；因缘变化，花也变化。“空”不是没有，而是没有孤立不变的自性。</p>
+                        <div class="chan-diagram">
+                            <svg class="chan-process-svg" viewBox="0 0 320 140" role="img" aria-labelledby="form-empty-title form-empty-desc">
+                                <title id="form-empty-title">因缘聚合显现为花，因缘变化而花无固定自性</title>
+                                <desc id="form-empty-desc">阳光、水土和种子汇聚成花；花并非孤立存在，因缘变化时形态也随之改变，说明空并非虚无。</desc>
+                                <text x="48" y="19" class="chan-process-label">因缘聚合</text>
+                                <text x="160" y="19" class="chan-process-label">显为一花</text>
+                                <text x="272" y="19" class="chan-process-label">缘变花亦变</text>
+
+                                <circle cx="29" cy="48" r="10" class="chan-process-warm"></circle>
+                                <path d="M25 48 Q29 41 33 48 Q29 55 25 48" class="chan-process-accent"></path>
+                                <circle cx="52" cy="74" r="10" class="chan-process-fill"></circle>
+                                <path d="M45 75 Q52 70 59 75 M52 66 V82" class="chan-process-line"></path>
+                                <circle cx="28" cy="100" r="10" class="chan-process-fill"></circle>
+                                <path d="M28 106 V94 M28 99 Q22 94 21 98 M28 102 Q34 96 36 100" class="chan-process-line"></path>
+                                <path d="M66 48 Q87 48 101 66 M66 74 H99 M66 100 Q87 100 101 82" class="chan-process-line"></path>
+                                <path d="M94 61 L102 68 L92 70" class="chan-process-line"></path>
+
+                                <path d="M160 79 C151 70 142 62 148 55 C154 48 160 57 160 61 C160 57 166 48 172 55 C178 62 169 70 160 79 Z" class="chan-process-warm"></path>
+                                <path d="M160 79 V99 M160 88 Q148 83 145 88 M160 93 Q172 86 175 90" class="chan-process-line"></path>
+                                <circle cx="160" cy="67" r="4" fill="#fef3c7"></circle>
+                                <path d="M108 74 Q122 62 137 66 M183 66 Q198 62 212 74" class="chan-process-accent"></path>
+                                <path d="M132 62 L138 66 L131 70 M208 70 L213 74 L207 78" class="chan-process-accent"></path>
+
+                                <path d="M230 47 C245 37 258 45 258 57 C258 68 247 73 239 67 C232 62 237 53 244 55" class="chan-process-line"></path>
+                                <circle cx="278" cy="52" r="5" class="chan-process-warm"></circle>
+                                <circle cx="294" cy="71" r="3" class="chan-process-fill"></circle>
+                                <circle cx="270" cy="91" r="4" class="chan-process-fill"></circle>
+                                <path d="M229 92 Q244 81 257 91 T285 92" class="chan-process-accent"></path>
+                                <path d="M232 104 Q247 96 260 104 T288 104" class="chan-process-line" opacity="0.55"></path>
+                            </svg>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <span class="chan-chip">互摄</span><span class="chan-chip">缘起</span>
+                        </div>
+                    </article>
+
+                    <article class="glass-card chan-core-card rounded-xl p-4">
+                        <h4 class="font-semibold text-purple-200">无分别心（不二法门）</h4>
+                        <p class="text-xs text-slate-300 mt-1">看见人与事各有不同，但不急着贴好坏、高下的标签；先如实觉察，再恰当地回应。</p>
+                        <div class="chan-diagram">
+                            <svg class="chan-process-svg" viewBox="0 0 320 140" role="img" aria-labelledby="nondual-title nondual-desc">
+                                <title id="nondual-title">看见差异而不被好恶标签支配</title>
+                                <desc id="nondual-desc">两种不同的形状仍然清晰可见，贴在它们上方的好恶标签淡去；觉察先于判断，再作合宜回应。</desc>
+                                <text x="51" y="19" class="chan-process-label">看见差异</text>
+                                <text x="160" y="19" class="chan-process-label">放下好恶</text>
+                                <text x="269" y="19" class="chan-process-label">如实回应</text>
+
+                                <circle cx="38" cy="68" r="16" class="chan-process-fill"></circle>
+                                <path d="M30 68 H46 M38 60 V76" class="chan-process-line"></path>
+                                <path d="M66 54 L82 82 H50 Z" class="chan-process-warm"></path>
+                                <rect x="23" y="94" width="31" height="18" rx="9" class="chan-process-fill"></rect>
+                                <text x="38" y="106" class="chan-process-label">喜欢</text>
+                                <rect x="61" y="94" width="31" height="18" rx="9" class="chan-process-warm"></rect>
+                                <text x="76" y="106" class="chan-process-label">讨厌</text>
+                                <path d="M97 70 H127" class="chan-process-line"></path>
+                                <path d="M121 65 L128 70 L121 75" class="chan-process-line"></path>
+
+                                <circle cx="160" cy="71" r="27" class="chan-process-fill"></circle>
+                                <circle cx="160" cy="71" r="15" class="chan-process-accent"></circle>
+                                <circle cx="160" cy="71" r="4" fill="#fef3c7"></circle>
+                                <path d="M160 35 V43 M160 99 V107 M124 71 H132 M188 71 H196 M135 46 L141 52 M179 90 L185 96 M185 46 L179 52 M141 90 L135 96" class="chan-process-accent"></path>
+                                <path d="M195 71 H222" class="chan-process-line"></path>
+                                <path d="M216 66 L223 71 L216 76" class="chan-process-line"></path>
+
+                                <circle cx="251" cy="60" r="11" class="chan-process-fill"></circle>
+                                <path d="M244 61 H258 M251 53 V67" class="chan-process-line"></path>
+                                <path d="M274 52 L287 75 H261 Z" class="chan-process-warm"></path>
+                                <path d="M235 92 Q253 83 270 92 T302 92 M235 102 Q253 94 270 102 T302 102" class="chan-process-accent"></path>
+                                <path d="M294 87 L301 92 L294 97" class="chan-process-accent"></path>
+                            </svg>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <span class="chan-chip">不二</span><span class="chan-chip">平等心</span>
+                        </div>
+                    </article>
+
+                    <article class="glass-card chan-core-card rounded-xl p-4">
+                        <h4 class="font-semibold text-purple-200">顿悟（直指人心）</h4>
+                        <p class="text-xs text-slate-300 mt-1">不是逐一理清念头，而是当下看见念头；执著松开，前路自明。</p>
+                        <div class="chan-diagram">
+                            <svg class="awakening-svg" viewBox="0 0 320 140" role="img" aria-labelledby="awakening-title awakening-desc">
+                                <title id="awakening-title">从念头纷杂到心路顿开的顿悟过程</title>
+                                <desc id="awakening-desc">缠绕的念头在一念照见中止息，路径随之展开，象征看清当下、不再被执著牵引。</desc>
+                                <defs>
+                                    <radialGradient id="awakening-light">
+                                        <stop offset="0" stop-color="#fef3c7" stop-opacity="0.95"></stop>
+                                        <stop offset="1" stop-color="#fbbf24" stop-opacity="0"></stop>
+                                    </radialGradient>
+                                    <linearGradient id="awakening-clearing" x1="0" x2="1">
+                                        <stop offset="0" stop-color="#fbbf24" stop-opacity="0.2"></stop>
+                                        <stop offset="1" stop-color="#fef3c7" stop-opacity="0.04"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <text x="54" y="19" class="awakening-label">念头纷杂</text>
+                                <text x="160" y="19" class="awakening-label">一念照见</text>
+                                <text x="266" y="19" class="awakening-label">心路顿开</text>
+
+                                <path d="M14 72 C28 35 48 109 64 66 S91 39 103 77 S126 100 145 72" class="awakening-knot"></path>
+                                <path d="M18 88 C38 113 43 46 68 82 S96 108 112 67 S132 52 145 72" class="awakening-knot" opacity="0.55"></path>
+                                <path d="M18 57 C39 35 48 93 76 58 S111 43 125 73" class="awakening-knot" opacity="0.4"></path>
+
+                                <path d="M169 72 C201 71 221 52 248 47 L309 42 L309 102 L248 97 C221 92 201 73 169 72 Z" class="awakening-clearing"></path>
+                                <path d="M169 72 C202 72 224 72 249 72 H302" class="awakening-way"></path>
+                                <path d="M247 48 Q264 72 247 96" class="soft"></path>
+                                <path d="M263 57 Q274 72 263 87 M278 63 Q284 72 278 81" class="soft"></path>
+                                <path d="M291 72 H302 M297 67 L302 72 L297 77" class="awakening-way"></path>
+
+                                <circle cx="158" cy="72" r="29" class="awakening-light"></circle>
+                                <circle cx="158" cy="72" r="8" fill="#fef3c7"></circle>
+                                <path d="M158 53 V46 M158 98 V91 M139 72 H132 M184 72 H177 M145 59 L140 54 M176 90 L171 85 M171 59 L176 54 M140 90 L145 85" class="awakening-way"></path>
+                            </svg>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <span class="chan-chip">当下</span><span class="chan-chip">明见</span>
+                        </div>
+                    </article>
+
+                    <article class="glass-card chan-core-card rounded-xl p-4">
+                        <h4 class="font-semibold text-purple-200">不住相（心即是佛）</h4>
+                        <p class="text-xs text-slate-300 mt-1">境遇来时清楚回应，过去后不反复抓取；不是逃避发生的一切，而是不把它执为固定的“我”与“我的”。</p>
+                        <div class="chan-diagram">
+                            <svg class="chan-process-svg" viewBox="0 0 320 140" role="img" aria-labelledby="nonabiding-title nonabiding-desc">
+                                <title id="nonabiding-title">境来心应，境过不留的不住相</title>
+                                <desc id="nonabiding-desc">一片叶子随水流经过石头与水纹，不停滞也不被固定边框困住，象征清楚回应境遇而不执著留恋。</desc>
+                                <text x="50" y="19" class="chan-process-label">境来</text>
+                                <text x="160" y="19" class="chan-process-label">心应</text>
+                                <text x="270" y="19" class="chan-process-label">境过</text>
+
+                                <path d="M12 69 C39 57 58 81 84 69 S129 57 154 69 S199 81 225 69 S275 57 308 69" class="chan-process-line"></path>
+                                <path d="M12 82 C39 70 58 94 84 82 S129 70 154 82 S199 94 225 82 S275 70 308 82" class="chan-process-accent" opacity="0.65"></path>
+                                <path d="M29 54 C39 45 49 48 55 56 C48 64 37 64 29 54 Z" class="chan-process-warm"></path>
+                                <path d="M39 57 Q45 53 51 51" class="chan-process-accent"></path>
+                                <path d="M147 66 Q159 50 171 66 Q159 78 147 66 Z" class="chan-process-fill"></path>
+                                <path d="M158 65 Q164 61 169 59" class="chan-process-line"></path>
+                                <path d="M264 58 C271 50 278 50 284 58 M275 53 V65" class="chan-process-accent"></path>
+                                <circle cx="227" cy="52" r="4" class="chan-process-fill"></circle>
+                                <circle cx="239" cy="45" r="2.5" class="chan-process-fill"></circle>
+                                <circle cx="250" cy="39" r="1.5" class="chan-process-fill"></circle>
+                                <path d="M70 45 V37 H91 V45 M127 45 V37 H148 V45 M173 45 V37 H194 V45" class="soft"></path>
+                                <path d="M80 105 Q103 96 126 105 T172 105 T218 105 T264 105" class="chan-process-accent"></path>
+                                <path d="M256 100 L264 105 L256 110" class="chan-process-accent"></path>
+                            </svg>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <span class="chan-chip">不执</span><span class="chan-chip">自在</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+        };
+    </script>
+</body>
+</html>

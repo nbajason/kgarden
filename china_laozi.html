@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full bg-slate-950 text-slate-100 dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>道家专题 | 中国文化总览</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif']
+                    },
+                    colors: {
+                        taoism: {
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.9); border-radius: 999px; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.58);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.42);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            transition: all 0.25s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(52, 211, 153, 0.5);
+            background: rgba(30, 41, 59, 0.72);
+        }
+        .theme-toggle-btn {
+            position: fixed;
+            left: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+        .cat-btn {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 0.9rem;
+            z-index: 50;
+            user-select: none;
+        }
+        body.light-theme,
+        body.light-theme main,
+        body.light-theme #sidebar {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        body.light-theme .glass-panel,
+        body.light-theme .glass-card,
+        body.light-theme [class*="bg-slate-9"],
+        body.light-theme [class*="bg-slate-8"],
+        body.light-theme [class*="bg-slate-7"] {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+        body.light-theme [class*="text-slate-"] {
+            color: #0f172a !important;
+        }
+        body.light-theme [class*="border-slate-"] {
+            border-color: #cbd5e1 !important;
+        }
+        .tao-diagram-svg {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+        }
+        .tao-diagram-svg text {
+            fill: #e2e8f0;
+        }
+        .tao-card {
+            background: linear-gradient(155deg, rgba(30, 41, 59, 0.52), rgba(30, 41, 59, 0.3));
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+        .tao-card:hover {
+            border-color: rgba(52, 211, 153, 0.45);
+            box-shadow: 0 10px 26px rgba(16, 185, 129, 0.12);
+        }
+        .tao-node {
+            fill: rgba(16, 185, 129, 0.18);
+            stroke: rgba(52, 211, 153, 0.85);
+            stroke-width: 1.5;
+        }
+        .tao-link {
+            stroke: rgba(110, 231, 183, 0.9);
+            stroke-width: 1.8;
+            fill: none;
+        }
+        body.light-theme .tao-node {
+            fill: rgba(16, 185, 129, 0.12);
+            stroke: rgba(5, 150, 105, 0.9);
+        }
+        body.light-theme .tao-link {
+            stroke: rgba(5, 150, 105, 0.95);
+        }
+        body.light-theme .tao-card {
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.9));
+            border-color: rgba(5, 150, 105, 0.28);
+        }
+        body.light-theme .tao-diagram-svg text {
+            fill: #0f172a;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden font-sans antialiased bg-slate-950 text-slate-100">
+
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-50">
+        <a href="index.html" class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-taoism-500 to-amber-500 flex items-center justify-center text-white">
+                <i class="fa-solid fa-spa"></i>
+            </div>
+            <span class="font-bold text-slate-100">个人知识花园</span>
+        </a>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2" aria-label="打开菜单">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-taoism-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-spa"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-scroll w-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">思想分支专题</p>
+            <a href="china_confucianism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-book w-5 text-center text-red-300"></i>
+                <span>儒家专题</span>
+            </a>
+            <a href="china_taoism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                <i class="fa-solid fa-leaf w-5 text-center"></i>
+                <span>道家专题</span>
+            </a>
+            <a href="china_chan_buddhism.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-spa w-5 text-center text-purple-300"></i>
+                <span>禅宗专题</span>
+            </a>
+
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                道家费曼模式
+            </span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-slate-950 p-4 md:p-8">
+        <section class="max-w-7xl mx-auto space-y-8">
+            <div class="glass-panel rounded-2xl p-6 md:p-8 border-emerald-500/20">
+                <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight flex items-center gap-3">
+                    <i class="fa-solid fa-leaf text-emerald-300"></i>
+                    道家专题：顺势、节制与系统自组织
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base mt-3 max-w-4xl leading-relaxed">
+                    道家强调"道法自然"，不是消极无为，而是在复杂系统中识别节奏、减少过度干预。
+                    它在治理、审美和生活方式上都指向同一个核心：以更低摩擦实现更高稳定。
+                </p>
+            </div>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-timeline text-emerald-300"></i> 发展历史（四段）</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 text-sm">
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-emerald-300">先秦源起</p><p class="font-semibold mt-1">老庄哲学形成</p><p class="text-slate-300 mt-2 text-xs">以道、无为、齐物等观念回应秩序焦虑与权力过载问题。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-emerald-300">汉魏扩展</p><p class="font-semibold mt-1">黄老与玄学发展</p><p class="text-slate-300 mt-2 text-xs">道家思想进入政治实践与士人思辨，形成治术与心性双轨。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-emerald-300">隋唐宋元</p><p class="font-semibold mt-1">与艺术技术深度融合</p><p class="text-slate-300 mt-2 text-xs">山水、园林、养生、医学中凸显顺势调和的系统观。</p></article>
+                    <article class="glass-card rounded-xl p-4"><p class="text-xs text-emerald-300">近现代转化</p><p class="font-semibold mt-1">生态与生活哲学复兴</p><p class="text-slate-300 mt-2 text-xs">从生态治理到心理减压，道家成为高压社会的重要平衡资源。</p></article>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-emerald-300">治理模型</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">重视"简政+赋能"：减少无效命令，保留关键约束，提升基层与个体的自组织能力。</p>
+                </article>
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-emerald-300">艺术审美</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">以留白、虚实、流动为美学主轴，强调人与自然的呼应关系，而非对自然的完全控制。</p>
+                </article>
+                <article class="glass-card rounded-2xl p-5">
+                    <h4 class="font-bold text-emerald-300">统计视角</h4>
+                    <p class="text-sm text-slate-300 mt-2 leading-relaxed">在高不确定环境下，道家策略可降低系统波动幅度，避免过度干预引发二次风险。</p>
+                </article>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6" aria-labelledby="tao-core-visual-title">
+                <h3 id="tao-core-visual-title" class="text-base font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-diagram-project text-emerald-300" aria-hidden="true"></i>
+                    道家核心思想图解
+                </h3>
+                <p class="text-sm text-slate-300 mb-5 leading-relaxed">用更少的线条，呈现更深的秩序：生成、回转、润泽、自治，构成道家理解世界的四个切面。</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <article class="glass-card tao-card rounded-xl p-5">
+                        <h4 class="font-semibold text-emerald-300 mb-2">道生一，一生二，三生万物</h4>
+                        <svg class="tao-diagram-svg" viewBox="0 0 320 160" role="img" aria-labelledby="svg-sheng-title svg-sheng-desc">
+                            <title id="svg-sheng-title">道家生成层级图</title>
+                            <desc id="svg-sheng-desc">从道到一、二、三，再到万物的层级演化关系。</desc>
+                            <path class="tao-link" d="M48 78 C84 54, 112 54, 142 78"></path>
+                            <path class="tao-link" d="M142 78 C174 102, 206 102, 236 78"></path>
+                            <path class="tao-link" d="M236 78 C264 56, 286 66, 300 94"></path>
+                            <circle class="tao-node" cx="36" cy="80" r="14"></circle>
+                            <circle class="tao-node" cx="140" cy="80" r="12"></circle>
+                            <circle class="tao-node" cx="236" cy="80" r="10"></circle>
+                            <circle class="tao-node" cx="302" cy="96" r="8"></circle>
+                            <text x="36" y="84" text-anchor="middle" font-size="11">道</text>
+                            <text x="140" y="84" text-anchor="middle" font-size="11">一</text>
+                            <text x="236" y="84" text-anchor="middle" font-size="11">二</text>
+                            <text x="302" y="100" text-anchor="middle" font-size="10">三</text>
+                            <text x="262" y="126" text-anchor="middle" font-size="11">万物自化</text>
+                        </svg>
+                        <p class="text-xs text-slate-300 mt-2">从一个原理递进出层层秩序，复杂世界由简驭繁。</p>
+                    </article>
+
+                    <article class="glass-card tao-card rounded-xl p-5">
+                        <h4 class="font-semibold text-emerald-300 mb-2">物极必反</h4>
+                        <svg class="tao-diagram-svg" viewBox="0 0 320 160" role="img" aria-labelledby="svg-fan-title svg-fan-desc">
+                            <title id="svg-fan-title">物极必反循环图</title>
+                            <desc id="svg-fan-desc">增长达到极值后转向回落，再进入新一轮平衡的过程。</desc>
+                            <path class="tao-link" d="M22 112 C76 42, 130 42, 164 88 C192 126, 228 126, 292 58"></path>
+                            <circle class="tao-node" cx="164" cy="88" r="8"></circle>
+                            <path class="tao-link" d="M292 58 L284 62 L288 70"/>
+                            <text x="48" y="126" font-size="11">积累</text>
+                            <text x="164" y="107" text-anchor="middle" font-size="11">极点</text>
+                            <text x="250" y="52" font-size="11">回转</text>
+                        </svg>
+                        <p class="text-xs text-slate-300 mt-2">任何趋势到达边界都会折返，节奏比速度更重要。</p>
+                    </article>
+
+                    <article class="glass-card tao-card rounded-xl p-5">
+                        <h4 class="font-semibold text-emerald-300 mb-2">善上若水</h4>
+                        <svg class="tao-diagram-svg" viewBox="0 0 320 160" role="img" aria-labelledby="svg-water-title svg-water-desc">
+                            <title id="svg-water-title">善上若水示意图</title>
+                            <desc id="svg-water-desc">水向低处流、润泽万物而不争，体现柔和包容的德性。</desc>
+                            <path class="tao-link" d="M14 52 C58 28, 94 88, 140 64 C178 44, 220 92, 306 66"></path>
+                            <path class="tao-link" d="M14 88 C60 64, 96 124, 144 100 C184 80, 224 124, 306 98"></path>
+                            <path class="tao-link" d="M22 126 L298 126"></path>
+                            <circle class="tao-node" cx="92" cy="126" r="9"></circle>
+                            <circle class="tao-node" cx="160" cy="126" r="9"></circle>
+                            <circle class="tao-node" cx="228" cy="126" r="9"></circle>
+                            <text x="92" y="130" text-anchor="middle" font-size="9">谦下</text>
+                            <text x="160" y="130" text-anchor="middle" font-size="9">润物</text>
+                            <text x="228" y="130" text-anchor="middle" font-size="9">不争</text>
+                        </svg>
+                        <p class="text-xs text-slate-300 mt-2">像水一样向下包容，在不争中完成最持久的滋养。</p>
+                    </article>
+
+                    <article class="glass-card tao-card rounded-xl p-5">
+                        <h4 class="font-semibold text-emerald-300 mb-2">无为而治</h4>
+                        <svg class="tao-diagram-svg" viewBox="0 0 320 160" role="img" aria-labelledby="svg-govern-title svg-govern-desc">
+                            <title id="svg-govern-title">无为而治治理图</title>
+                            <desc id="svg-govern-desc">通过少量关键约束与反馈闭环，促成系统自组织与稳态运行。</desc>
+                            <rect class="tao-node" x="20" y="24" width="82" height="28" rx="14"></rect>
+                            <rect class="tao-node" x="118" y="24" width="82" height="28" rx="14"></rect>
+                            <rect class="tao-node" x="216" y="24" width="82" height="28" rx="14"></rect>
+                            <path class="tao-link" d="M102 38 L118 38"></path>
+                            <path class="tao-link" d="M200 38 L216 38"></path>
+                            <path class="tao-link" d="M266 54 C288 74, 276 116, 228 122"></path>
+                            <path class="tao-link" d="M92 122 C44 116, 32 74, 54 54"></path>
+                            <rect class="tao-node" x="96" y="112" width="128" height="26" rx="13"></rect>
+                            <text x="61" y="42" text-anchor="middle" font-size="10">少令</text>
+                            <text x="159" y="42" text-anchor="middle" font-size="10">赋能</text>
+                            <text x="257" y="42" text-anchor="middle" font-size="10">自治</text>
+                            <text x="160" y="129" text-anchor="middle" font-size="10">反馈稳态</text>
+                        </svg>
+                        <p class="text-xs text-slate-300 mt-2">少干预、强反馈，让系统在边界内自然形成秩序。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="glass-panel rounded-2xl p-6">
+                <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-hand-holding-heart text-amber-300"></i> 平常心日常：道与布施积德的影响</h3>
+                <ul class="space-y-2 text-sm text-slate-200 leading-relaxed">
+                    <li>1) 接纳变化、顺势行动，先分清"可控"与"不可控"，减少无谓内耗。</li>
+                    <li>2) 以节制消费、节制表达、节制冲突作为日课，让身心资源留给更重要的人和事。</li>
+                    <li>3) 布施强调"随缘而不攀缘"，在能力边界内持续助人，形成稳态善循环。</li>
+                    <li>4) 以柔克刚：遇到矛盾先降温，再协商，提升关系系统的长期韧性。</li>
+                </ul>
+            </section>
+        </section>
+    </main>
+
+    <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
+        <span id="cat-emoji" class="text-base leading-none">😺</span>
+        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+    </button>
+
+    <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-half-stroke mr-1"></i><span id="theme-toggle-label">Dark Theme</span>
+    </button>
+
+    <script>
+        let currentTheme = localStorage.getItem('knowledge_theme') || 'dark';
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('knowledge_theme', theme);
+            document.body.classList.toggle('light-theme', theme === 'light');
+            const themeLabel = document.getElementById('theme-toggle-label');
+            if (themeLabel) {
+                themeLabel.textContent = theme === 'light' ? 'Light Theme' : 'Dark Theme';
+            }
+        }
+
+        function toggleTheme() {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        let isCatLying = false;
+        function toggleCatPose() {
+            isCatLying = !isCatLying;
+            const catEmoji = document.getElementById('cat-emoji');
+            const catLabel = document.getElementById('cat-label');
+            const catBtn = document.getElementById('cat-toggle');
+            if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
+            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catBtn) {
+                catBtn.setAttribute('aria-pressed', String(isCatLying));
+                catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
+            }
+        }
+
+        applyTheme(currentTheme);
+
+        window.onload = function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileMenuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+            });
+        };
+    </script>
+</body>
+</html>
