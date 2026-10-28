@@ -236,7 +236,7 @@
 
     <button id="cat-toggle" type="button" class="cat-btn flex items-center gap-2 rounded-xl border border-pink-400/40 bg-slate-900/90 px-3 py-2 text-xs text-pink-200 hover:border-pink-300/70" onclick="toggleCatPose()" aria-pressed="false" title="点击让小猫趴下">
         <span id="cat-emoji" class="text-base leading-none">😺</span>
-        <span id="cat-label" class="font-semibold">Fia: Benji坐坐</span>
+        <span id="cat-label" class="font-semibold">汤圆坐坐</span>
     </button>
 
     <button id="theme-toggle" onclick="toggleTheme()" class="theme-toggle-btn text-xs font-semibold px-3 py-2 rounded-lg">
@@ -393,7 +393,7 @@
             const catLabel = document.getElementById('cat-label');
             const catBtn = document.getElementById('cat-toggle');
             if (catEmoji) catEmoji.textContent = isCatLying ? '😽' : '😺';
-            if (catLabel) catLabel.textContent = isCatLying ? 'Fia: Benji趴趴' : 'Fia: Benji坐坐';
+            if (catLabel) catLabel.textContent = isCatLying ? '汤圆趴趴' : '汤圆坐坐';
             if (catBtn) {
                 catBtn.setAttribute('aria-pressed', String(isCatLying));
                 catBtn.title = isCatLying ? '小猫正在趴着，再点让它坐好' : '点击让小猫趴下';
