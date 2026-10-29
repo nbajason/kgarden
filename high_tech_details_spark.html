@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark 集群规模计算与费曼拆解|交互式物流枢纽模型 </title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts (Inter & JetBrains Mono) -->
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                mono: ['JetBrains Mono', 'monospace'],
+              },
+              colors: {
+                hub: {
+                  bg: '#090d16',
+                  card: '#111827',
+                  border: '#1f293d',
+                  accent: '#f59e0b',
+                  driver: '#3b82f6',
+                  executor: '#10b981',
+                  storage: '#8b5cf6',
+                  shuffle: '#ec4899'
+                }
+              }
+            }
+          }
+        }
+    </script>
+
+    <style>
+        body {
+          background-color: #060911;
+          color: #f3f4f6;
+          font-family: 'Inter', sans-serif;
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+          background: rgba(17, 24, 39, 0.75);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+          background: rgba(24, 32, 51, 0.6);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* Tab styling */
+        .tab-btn.active {
+          border-color: #f59e0b;
+          color: #fbbf24;
+          background: rgba(245, 158, 11, 0.1);
+        }
+
+        /* SVG Interactive Hover Effects */
+        .bp-hotspot {
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        .bp-hotspot:hover {
+          filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #1f293d;
+          border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #374151;
+        }
+
+        /* Pulse glowing effect */
+        .glow-orange {
+          box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.3);
+        }
+        .glow-teal {
+          box-shadow: 0 0 25px -5px rgba(20, 184, 166, 0.3);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+
+<!-- Header Banner -->
+<header class="border-b border-gray-800/80 bg-gray-950/80 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-orange-500/20">
+                ⚡
+            </div>
+            <div>
+                <h1 class="text-base sm:text-lg font-bold text-gray-100 flex items-center gap-2">
+                    Spark 集群规模计算与费曼拆解
+                    <span class="text-xs font-mono font-normal px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 hidden sm:inline-block">物流枢纽模型</span>
+                </h1>
+                <p class="text-xs text-gray-400 hidden sm:block">用高速物流转运中心直观理解大计算架构与算力规划</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+          费曼学习法 3.0
+        </span>
+            <button onclick="scrollToCalculator()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-gray-950 transition-all duration-200 flex items-center shadow-md font-mono">
+                <i data-lucide="calculator" class="w-3.5 h-3.5 mr-1.5"></i> 算力配置计算器
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Main Container -->
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <!-- Global Navigation Tabs -->
+    <div class="flex items-center space-x-2 border-b border-gray-800/80 pb-2 overflow-x-auto text-xs font-medium">
+        <button onclick="switchTab('tab-blueprint')" id="btn-tab-blueprint" class="tab-btn active px-4 py-2.5 rounded-xl border border-transparent transition flex items-center gap-2">
+            <i data-lucide="map" class="w-4 h-4"></i> 1. 物流转运中心全景蓝图 (架构映射)
+        </button>
+        <button onclick="switchTab('tab-overview')" id="btn-tab-overview" class="tab-btn px-4 py-2.5 rounded-xl border border-transparent transition text-gray-400 hover:text-gray-200 flex items-center gap-2">
+            <i data-lucide="activity" class="w-4 h-4"></i> 2. 动态物流模拟与费曼模型
+        </button>
+        <button onclick="switchTab('tab-case1tb')" id="btn-tab-case1tb" class="tab-btn px-4 py-2.5 rounded-xl border border-transparent transition text-gray-400 hover:text-gray-200 flex items-center gap-2">
+            <i data-lucide="database" class="w-4 h-4"></i> 3. 日增 1TB 实战容量推导
+        </button>
+    </div>
+
+    <!-- ==================== TAB 1: CONCEPTUAL BLUEPRINT ==================== -->
+    <div id="tab-blueprint" class="tab-content space-y-6">
+
+        <!-- Fleet Scheduling Block Diagram (Multi-Worker) -->
+        <section class="glass-panel rounded-2xl p-4 sm:p-6 border border-gray-800/80">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">FLEET SCHEDULING VIEW</span>
+                        <h2 class="text-base sm:text-lg font-bold text-gray-100">Spark Fleet 多 Worker 调度框图</h2>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">先看全局调度关系：Driver 统一派单到多个 Worker，每个 Worker 内并行执行 Executor，并通过 Shuffle 进行跨节点数据交换。</p>
+                </div>
+                <div class="text-[11px] font-mono text-gray-300 bg-gray-900/80 border border-gray-800 rounded-lg px-3 py-2">
+                    示例拓扑: 1 Driver + 4 Workers + 12 Executors
+                </div>
+            </div>
+
+            <div class="bg-gray-950 rounded-xl border border-gray-800/80 p-2 sm:p-3 overflow-x-auto">
+                <svg viewBox="0 0 1120 430" class="w-full min-w-[900px] h-auto select-none">
+                    <defs>
+                        <marker id="fleet-arrow-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa" />
+                        </marker>
+                        <marker id="fleet-arrow-pink" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ec4899" />
+                        </marker>
+                    </defs>
+
+                    <rect x="0" y="0" width="1120" height="430" fill="#090d16" />
+
+                    <!-- Driver -->
+                    <rect x="420" y="24" width="280" height="78" rx="12" fill="#13294f" stroke="#3b82f6" stroke-width="2" />
+                    <text x="560" y="52" text-anchor="middle" fill="#bfdbfe" font-size="14" font-weight="bold">Driver / Cluster Manager</text>
+                    <text x="560" y="75" text-anchor="middle" fill="#93c5fd" font-size="11" font-family="monospace">DAG Parsing • Task Scheduling • Result Collect</text>
+
+                    <!-- Worker Blocks -->
+                    <g>
+                        <rect x="40" y="150" width="250" height="220" rx="12" fill="#042f2e" stroke="#10b981" stroke-width="2"/>
+                        <text x="165" y="176" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="bold">Worker-1 (16C/64G)</text>
+                        <rect x="60" y="194" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="165" y="222" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-1A (5C,18G)</text>
+                        <rect x="60" y="250" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="165" y="278" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-1B (5C,18G)</text>
+                        <rect x="60" y="306" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="165" y="334" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-1C (5C,18G)</text>
+                    </g>
+
+                    <g>
+                        <rect x="310" y="150" width="250" height="220" rx="12" fill="#042f2e" stroke="#10b981" stroke-width="2"/>
+                        <text x="435" y="176" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="bold">Worker-2 (16C/64G)</text>
+                        <rect x="330" y="194" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="435" y="222" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-2A (5C,18G)</text>
+                        <rect x="330" y="250" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="435" y="278" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-2B (5C,18G)</text>
+                        <rect x="330" y="306" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="435" y="334" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-2C (5C,18G)</text>
+                    </g>
+
+                    <g>
+                        <rect x="580" y="150" width="250" height="220" rx="12" fill="#042f2e" stroke="#10b981" stroke-width="2"/>
+                        <text x="705" y="176" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="bold">Worker-3 (16C/64G)</text>
+                        <rect x="600" y="194" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="705" y="222" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-3A (5C,18G)</text>
+                        <rect x="600" y="250" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="705" y="278" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-3B (5C,18G)</text>
+                        <rect x="600" y="306" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="705" y="334" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-3C (5C,18G)</text>
+                    </g>
+
+                    <g>
+                        <rect x="850" y="150" width="250" height="220" rx="12" fill="#042f2e" stroke="#10b981" stroke-width="2"/>
+                        <text x="975" y="176" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="bold">Worker-4 (16C/64G)</text>
+                        <rect x="870" y="194" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="975" y="222" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-4A (5C,18G)</text>
+                        <rect x="870" y="250" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="975" y="278" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-4B (5C,18G)</text>
+                        <rect x="870" y="306" width="210" height="46" rx="8" fill="#064e3b" stroke="#34d399"/>
+                        <text x="975" y="334" text-anchor="middle" fill="#a7f3d0" font-size="11" font-family="monospace">Executor-4C (5C,18G)</text>
+                    </g>
+
+                    <!-- Scheduling arrows from Driver to Workers -->
+                    <line x1="500" y1="102" x2="165" y2="150" stroke="#60a5fa" stroke-width="2" marker-end="url(#fleet-arrow-blue)"/>
+                    <line x1="540" y1="102" x2="435" y2="150" stroke="#60a5fa" stroke-width="2" marker-end="url(#fleet-arrow-blue)"/>
+                    <line x1="580" y1="102" x2="705" y2="150" stroke="#60a5fa" stroke-width="2" marker-end="url(#fleet-arrow-blue)"/>
+                    <line x1="620" y1="102" x2="975" y2="150" stroke="#60a5fa" stroke-width="2" marker-end="url(#fleet-arrow-blue)"/>
+
+                    <!-- Heartbeat (bidirectional dashed) -->
+                    <line x1="165" y1="145" x2="500" y2="96" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="5 4"/>
+                    <line x1="435" y1="145" x2="540" y2="96" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="5 4"/>
+                    <line x1="705" y1="145" x2="580" y2="96" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="5 4"/>
+                    <line x1="975" y1="145" x2="620" y2="96" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="5 4"/>
+
+                    <!-- Shuffle exchange across workers -->
+                    <path d="M 270 292 C 360 370, 510 370, 600 292" fill="none" stroke="#ec4899" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#fleet-arrow-pink)"/>
+                    <path d="M 540 292 C 630 230, 780 230, 870 292" fill="none" stroke="#ec4899" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#fleet-arrow-pink)"/>
+
+                    <text x="560" y="128" text-anchor="middle" fill="#bfdbfe" font-size="10" font-family="monospace">Task Scheduling</text>
+                    <text x="560" y="410" text-anchor="middle" fill="#fbcfe8" font-size="10" font-family="monospace">Cross-Worker Shuffle Exchange</text>
+                </svg>
+            </div>
+
+            <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+                <div class="bg-gray-900/70 border border-gray-800 rounded-lg px-3 py-2 text-gray-300"><span class="text-blue-300">实线蓝箭头</span>: Driver 派发 Task 到 Worker</div>
+                <div class="bg-gray-900/70 border border-gray-800 rounded-lg px-3 py-2 text-gray-300"><span class="text-cyan-300">青色虚线</span>: Worker 心跳与状态回报</div>
+                <div class="bg-gray-900/70 border border-gray-800 rounded-lg px-3 py-2 text-gray-300"><span class="text-pink-300">粉色虚线</span>: Worker 间 Shuffle 重分发</div>
+            </div>
+        </section>
+
+        <!-- Top Overview Info Banner -->
+        <div class="glass-panel rounded-2xl p-6 relative overflow-hidden">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30">VISUAL BLUEPRINT</span>
+                        <h2 class="text-xl font-black text-white">Spark 现代化高速物流转运中心全景图</h2>
+                    </div>
+                    <p class="text-xs text-gray-400 max-w-3xl leading-relaxed">
+                        抛开复杂的 RDD、Shuffle 与 JVM 参数词汇。下方交互蓝图展示了一个完整的 Spark 分布式作业在“物流枢纽”中的物理映射。点击图示中的各个模块可查看对应 Spark 参数与最佳实操建议。
+                    </p>
+                </div>
+                <div id="bp-status-pill" class="shrink-0 text-xs font-mono px-3 py-2 rounded-xl bg-gray-900 border border-gray-700/60 text-amber-400 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                    点击任意组件进行深度拆解
+                </div>
+            </div>
+        </div>
+
+        <!-- SVG Interactive Vector Diagram -->
+        <div class="glass-panel rounded-2xl p-4 sm:p-6 shadow-2xl relative border border-gray-800/80">
+            <div class="relative w-full bg-gray-950 rounded-xl border border-gray-800/80 p-2 sm:p-4 overflow-x-auto">
+                <svg id="interactive-blueprint" viewBox="0 0 1000 580" class="w-full min-w-[800px] h-auto select-none">
+                    <defs>
+                        <!-- Grid Pattern -->
+                        <pattern id="bp-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                        </pattern>
+
+                        <!-- Gradient Definitions -->
+                        <linearGradient id="grad-dispatcher" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.9"/>
+                            <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0.9"/>
+                        </linearGradient>
+
+                        <linearGradient id="grad-truck" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#064e3b" stop-opacity="0.9"/>
+                            <stop offset="100%" stop-color="#022c22" stop-opacity="0.9"/>
+                        </linearGradient>
+
+                        <linearGradient id="grad-rack" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#4c1d95" stop-opacity="0.9"/>
+                            <stop offset="100%" stop-color="#2e1065" stop-opacity="0.9"/>
+                        </linearGradient>
+
+                        <linearGradient id="grad-highway" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#831843" stop-opacity="0.8"/>
+                            <stop offset="50%" stop-color="#be185d" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#831843" stop-opacity="0.8"/>
+                        </linearGradient>
+
+                        <!-- Arrow Markers -->
+                        <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b" />
+                        </marker>
+                        <marker id="arrow-pink" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ec4899" />
+                        </marker>
+                    </defs>
+
+                    <!-- Background Grid -->
+                    <rect width="100%" height="100%" fill="#090d16" />
+                    <rect width="100%" height="100%" fill="url(#bp-grid)" />
+
+                    <!-- Lane Dividers / Flow Lines -->
+                    <path d="M 230 180 C 320 180, 320 100, 420 100" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6 4" opacity="0.6"/>
+                    <path d="M 230 200 C 320 200, 320 300, 420 300" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6 4" opacity="0.6"/>
+                    <path d="M 680 120 L 730 120 L 730 220 L 780 220" fill="none" stroke="#ec4899" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-pink)" opacity="0.8"/>
+
+                    <!-- ================= COMPONENT 1: LOGISTICS DISPATCHER (DRIVER NODE) ================= -->
+                    <g class="bp-hotspot" onclick="selectComponent('dispatcher')">
+                        <rect x="30" y="120" width="200" height="260" rx="16" fill="url(#grad-dispatcher)" stroke="#3b82f6" stroke-width="2"/>
+
+                        <!-- Title Header -->
+                        <rect x="30" y="120" width="200" height="40" rx="16" fill="#1d4ed8" opacity="0.4"/>
+                        <text x="130" y="145" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="bold">👮‍♂️ 调度总指挥部</text>
+                        <text x="130" y="172" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="monospace">Driver Node / Cluster Mgr</text>
+
+                        <!-- Inner Visual Elements -->
+                        <!-- DAG Route Map -->
+                        <rect x="45" y="185" width="170" height="75" rx="8" fill="#0f172a" stroke="#1e40af" stroke-width="1"/>
+                        <text x="55" y="202" fill="#38bdf8" font-size="10" font-weight="bold">🗺️ 派单路线图 (DAG & Stages)</text>
+                        <circle cx="70" cy="225" r="8" fill="#0284c7"/>
+                        <line x1="78" y1="225" x2="110" y2="225" stroke="#38bdf8" stroke-width="2"/>
+                        <circle cx="118" cy="225" r="8" fill="#0284c7"/>
+                        <line x1="126" y1="225" x2="158" y2="225" stroke="#38bdf8" stroke-width="2"/>
+                        <circle cx="166" cy="225" r="8" fill="#f59e0b"/>
+                        <text x="130" y="250" text-anchor="middle" fill="#94a3b8" font-size="9">Stage 0 ➔ Stage 1 ➔ Shuffle</text>
+
+                        <!-- Task Queue Box -->
+                        <rect x="45" y="270" width="170" height="95" rx="8" fill="#0f172a" stroke="#1e40af" stroke-width="1"/>
+                        <text x="55" y="287" fill="#60a5fa" font-size="10" font-weight="bold">📋 待分发包裹任务队列 (Tasks)</text>
+                        <rect x="55" y="297" width="150" height="16" rx="4" fill="#1e293b"/>
+                        <text x="60" y="309" fill="#93c5fd" font-size="9" font-family="monospace">Task #001: Process Partition 0</text>
+                        <rect x="55" y="318" width="150" height="16" rx="4" fill="#1e293b"/>
+                        <text x="60" y="330" fill="#93c5fd" font-size="9" font-family="monospace">Task #002: Process Partition 1</text>
+                        <rect x="55" y="339" width="150" height="16" rx="4" fill="#1e293b"/>
+                        <text x="60" y="351" fill="#93c5fd" font-size="9" font-family="monospace">Task #003: Process Partition 2</text>
+                    </g>
+
+
+                    <!-- ================= COMPONENT 2: AUTOMATED WAREHOUSE RACKS (STORAGE LAYER) ================= -->
+                    <g class="bp-hotspot" onclick="selectComponent('racks')">
+                        <rect x="420" y="30" width="260" height="160" rx="16" fill="url(#grad-rack)" stroke="#8b5cf6" stroke-width="2"/>
+
+                        <text x="550" y="55" text-anchor="middle" fill="#c4b5fd" font-size="13" font-weight="bold">🏭 自动化货架仓库 (HDFS / S3 / Storage)</text>
+                        <text x="550" y="72" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="monospace">Persistent Storage & Data Partitions</text>
+
+                        <!-- Racks visual grid -->
+                        <g transform="translate(435, 80)">
+                            <!-- Shelf Line 1 -->
+                            <rect x="0" y="0" width="230" height="25" rx="4" fill="#1e1b4b" stroke="#6d28d9" stroke-width="1"/>
+                            <rect x="5" y="4" width="30" height="17" rx="3" fill="#a78bfa"/>
+                            <rect x="40" y="4" width="30" height="17" rx="3" fill="#a78bfa"/>
+                            <rect x="75" y="4" width="30" height="17" rx="3" fill="#a78bfa"/>
+                            <rect x="110" y="4" width="30" height="17" rx="3" fill="#818cf8"/>
+                            <text x="175" y="16" fill="#ddd6fe" font-size="9" font-weight="bold">128MB 切片包</text>
+
+                            <!-- Shelf Line 2 -->
+                            <rect x="0" y="32" width="230" height="25" rx="4" fill="#1e1b4b" stroke="#6d28d9" stroke-width="1"/>
+                            <rect x="5" y="36" width="30" height="17" rx="3" fill="#818cf8"/>
+                            <rect x="40" y="36" width="30" height="17" rx="3" fill="#818cf8"/>
+                            <rect x="75" y="36" width="30" height="17" rx="3" fill="#a78bfa"/>
+                            <rect x="110" y="36" width="30" height="17" rx="3" fill="#a78bfa"/>
+                            <text x="175" y="48" fill="#ddd6fe" font-size="9" font-weight="bold">Block Partitions</text>
+
+                            <!-- Cached badge -->
+                            <rect x="0" y="63" width="230" height="18" rx="4" fill="#4c1d95"/>
+                            <text x="115" y="75" text-anchor="middle" fill="#c4b5fd" font-size="9">内存缓存块: MEMORY_AND_DISK Cache</text>
+                        </g>
+                    </g>
+
+
+                    <!-- ================= COMPONENT 3: FLEET TRUCK (EXECUTOR CONTAINER) ================= -->
+                    <g class="bp-hotspot" onclick="selectComponent('executor')">
+                        <!-- Node Boundary (Worker Node) -->
+                        <rect x="400" y="215" width="310" height="340" rx="16" fill="#062016" stroke="#10b981" stroke-width="2" stroke-dasharray="4 4"/>
+                        <text x="415" y="235" fill="#34d399" font-size="11" font-weight="bold">🚚 算力停车位 Worker Node (16核 / 64G)</text>
+
+                        <!-- Multi-Executor Fleet inside one Worker -->
+                        <rect x="415" y="248" width="280" height="292" rx="12" fill="url(#grad-truck)" stroke="#059669" stroke-width="2"/>
+                        <text x="555" y="268" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="bold">分拣车队 (3 x Executor Containers)</text>
+
+                        <!-- Executor A -->
+                        <rect x="426" y="282" width="82" height="128" rx="8" fill="#022c22" stroke="#10b981" stroke-width="1"/>
+                        <text x="467" y="299" text-anchor="middle" fill="#a7f3d0" font-size="9" font-weight="bold">Exe-A</text>
+                        <text x="467" y="317" text-anchor="middle" fill="#6ee7b7" font-size="8" font-family="monospace">5 Cores</text>
+                        <text x="467" y="333" text-anchor="middle" fill="#99f6e4" font-size="8" font-family="monospace">18G Heap</text>
+                        <text x="467" y="349" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="monospace">2G O/H</text>
+                        <rect x="434" y="358" width="66" height="10" rx="3" fill="#047857"/>
+                        <rect x="434" y="373" width="54" height="10" rx="3" fill="#0f766e"/>
+                        <text x="467" y="401" text-anchor="middle" fill="#a7f3d0" font-size="7">Execution / Storage</text>
+
+                        <!-- Executor B -->
+                        <rect x="514" y="282" width="82" height="128" rx="8" fill="#022c22" stroke="#10b981" stroke-width="1"/>
+                        <text x="555" y="299" text-anchor="middle" fill="#a7f3d0" font-size="9" font-weight="bold">Exe-B</text>
+                        <text x="555" y="317" text-anchor="middle" fill="#6ee7b7" font-size="8" font-family="monospace">5 Cores</text>
+                        <text x="555" y="333" text-anchor="middle" fill="#99f6e4" font-size="8" font-family="monospace">18G Heap</text>
+                        <text x="555" y="349" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="monospace">2G O/H</text>
+                        <rect x="522" y="358" width="66" height="10" rx="3" fill="#047857"/>
+                        <rect x="522" y="373" width="54" height="10" rx="3" fill="#0f766e"/>
+                        <text x="555" y="401" text-anchor="middle" fill="#a7f3d0" font-size="7">Execution / Storage</text>
+
+                        <!-- Executor C -->
+                        <rect x="602" y="282" width="82" height="128" rx="8" fill="#022c22" stroke="#10b981" stroke-width="1"/>
+                        <text x="643" y="299" text-anchor="middle" fill="#a7f3d0" font-size="9" font-weight="bold">Exe-C</text>
+                        <text x="643" y="317" text-anchor="middle" fill="#6ee7b7" font-size="8" font-family="monospace">5 Cores</text>
+                        <text x="643" y="333" text-anchor="middle" fill="#99f6e4" font-size="8" font-family="monospace">18G Heap</text>
+                        <text x="643" y="349" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="monospace">2G O/H</text>
+                        <rect x="610" y="358" width="66" height="10" rx="3" fill="#047857"/>
+                        <rect x="610" y="373" width="54" height="10" rx="3" fill="#0f766e"/>
+                        <text x="643" y="401" text-anchor="middle" fill="#a7f3d0" font-size="7">Execution / Storage</text>
+
+                        <!-- Node-level summary -->
+                        <rect x="430" y="423" width="250" height="30" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
+                        <text x="555" y="442" text-anchor="middle" fill="#d1fae5" font-size="9" font-weight="bold">总并行度: 15 Cores (3 Executors x 5)</text>
+
+                        <rect x="430" y="460" width="250" height="34" rx="6" fill="#142e2b" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3 3"/>
+                        <text x="555" y="475" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="bold">Node 预留 + Executor Overhead</text>
+                        <text x="555" y="488" text-anchor="middle" fill="#fef3c7" font-size="8">OS/NodeManager 预留 + 每车堆外内存 (Off-Heap)</text>
+                    </g>
+
+
+                    <!-- ================= COMPONENT 4: HIGHWAYS & SHUFFLE (NETWORK & INTERCONNECT) ================= -->
+                    <g class="bp-hotspot" onclick="selectComponent('shuffle')">
+                        <rect x="760" y="160" width="210" height="260" rx="16" fill="url(#grad-highway)" stroke="#ec4899" stroke-width="2"/>
+
+                        <text x="865" y="185" text-anchor="middle" fill="#fbcfe8" font-size="13" font-weight="bold">🛣️ 跨厂区调拨高速公路</text>
+                        <text x="865" y="202" text-anchor="middle" fill="#f472b6" font-size="10" font-family="monospace">Shuffle Service & Network I/O</text>
+
+                        <!-- High speed lanes -->
+                        <g transform="translate(775, 215)">
+                            <rect x="0" y="0" width="180" height="45" rx="6" fill="#831843" stroke="#f472b6" stroke-width="1"/>
+                            <text x="10" y="18" fill="#fbcfe8" font-size="10" font-weight="bold">🚚🔄🚚 跨车二次重新打散 (Shuffle)</text>
+                            <text x="10" y="34" fill="#f472b6" font-size="8">GroupByKey / Join 重新分拣</text>
+
+                            <rect x="0" y="55" width="180" height="45" rx="6" fill="#831843" stroke="#f472b6" stroke-width="1"/>
+                            <text x="10" y="73" fill="#fbcfe8" font-size="10" font-weight="bold">💽 临时落地方案 (Disk Spill)</text>
+                            <text x="10" y="89" fill="#f472b6" font-size="8">车厢爆仓时紧急堆放至本地磁盘</text>
+
+                            <rect x="0" y="110" width="180" height="70" rx="6" fill="#500724" stroke="#ec4899" stroke-width="1"/>
+                            <text x="10" y="128" fill="#fbcfe8" font-size="10" font-weight="bold">🌐 网络卡顿风险 (Network Bottleneck)</text>
+                            <text x="10" y="144" fill="#f472b6" font-size="8">受限于网卡带宽 (10GbE / 25GbE)</text>
+                            <text x="10" y="160" fill="#fbcfe8" font-size="8">Spark Shuffle Write / Read</text>
+                        </g>
+                    </g>
+
+                    <!-- Interactive Guidance Pointer Overlay -->
+                    <path d="M 230 250 L 400 380" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)" stroke-dasharray="4 4"/>
+                    <text x="310" y="300" fill="#fbbf24" font-size="9" font-weight="bold">派派任务 (Dispatch Task)</text>
+
+                </svg>
+            </div>
+
+            <!-- Dynamic Selected Component Deep-Dive Card -->
+            <div id="blueprint-detail-card" class="mt-4 bg-gray-900/90 rounded-xl p-5 border border-gray-800 transition-all duration-300">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-800/80 pb-3">
+                    <div class="flex items-center space-x-2">
+                        <span id="bp-card-tag" class="px-2.5 py-0.5 rounded text-xs font-mono bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold">Driver Node</span>
+                        <h3 id="bp-card-title" class="font-bold text-gray-100 text-base sm:text-lg">👮‍♂️ 调度总指挥部 (Logistics Dispatcher / Driver Node)</h3>
+                    </div>
+                    <span id="bp-card-params" class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/20">spark.driver.memory / spark.driver.cores</span>
+                </div>
+
+                <p id="bp-card-desc" class="text-xs sm:text-sm text-gray-300 leading-relaxed mt-3">
+                    调度总指挥部是 Spark 作业的大脑（Driver）。它不直接参与具体搬运，而是将用户提交的程序解析为 DAG 路线图、切割为 Stages，并将上万个分拣 Task 打包发给远程卡车。如果执行 `collect()` 会将所有货物拉回指挥部，极易爆仓崩溃。
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs mt-4">
+                    <div class="bg-gray-950 p-3 rounded-lg border border-gray-800/80">
+                        <span class="text-gray-400 block text-[10px] uppercase font-mono">核心配置建议</span>
+                        <code id="bp-card-p1" class="text-emerald-400 font-mono font-semibold block mt-1">spark.driver.memory = 4g~32g</code>
+                    </div>
+                    <div class="bg-gray-950 p-3 rounded-lg border border-gray-800/80">
+                        <span class="text-gray-400 block text-[10px] uppercase font-mono">物流风险点</span>
+                        <span id="bp-card-p2" class="text-amber-400 font-medium block mt-1">collect() 大数据导致指挥部 OOM 瘫痪</span>
+                    </div>
+                    <div class="bg-gray-950 p-3 rounded-lg border border-gray-800/80">
+                        <span class="text-gray-400 block text-[10px] uppercase font-mono">费曼直觉总结</span>
+                        <span id="bp-card-p3" class="text-gray-300 block mt-1">指挥官手里的路线图要清淅，绝不能把全部包裹全拉回指挥室。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==================== TAB 2: DYNAMIC SIMULATION & FEYNMAN MODEL ==================== -->
+    <div id="tab-overview" class="tab-content hidden space-y-8">
+
+        <!-- Interactive Logistics Canvas Simulation -->
+        <section class="glass-panel rounded-2xl p-4 lg:p-6 shadow-2xl relative overflow-hidden border border-gray-800/80">
+            <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-gray-800/80 gap-3">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">REAL-TIME SIMULATOR</span>
+                        <h2 class="text-lg font-bold text-gray-100">高速物流转运中心 Live 模拟吞吐画布</h2>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-0.5">观察数据包裹如何在 Driver 指挥下，通过分拣卡车车队（Executors）并行吐吞处理</p>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleSimulation()" id="sim-play-btn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-gray-950 transition flex items-center gap-1">
+                        <i data-lucide="pause" class="w-3.5 h-3.5"></i> 暂停模拟
+                    </button>
+                    <button onclick="resetSimulation()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 transition flex items-center gap-1">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> 重置车队
+                    </button>
+                </div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative w-full h-64 sm:h-80 bg-gray-950 rounded-xl mt-4 border border-gray-800/80 overflow-hidden">
+                <canvas id="logisticsCanvas" class="w-full h-full block"></canvas>
+
+                <!-- Overlay HUD Metrics -->
+                <div class="absolute top-3 left-3 bg-gray-900/80 backdrop-blur border border-gray-800 p-2.5 rounded-lg text-xs space-y-1 font-mono">
+                    <div class="text-gray-400">吞吐状态 (Throughput): <span id="hud-tp" class="text-emerald-400 font-bold">1.2 TB/h</span></div>
+                    <div class="text-gray-400">在途卡车 (Active Trucks): <span id="hud-active" class="text-amber-400 font-bold">12 辆</span></div>
+                    <div class="text-gray-400">SLA 死线倒计时: <span id="hud-timer" class="text-cyan-400 font-bold">01:42:15</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4-Step Feynman Deconstruction Cards -->
+        <section class="space-y-4">
+            <h2 class="text-lg font-bold text-gray-100 flex items-center gap-2">
+                <i data-lucide="brain-circuit" class="w-5 h-5 text-amber-400"></i>
+                费曼四步法：把 Spark 物理模型讲给 10 岁孩子听
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Step 1 -->
+                <div class="glass-card p-4 rounded-xl border border-gray-800/80 space-y-2 hover:border-amber-500/40 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-amber-400">STEP 1</span>
+                        <span class="text-xl">📦</span>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-200">数据量 = 待处理包裹吨数</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        1TB 原始日志相当于 1000 吨货物。经过 Parquet 压缩后体积极致缩小，但在解压分拣时又会膨胀。
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="glass-card p-4 rounded-xl border border-gray-800/80 space-y-2 hover:border-amber-500/40 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-amber-400">STEP 2</span>
+                        <span class="text-xl">⏰</span>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-200">SLA = 早上 8 点送达死线</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        业务必须在 2 小时内出结果。如果死线极紧，就必须派入更多车队（Executors）并行干活。
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="glass-card p-4 rounded-xl border border-gray-800/80 space-y-2 hover:border-amber-500/40 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-amber-400">STEP 3</span>
+                        <span class="text-xl">🚚</span>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-200">Executor = 标准卡车车队</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        每辆卡车配 5 个搬运工（Cores），车厢大小（Memory）决定能装多少数据，防止中途爆仓（OOM）。
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="glass-card p-4 rounded-xl border border-gray-800/80 space-y-2 hover:border-amber-500/40 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-amber-400">STEP 4</span>
+                        <span class="text-xl">🔄</span>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-200">Shuffle = 跨园区调拨</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        当遇到 GroupBy / Join 时，所有卡车需要在高速公路上交叉拉货，这是最烧油（耗网络和磁盘）的环节。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Term Mapping Dictionary -->
+        <section class="glass-panel rounded-2xl p-6 border border-gray-800/80 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-3">
+                <h3 class="font-bold text-gray-100 text-base flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-5 h-5 text-amber-400"></i>
+                    Spark 架构与物流转运中心对照辞典 (Mapping Dictionary)
+                </h3>
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="dict-search" onkeyup="filterDict()" placeholder="搜索 Spark 或物流术语..." class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-amber-500 pl-8">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-gray-500 absolute left-2.5 top-2.5"></i>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="dict-container">
+                <!-- Item 1 -->
+                <div class="dict-item bg-gray-900/60 p-3.5 rounded-xl border border-gray-800/80 space-y-1">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-amber-400 font-bold">Spark Driver</span>
+                        <span class="text-blue-400">物流调度总指挥</span>
+                    </div>
+                    <p class="text-xs text-gray-400">负责全局路线规划 (DAG Parsing)、包裹任务拆解与派发给各个卡车。</p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="dict-item bg-gray-900/60 p-3.5 rounded-xl border border-gray-800/80 space-y-1">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-amber-400 font-bold">Executor Container</span>
+                        <span class="text-emerald-400">标准分拣卡车</span>
+                    </div>
+                    <p class="text-xs text-gray-400">真正干活的计算容器，包含一定数量的搬运工 (Cores) 和指定容积的车厢 (Memory)。</p>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="dict-item bg-gray-900/60 p-3.5 rounded-xl border border-gray-800/80 space-y-1">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-amber-400 font-bold">Partition / Block</span>
+                        <span class="text-purple-400">标准打包件 / 切片</span>
+                    </div>
+                    <p class="text-xs text-gray-400">数据被切分为如 128MB 的标准箱子，每个搬运工一次处理一个箱子。</p>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="dict-item bg-gray-900/60 p-3.5 rounded-xl border border-gray-800/80 space-y-1">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-amber-400 font-bold">Shuffle Write / Read</span>
+                        <span class="text-pink-400">跨园区货物调拨</span>
+                    </div>
+                    <p class="text-xs text-gray-400">按新 Key（如按目的地）把包裹重新分配给不同卡车，产生大量网络与磁盘 IO。</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ==================== TAB 3: 1TB CASE STUDY ==================== -->
+    <div id="tab-case1tb" class="tab-content hidden space-y-6">
+        <div class="glass-panel rounded-2xl p-6 border border-gray-800/80 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-800 pb-4 gap-4">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30 font-semibold">PRODUCTION BENCHMARK</span>
+                        <h2 class="text-xl font-extrabold text-white">日增 1TB 级数据处理：Spark 集群容量全流程推导实战</h2>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">从数据物理特性到生产环境 `spark-submit` 参数的完整数学与物理推导链</p>
+                </div>
+                <button onclick="load1TBPresetAndScroll()" class="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-gray-950 shadow-lg transition-all flex items-center gap-1.5 shrink-0 font-mono">
+                    <i data-lucide="zap" class="w-4 h-4"></i> 载入 1TB 预设至计算器
+                </button>
+            </div>
+
+            <!-- Step-by-Step Derivation Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Phase 1 -->
+                <div class="bg-gray-900/80 p-5 rounded-xl border border-gray-800/80 space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-6 h-6 rounded-full bg-amber-500 text-black font-mono text-xs flex items-center justify-center font-bold">1</div>
+                        <h3 class="font-bold text-sm text-gray-100">原始数据与内存膨胀评估</h3>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        每日增量为 <strong>1 TB (1024 GB)</strong> 原始日志，在写入 Parquet/ORC 压缩后约占 <strong>200~250 GB</strong> 磁盘空间。
+                    </p>
+                    <div class="bg-gray-950 p-3 rounded-lg border border-gray-800/80 text-[11px] space-y-1.5 text-gray-300 font-mono">
+                        <div class="flex justify-between"><span>内存反序列化膨胀系数:</span><span class="text-amber-400">2.5x ~ 3.0x</span></div>
+                        <div class="flex justify-between"><span>内存活跃计算池需求:</span><span class="text-emerald-400 font-bold">~2.5 TB RAM</span></div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="bg-gray-900/80 p-5 rounded-xl border border-gray-800/80 space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-6 h-6 rounded-full bg-emerald-500 text-black font-mono text-xs flex items-center justify-center font-bold">2</div>
+                        <h3 class="font-bold text-sm text-gray-100">单车 (Executor) 黄金规格</h3>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        选择标准云主机/物理机：<strong>16 vCPU / 64 GB RAM</strong> 规格 Worker 节点（1:4 黄金 CPU 内存比）。
+                    </p>
+                    <div class="bg-gray-950 p-3 rounded-lg border border-gray-800/80 text-[11px] space-y-1.5 text-gray-300 font-mono">
+                        <div class="flex justify-between"><span>系统预留:</span><span class="text-amber-400">1 核 / 4GB RAM</span></div>
+                        <div class="flex justify-between"><span>单车搬运工 (Cores):</span><span class="text-emerald-400">5 Cores/Executor</span></div>
+                        <div class="flex justify-between"><span>单节点停靠卡车数:</span><span class="text-blue-400 font-bold">3 辆 / 节点</span></div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="bg-gray-900/80 p-5 rounded-xl border border-gray-800/80 space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-6 h-6 rounded-full bg-blue-500 text-black font-mono text-xs flex items-center justify-center font-bold">3</div>
+                        <h3 class="font-bold text-sm text-gray-100">SLA 死线与节点数推导</h3>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        业务死线为 <strong>2 小时 SLA</strong>（包含 Complex Join 与 Aggregation 算子）。
+                    </p>
+                    <div class="bg-gray-950 p-3 rounded-lg border border-gray-800/80 text-[11px] space-y-1.5 text-gray-300 font-mono">
+                        <div class="flex justify-between"><span>所需 Executor 卡车数:</span><span class="text-blue-400 font-bold">18 ~ 24 辆</span></div>
+                        <div class="flex justify-between"><span>推导物理节点数:</span><span class="text-purple-400 font-bold">6 ~ 8 个 Worker</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Production Configuration Architecture Box -->
+            <div class="bg-gray-950 p-5 rounded-xl border border-gray-800 space-y-3">
+                <h4 class="text-xs font-bold text-gray-200 uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> 日增 1TB 生产集群部署架构总结
+                </h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center font-mono">
+                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800">
+                        <span class="text-[10px] text-gray-500 block">Worker 节点数</span>
+                        <span class="text-lg font-bold text-emerald-400">8 台</span>
+                    </div>
+                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800">
+                        <span class="text-[10px] text-gray-500 block">Executor 车队总数</span>
+                        <span class="text-lg font-bold text-amber-400">24 辆</span>
+                    </div>
+                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800">
+                        <span class="text-[10px] text-gray-500 block">Shuffle 分区数</span>
+                        <span class="text-lg font-bold text-blue-400">360 分区</span>
+                    </div>
+                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800">
+                        <span class="text-[10px] text-gray-500 block">预计完工耗时</span>
+                        <span class="text-lg font-bold text-purple-400">1.4 小时</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== INTERACTIVE SIZING CALCULATOR (CORE TOOL) ==================== -->
+    <section id="calculator-section" class="glass-panel rounded-2xl p-6 shadow-2xl space-y-6 border border-amber-500/20 glow-orange">
+        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-800 pb-4 gap-3">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold">SMART CONFIGURATOR</span>
+                    <h2 class="text-xl font-black text-white">Spark 车队规模与容量计算器 (Sizing Calculator)</h2>
+                </div>
+                <p class="text-xs text-gray-400 mt-1">输入业务数据指标与服务器规格，自动推导黄金节点比、卡车数与生产级 CLI 命令行</p>
+            </div>
+
+            <button onclick="resetCalculator()" class="text-xs font-mono text-gray-400 hover:text-amber-400 flex items-center gap-1 self-start md:self-auto">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> 恢复默认配置
+            </button>
+        </div>
+
+        <!-- Input Form & Sliders -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Controls Left (7 cols) -->
+            <div class="lg:col-span-7 space-y-5">
+
+                <!-- Data Volume -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-mono">
+                        <label class="text-gray-300 font-bold flex items-center gap-1.5">
+                            <i data-lucide="package" class="w-4 h-4 text-amber-400"></i> 每日待处理增量数据量 (GB):
+                        </label>
+                        <span id="val-data-size" class="text-amber-400 font-bold text-sm">1000 GB (1 TB)</span>
+                    </div>
+                    <input type="range" id="input-data-size" min="100" max="10000" step="100" value="1000" oninput="calculateClusterSizing()" class="w-full accent-amber-500 h-2 bg-gray-800 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- SLA Deadline -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-mono">
+                        <label class="text-gray-300 font-bold flex items-center gap-1.5">
+                            <i data-lucide="clock" class="w-4 h-4 text-cyan-400"></i> SLA 要求的完成时间死线 (Hours):
+                        </label>
+                        <span id="val-sla-hours" class="text-cyan-400 font-bold text-sm">2.0 小时</span>
+                    </div>
+                    <input type="range" id="input-sla-hours" min="0.5" max="12" step="0.5" value="2" oninput="calculateClusterSizing()" class="w-full accent-cyan-500 h-2 bg-gray-800 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Task Complexity -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-mono">
+                        <label class="text-gray-300 font-bold flex items-center gap-1.5">
+                            <i data-lucide="cpu" class="w-4 h-4 text-purple-400"></i> 作业复杂度 (Complexity Multiplier):
+                        </label>
+                        <span id="val-complexity" class="text-purple-400 font-bold text-sm">1.8x (含 JOIN 与聚合)</span>
+                    </div>
+                    <select id="input-complexity" onchange="calculateClusterSizing()" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-amber-500 font-mono">
+                        <option value="1.0">1.0x - 极轻量 (仅 Filter / Map 纯搬运)</option>
+                        <option value="1.8" selected>1.8x - 中等复杂 (常规 ETL / Join / GroupBy)</option>
+                        <option value="3.0">3.0x - 重度计算 (多表倾斜 Join / 窗函数 / ML)</option>
+                    </select>
+                </div>
+
+                <!-- Server Specs Selection -->
+                <div class="pt-2 border-t border-gray-800/80 space-y-3">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block font-mono">物理 Worker 节点服务器规格</span>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[11px] text-gray-400 block font-mono mb-1">单节点 vCPU 核数:</label>
+                            <select id="input-node-cores" onchange="calculateClusterSizing()" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 font-mono">
+                                <option value="8">8 vCPU</option>
+                                <option value="16" selected>16 vCPU (推荐黄金规格)</option>
+                                <option value="32">32 vCPU</option>
+                                <option value="64">64 vCPU</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] text-gray-400 block font-mono mb-1">单节点 物理 RAM (GB):</label>
+                            <select id="input-node-ram" onchange="calculateClusterSizing()" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 font-mono">
+                                <option value="32">32 GB</option>
+                                <option value="64" selected>64 GB (1:4 黄金比)</option>
+                                <option value="128">128 GB</option>
+                                <option value="256">256 GB</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Calculated Output Right (5 cols) -->
+            <div class="lg:col-span-5 bg-gray-950 p-5 rounded-xl border border-gray-800/80 flex flex-col justify-between space-y-4 font-mono">
+                <div>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block mb-3 border-b border-gray-800 pb-2">
+              📊 自动推导配置参数 (Recommended Spec)
+            </span>
+
+                    <div class="space-y-3 text-xs">
+                        <div class="flex justify-between items-center bg-gray-900 p-2.5 rounded-lg border border-gray-800">
+                            <span class="text-gray-400">推荐 Worker 节点数:</span>
+                            <span id="out-nodes" class="text-lg font-bold text-emerald-400">8 台</span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-gray-900 p-2.5 rounded-lg border border-gray-800">
+                            <span class="text-gray-400">推荐 Executor 卡车总数:</span>
+                            <span id="out-executors" class="text-lg font-bold text-amber-400">24 辆</span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-gray-900 p-2.5 rounded-lg border border-gray-800">
+                            <span class="text-gray-400">单车搬运工 (--executor-cores):</span>
+                            <span id="out-cores" class="text-sm font-bold text-blue-400">5 Cores</span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-gray-900 p-2.5 rounded-lg border border-gray-800">
+                            <span class="text-gray-400">单车车厢内存 (--executor-memory):</span>
+                            <span id="out-memory" class="text-sm font-bold text-purple-400">18 GB</span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-gray-900 p-2.5 rounded-lg border border-gray-800">
+                            <span class="text-gray-400">推荐 Shuffle 分区数:</span>
+                            <span id="out-shuffle" class="text-sm font-bold text-pink-400">360</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculated Throughput meter -->
+                <div class="bg-gray-900/90 p-3 rounded-lg border border-gray-800 text-[11px] space-y-1">
+                    <div class="flex justify-between text-gray-400">
+                        <span>集群整体算力吞吐:</span>
+                        <span id="out-throughput-rate" class="text-emerald-400 font-bold">714 GB / Hour</span>
+                    </div>
+                    <div class="w-full bg-gray-950 rounded-full h-1.5 overflow-hidden">
+                        <div id="out-progress-bar" class="bg-emerald-500 h-full w-3/4"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Generated spark-submit production CLI command -->
+        <div class="pt-4 border-t border-gray-800/80 space-y-2">
+            <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-gray-300 font-mono flex items-center gap-1.5">
+            <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i> 生产级 spark-submit 提交命令 (CLI)
+          </span>
+                <button onclick="copyCliCommand()" class="text-xs text-amber-400 hover:text-amber-300 font-mono flex items-center gap-1 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/20">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> 一键复制命令行
+                </button>
+            </div>
+
+            <pre id="cli-output" class="bg-gray-950 p-4 rounded-xl border border-gray-800 text-xs text-emerald-400 font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed">
+spark-submit \
+  --master yarn \
+  --deploy-mode cluster \
+  --num-executors 24 \
+  --executor-cores 5 \
+  --executor-memory 18g \
+  --driver-memory 8g \
+  --conf spark.memory.offHeap.enabled=true \
+  --conf spark.memory.offHeap.size=2g \
+  --conf spark.sql.shuffle.partitions=360 \
+  --class com.logistics.spark.FeynmanJob \
+  hdfs:///apps/spark-jobs/feynman-job.jar
+        </pre>
+        </div>
+
+    </section>
+
+</main>
+
+<!-- Toast Notification System -->
+<div id="toast" class="fixed bottom-5 right-5 bg-amber-500 text-gray-950 px-4 py-2.5 rounded-xl font-mono text-xs font-bold shadow-2xl transition-all duration-300 opacity-0 transform translate-y-4 pointer-events-none z-50 flex items-center gap-2">
+    <i data-lucide="check-circle" class="w-4 h-4"></i>
+    <span id="toast-msg">已复制命令行到剪贴板！</span>
+</div>
+
+<!-- Footer -->
+<footer class="border-t border-gray-800/80 bg-gray-950 mt-12 py-6 text-center text-xs text-gray-500 font-mono">
+    Spark Cluster Sizing & Feynman Model Viewer • Designed for Big Data Architects
+</footer>
+
+<!-- JavaScript Application Logic -->
+<script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // ================= GLOBAL TAB SWITCHING =================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('active');
+        el.classList.add('text-gray-400');
+      });
+
+      document.getElementById(tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      activeBtn.classList.add('active');
+      activeBtn.classList.remove('text-gray-400');
+
+      if (tabId === 'tab-overview') {
+        initCanvasSimulation();
+      }
+    }
+
+    function scrollToCalculator() {
+      document.getElementById('calculator-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ================= BLUEPRINT INTERACTIVE DICTIONARY =================
+    const bpComponentData = {
+      dispatcher: {
+        tag: "Driver Node",
+        tagClass: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        title: "👮‍♂️ 调度总指挥部 (Logistics Dispatcher / Driver Node)",
+        params: "spark.driver.memory / spark.driver.cores",
+        desc: "调度总指挥部是 Spark 作业的大脑（Driver）。它不直接参与具体搬运，而是将用户提交的程序解析为 DAG 路线图、切割为 Stages，并将上万个分拣 Task 打包发给远程卡车。如果执行 collect() 会将所有货物拉回指挥部，极易爆仓崩溃。",
+        p1: "spark.driver.memory = 4g ~ 32g",
+        p2: "collect() 收集过多包裹导致指挥部爆仓 OOM",
+        p3: "指挥官全局掌控地图即可，绝不能把全仓库货物搬进办公室。"
+      },
+      racks: {
+        tag: "Storage Layer",
+        tagClass: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+        title: "🏭 自动化货架仓库 (HDFS / S3 / Delta Lake)",
+        params: "spark.sql.files.maxPartitionBytes",
+        desc: "海量包裹的初始持久化存放地。数据在仓库里被拆分为固定大小的 Block 切片（如 128MB），对应 Spark 中的 Partition。若小切片文件太多，会导致指挥部发单发到瘫痪（Small File Problem）。",
+        p1: "maxPartitionBytes = 128MB",
+        p2: "数万个 KKB 小文件导致调度器卡死",
+        p3: "规范打包标准箱，卡车装卸才最顺手。"
+      },
+      executor: {
+        tag: "Executor Container",
+        tagClass: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+        title: "🚚 标准分拣卡车车队 (Executor Containers)",
+        params: "spark.executor.instances / spark.executor.memory / spark.executor.cores",
+        desc: "单个 Worker Node 通常并行承载多个 Executor。每辆车各自拥有计算区与缓存区，并配置独立堆外内存，Driver 会把 Task 分散到多辆车并行处理。",
+        p1: "spark.executor.cores = 5; 每节点常见 2~4 Executors",
+        p2: "GC 垃圾回收停顿导致卡车超时抛锚",
+        p3: "优先多辆中型车并行，而不是一辆超大车，能兼顾吞吐与稳定性。"
+      },
+      shuffle: {
+        tag: "Shuffle Service",
+        tagClass: "bg-pink-500/20 text-pink-400 border-pink-500/30",
+        title: "🛣️ 跨厂区调拨高速公路 (Shuffle Network)",
+        params: "spark.sql.shuffle.partitions / spark.reducer.maxSizeInFlight",
+        desc: "当执行 GroupBy 或 Join 时，货物需要按照新 Key 重新分类分配给不同的卡车。这会触发高密度的网络传输与磁盘溢写 (Disk Spill)，是整个物流系统中最烧油耗（网络带宽）的环节。",
+        p1: "spark.sql.shuffle.partitions = 200~2000",
+        p2: "数据倾斜 (Data Skew) 导致某一辆卡车爆胎",
+        p3: "跨厂调拨最耗油，尽量在本地就地分拣（Map-Side Combine）。"
+      }
+    };
+
+    function selectComponent(key) {
+      const data = bpComponentData[key];
+      if (!data) return;
+
+      document.getElementById('bp-status-pill').innerText = `已选中: ${data.title.split(' ')[1]}`;
+      document.getElementById('bp-card-tag').innerText = data.tag;
+      document.getElementById('bp-card-title').innerText = data.title;
+      document.getElementById('bp-card-params').innerText = data.params;
+      document.getElementById('bp-card-desc').innerText = data.desc;
+      document.getElementById('bp-card-p1').innerText = data.p1;
+      document.getElementById('bp-card-p2').innerText = data.p2;
+      document.getElementById('bp-card-p3').innerText = data.p3;
+    }
+
+    // ================= CALCULATOR & CLOUD SIZING LOGIC =================
+    function calculateClusterSizing() {
+      const dataGB = parseFloat(document.getElementById('input-data-size').value);
+      const slaHours = parseFloat(document.getElementById('input-sla-hours').value);
+      const complexity = parseFloat(document.getElementById('input-complexity').value);
+      const nodeCores = parseInt(document.getElementById('input-node-cores').value);
+      const nodeRam = parseInt(document.getElementById('input-node-ram').value);
+
+      // UI Text updates
+      document.getElementById('val-data-size').innerText = `${dataGB} GB (${(dataGB/1024).toFixed(1)} TB)`;
+      document.getElementById('val-sla-hours').innerText = `${slaHours} 小时`;
+
+      const compLabels = { "1.0": "1.0x (纯 Filter/Map 极快)", "1.8": "1.8x (常规 ETL / Join / GroupBy)", "3.0": "3.0x (重度计算 / 倾斜 / 窗函数)" };
+      document.getElementById('val-complexity').innerText = compLabels[document.getElementById('input-complexity').value];
+
+      // Calculation Formula
+      // 1TB raw data requires ~ 150 Core-Hours for 1.0x complexity
+      const totalCoreHoursNeeded = (dataGB / 1000) * 150 * complexity;
+      const requiredConcurrentCores = Math.ceil(totalCoreHoursNeeded / slaHours);
+
+      // Standard Executor Cores = 5
+      const execCores = 5;
+      let totalExecutors = Math.ceil(requiredConcurrentCores / execCores);
+      if (totalExecutors < 2) totalExecutors = 2; // Min limit
+
+      // Compute Executors per Worker Node
+      // Leave 1 core & 4GB RAM for NodeManager & OS
+      const usableCoresPerNode = nodeCores - 1;
+      const usableRamPerNode = nodeRam - 4;
+
+      const executorsPerNode = Math.max(1, Math.floor(usableCoresPerNode / execCores));
+      const ramPerExecutor = Math.floor(usableRamPerNode / executorsPerNode);
+
+      // Overhead calculation (10%)
+      const heapMemory = Math.floor(ramPerExecutor * 0.9);
+      const overheadMemory = ramPerExecutor - heapMemory;
+
+      // Required Worker Nodes Count
+      const totalWorkerNodes = Math.ceil(totalExecutors / executorsPerNode);
+
+      // Shuffle partitions recommendation: 2~3x total cores
+      const totalCoresActual = totalExecutors * execCores;
+      const shufflePartitions = totalCoresActual * 3;
+
+      // Throughput
+      const throughputRate = Math.round(dataGB / slaHours);
+
+      // Update Result UI
+      document.getElementById('out-nodes').innerText = `${totalWorkerNodes} 台 (${nodeCores}核/${nodeRam}G)`;
+      document.getElementById('out-executors').innerText = `${totalExecutors} 辆卡车`;
+      document.getElementById('out-cores').innerText = `${execCores} Cores/车`;
+      document.getElementById('out-memory').innerText = `${heapMemory} GB ( Overhead: ${overheadMemory}G )`;
+      document.getElementById('out-shuffle').innerText = `${shufflePartitions} 分区`;
+      document.getElementById('out-throughput-rate').innerText = `${throughputRate} GB / 小时`;
+
+      // Progress bar fill
+      const progressPercent = Math.min(100, Math.max(15, (throughputRate / 2000) * 100));
+      document.getElementById('out-progress-bar').style.width = `${progressPercent}%`;
+
+      // Update CLI Output Code
+      const driverMem = totalWorkerNodes > 10 ? "16g" : "8g";
+      const cliStr = `spark-submit \\
+  --master yarn \\
+  --deploy-mode cluster \\
+  --num-executors ${totalExecutors} \\
+  --executor-cores ${execCores} \\
+  --executor-memory ${heapMemory}g \\
+  --driver-memory ${driverMem} \\
+  --conf spark.memory.offHeap.enabled=true \\
+  --conf spark.memory.offHeap.size=${overheadMemory}g \\
+  --conf spark.sql.shuffle.partitions=${shufflePartitions} \\
+  --class com.logistics.spark.FeynmanJob \\
+  hdfs:///apps/spark-jobs/feynman-job.jar`;
+
+      document.getElementById('cli-output').innerText = cliStr;
+    }
+
+    function resetCalculator() {
+      document.getElementById('input-data-size').value = 1000;
+      document.getElementById('input-sla-hours').value = 2;
+      document.getElementById('input-complexity').value = '1.8';
+      document.getElementById('input-node-cores').value = '16';
+      document.getElementById('input-node-ram').value = '64';
+      calculateClusterSizing();
+    }
+
+    function load1TBPresetAndScroll() {
+      switchTab('tab-overview');
+      resetCalculator();
+      scrollToCalculator();
+      showToast("已载入 1TB 生产集群基准配置参数！");
+    }
+
+    function copyCliCommand() {
+      const text = document.getElementById('cli-output').innerText;
+      // Clipboard copy fallback for iframe environment
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      showToast("spark-submit 命令行已复制到剪贴板！");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+      }, 2500);
+    }
+
+    // Filter dictionary items
+    function filterDict() {
+      const q = document.getElementById('dict-search').value.toLowerCase();
+      document.querySelectorAll('.dict-item').forEach(item => {
+        const txt = item.innerText.toLowerCase();
+        item.style.display = txt.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    // ================= CANVAS LOGISTICS SIMULATION =================
+    let animId = null;
+    let isRunning = true;
+    let trucks = [];
+    let packages = [];
+
+    function initCanvasSimulation() {
+      const canvas = document.getElementById('logisticsCanvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+
+      // Spawn Trucks
+      trucks = [];
+      const numTrucks = 6;
+      for (let i = 0; i < numTrucks; i++) {
+        trucks.push({
+          x: 180 + i * (canvas.width - 240) / numTrucks,
+          y: 80 + (i % 2) * 90,
+          speed: 1 + Math.random() * 1.5,
+          cargo: Math.floor(Math.random() * 100),
+          state: 'LOADING'
+        });
+      }
+
+      // Spawn Packages
+      packages = [];
+      for (let i = 0; i < 20; i++) {
+        packages.push({
+          x: 20 + Math.random() * 80,
+          y: 40 + Math.random() * (canvas.height - 80),
+          speed: 2 + Math.random() * 2,
+          targetTruck: Math.floor(Math.random() * numTrucks)
+        });
+      }
+
+      function draw() {
+        if (!isRunning) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw Warehouse Loading Bay (Left)
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(10, 20, 100, canvas.height - 40);
+        ctx.strokeStyle = '#3b82f6';
+        ctx.strokeRect(10, 20, 100, canvas.height - 40);
+        ctx.fillStyle = '#60a5fa';
+        ctx.font = '10px JetBrains Mono';
+        ctx.fillText('HDFS/S3 仓库', 20, 40);
+
+        // Draw Dispatcher Office
+        ctx.fillStyle = '#1e1b4b';
+        ctx.fillRect(canvas.width / 2 - 60, 10, 120, 35);
+        ctx.strokeStyle = '#818cf8';
+        ctx.strokeRect(canvas.width / 2 - 60, 10, 120, 35);
+        ctx.fillStyle = '#c7d2fe';
+        ctx.fillText('👮‍♂️ Driver 调度部', canvas.width / 2 - 45, 32);
+
+        // Draw Trucks
+        trucks.forEach((t, idx) => {
+          ctx.fillStyle = '#065f46';
+          ctx.fillRect(t.x, t.y, 70, 35);
+          ctx.strokeStyle = '#10b981';
+          ctx.strokeRect(t.x, t.y, 70, 35);
+
+          // Cab
+          ctx.fillStyle = '#047857';
+          ctx.fillRect(t.x + 50, t.y + 5, 18, 25);
+
+          // Text
+          ctx.fillStyle = '#a7f3d0';
+          ctx.font = '9px JetBrains Mono';
+          ctx.fillText(`Exe #${idx+1}`, t.x + 5, t.y + 15);
+          ctx.fillText(`5 Cores`, t.x + 5, t.y + 28);
+
+          // Move animation
+          t.x += t.speed;
+          if (t.x > canvas.width - 90) {
+            t.x = 140;
+          }
+        });
+
+        // Draw Packages Flowing
+        packages.forEach(p => {
+          ctx.fillStyle = '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          p.x += p.speed;
+          if (p.x > canvas.width - 30) {
+            p.x = 110;
+            p.y = 40 + Math.random() * (canvas.height - 80);
+          }
+        });
+
+        animId = requestAnimationFrame(draw);
+      }
+
+      if (animId) cancelAnimationFrame(animId);
+      draw();
+    }
+
+    function toggleSimulation() {
+      isRunning = !isRunning;
+      const btn = document.getElementById('sim-play-btn');
+      if (isRunning) {
+        btn.innerHTML = `<i data-lucide="pause" class="w-3.5 h-3.5"></i> 暂停模拟`;
+        initCanvasSimulation();
+      } else {
+        btn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5"></i> 继续模拟`;
+      }
+      lucide.createIcons();
+    }
+
+    function resetSimulation() {
+      initCanvasSimulation();
+    }
+
+    // Handle Window Load and Resizing
+    window.onload = function() {
+      calculateClusterSizing();
+      initCanvasSimulation();
+    };
+
+    window.onresize = function() {
+      initCanvasSimulation();
+    };
+</script>
+</body>
+</html>
