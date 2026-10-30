@@ -105,10 +105,55 @@
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+<body class="min-h-screen flex flex-col md:pl-64 antialiased selection:bg-amber-500 selection:text-black">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Left Sidebar -->
+<aside id="site-sidebar" class="hidden md:flex flex-col w-64 bg-slate-900 border-r border-slate-800 fixed inset-y-0 left-0 z-[60] overflow-hidden">
+    <a href="index.html" title="返回首页" aria-label="返回首页" class="group p-5 border-b border-slate-800 flex items-center space-x-3 hover:bg-slate-800/40 transition-colors">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/20">
+            <i class="fa-solid fa-spa text-lg"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+            <div class="text-base font-bold text-slate-100 tracking-wide leading-tight">个人知识花园</div>
+            <p class="text-xs text-sky-400 font-medium">费曼高效学习法</p>
+        </div>
+        <i class="fa-solid fa-house text-xs text-slate-500"></i>
+    </a>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+        <a href="high_tech_details.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-all">
+            <i class="fa-solid fa-layer-group w-5 text-center text-indigo-400"></i><span>高科技实验园地</span>
+        </a>
+        <div class="pt-4 pb-1 px-3"><p class="text-[10px] font-semibold tracking-wider text-slate-500 uppercase">核心知识主题</p></div>
+        <a href="high_tech_details_nvidia.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-all">
+            <i class="fa-solid fa-microchip w-5 text-center text-emerald-400"></i><span>NVIDIA GPU / CUDA</span>
+        </a>
+        <a href="high_tech_details_spark.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sky-400 bg-sky-500/10 border border-sky-500/20">
+            <i class="fa-solid fa-bolt w-5 text-center text-amber-400"></i><span>Spark 集群规模计算</span>
+        </a>
+    </nav>
+    <div class="p-4 border-t border-slate-800/80 bg-slate-900/50 text-xs text-slate-400 flex items-center space-x-1">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span><span>费曼学习模式</span>
+    </div>
+</aside>
+
+<!-- Top Menu Bar -->
+<div id="site-topbar" class="sticky top-0 z-50 h-12 flex items-center justify-between px-4 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+    <div class="flex items-center gap-1 overflow-x-auto text-xs">
+        <a href="index.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 whitespace-nowrap"><i class="fa-solid fa-house mr-1.5"></i>首页</a>
+        <a href="high_tech_details.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 whitespace-nowrap">高科技实验园地</a>
+        <a href="high_tech_details_nvidia.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 whitespace-nowrap">NVIDIA</a>
+        <a href="high_tech_details_spark.html" class="px-3 py-1.5 rounded-lg bg-sky-500/10 text-sky-300 border border-sky-500/20 whitespace-nowrap">Spark</a>
+    </div>
+    <button type="button" class="md:hidden text-slate-300 hover:text-white p-2" aria-label="打开菜单"
+            onclick="const s=document.getElementById('site-sidebar');s.classList.toggle('hidden');s.classList.toggle('flex');">
+        <i class="fa-solid fa-bars text-lg"></i>
+    </button>
+</div>
 
 <!-- Header Banner -->
-<header class="border-b border-gray-800/80 bg-gray-950/80 sticky top-0 z-50 backdrop-blur-md">
+<header class="border-b border-gray-800/80 bg-gray-950/80 sticky top-12 z-40 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-orange-500/20">
