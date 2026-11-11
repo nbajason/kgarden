@@ -66,14 +66,14 @@
 
     <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 z-40">
         <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-purple-600 flex items-center justify-center text-white">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
                 <i class="fa-solid fa-spa"></i>
             </div>
             <div class="flex-1 min-w-0">
                 <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
                 <p class="text-xs text-amber-400">费曼高效学习法</p>
             </div>
-            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-rose-400"></i>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
         </a>
 
         <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
@@ -81,12 +81,25 @@
                 <i class="fa-solid fa-scroll w-5 text-center"></i>
                 <span>中国文化总览</span>
             </a>
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">思想分支专题</p>
+            <a href="china_kongmeng.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-book w-5 text-center text-red-300"></i>
+                <span>儒家专题</span>
+            </a>
+            <a href="china_laozi.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-leaf w-5 text-center text-emerald-300"></i>
+                <span>道家专题</span>
+            </a>
+            <a href="china_chan.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-spa w-5 text-center text-purple-300"></i>
+                <span>禅宗专题</span>
+            </a>
             <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">实践专题</p>
-            <a href="culture_love.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+            <a href="culture_love.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
                 <i class="fa-solid fa-heart w-5 text-center text-amber-300"></i>
                 <span>爱、责任与家庭</span>
             </a>
-            <a href="culture_love_quiz.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+            <a href="culture_love_quiz.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
                 <i class="fa-solid fa-compass w-5 text-center text-amber-300"></i>
                 <span>关系建造者沙盘</span>
             </a>
@@ -96,9 +109,12 @@
             </a>
         </nav>
 
-        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-rose-500 inline-block"></span>
-            关系心理学专题
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                文化费曼模式
+            </span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
         </div>
     </aside>
 
