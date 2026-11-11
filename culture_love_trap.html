@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吸引力悖论：危险关系的心理学与博弈模拟</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0f19',
+                        cardBg: '#131c2e',
+                        borderCol: '#1e293b',
+                        neonPink: '#f43f5e',
+                        neonPurple: '#a855f7',
+                        neonBlue: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Chart.js for beautiful diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+        .glass-panel {
+            background: rgba(19, 28, 46, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-pink {
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.2);
+        }
+        .glow-purple {
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.2);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row selection:bg-rose-500 selection:text-white">
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-purple-600 flex items-center justify-center text-white">
+                <i class="fa-solid fa-spa"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-rose-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i class="fa-solid fa-scroll w-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">实践专题</p>
+            <a href="culture_love.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i class="fa-solid fa-heart w-5 text-center text-amber-300"></i>
+                <span>爱、责任与家庭</span>
+            </a>
+            <a href="culture_love_quiz.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i class="fa-solid fa-compass w-5 text-center text-amber-300"></i>
+                <span>关系建造者沙盘</span>
+            </a>
+            <a href="culture_love_trap.html" aria-current="page" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-rose-500/15 text-rose-300 border border-rose-500/30">
+                <i class="fa-solid fa-heart-crack w-5 text-center"></i>
+                <span>吸引力悖论</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rose-500 inline-block"></span>
+            关系心理学专题
+        </div>
+    </aside>
+
+    <div class="flex flex-col flex-grow min-w-0">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-borderCol">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <button id="mobile-sidebar-btn" class="md:hidden text-slate-300 hover:text-white p-2" aria-label="打开页面导航" aria-expanded="false">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-purple-600 flex items-center justify-center glow-pink">
+                    <i class="fa-solid fa-heart-crack text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wide bg-gradient-to-r from-rose-400 via-purple-300 to-blue-400 bg-clip-text text-transparent">
+                        吸引力悖论
+                    </h1>
+                    <p class="text-xs text-slate-400">危险关系的心理防御、情感博弈与宿命闭环</p>
+                </div>
+            </div>
+            <nav class="flex space-x-2 sm:space-x-4">
+                <button onclick="switchTab('theory')" id="nav-theory" class="px-4 py-2 rounded-lg text-sm font-medium transition-all bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                    <i class="fa-solid fa-book-open mr-2"></i>原理解析
+                </button>
+                <button onclick="switchTab('game')" id="nav-game" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50">
+                    <i class="fa-solid fa-gamepad mr-2"></i>宿命模拟器
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- PART 1: THEORY & DIAGRAMS -->
+        <div id="section-theory" class="space-y-12">
+            
+            <!-- Hero intro -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    心理学与社会学洞察
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+                    为什么我们总被“危险的特质”致命吸引？
+                </h2>
+                <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
+                    无论是男生追逐叛逆冷酷的“坏女生”，还是女生迷恋不羁浪荡的“坏男生”，表面上是对激情与刺激的渴望，本质上却是一场场深层的童年补偿、自恋投射与心理防御博弈。然而，通过理智边界与清醒觉醒，人完全可以打破宿命。
+                </p>
+            </div>
+
+            <!-- Two Columns Deep Dive -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Topic A: Boys -> Bad Girls -->
+                <div class="glass-panel p-6 sm:p-8 rounded-2xl border-l-4 border-l-rose-500 relative overflow-hidden space-y-6">
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-rose-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="flex items-center space-x-3">
+                        <div class="p-3 bg-rose-500/10 text-rose-400 rounded-xl">
+                            <i class="fa-solid fa-fire text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-rose-400 uppercase tracking-wider">男生的盲点</span>
+                            <h3 class="text-xl font-bold text-white">为什么男生喜欢“坏女生”，最终却走向崩溃或觉醒？</h3>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+                        <p>
+                            <strong>1. 拯救者情结（Savior Complex）与全能自恋：</strong>许多传统、循规蹈矩或缺乏安全感的男生，潜意识里将“桀骜不驯、满身刺”的坏女生视为未被驯服的野兽。他们渴望成为那个“让她浪子回头/改邪归正的唯一真命天子”。
+                        </p>
+                        <p>
+                            <strong>2. 情感刺激与多巴胺失控：</strong>坏女生往往擅长推拉（Push-Pull）、情绪忽冷忽热。这种间歇性强化会彻底激活男生大脑中的奖赏回路，产生类似于赌博上瘾的狂热激情。
+                        </p>
+                        <p class="p-4 rounded-xl bg-rose-950/20 border border-rose-500/20 text-rose-200">
+                            <i class="fa-solid fa-triangle-exclamation mr-2 text-rose-400"></i><strong>破局关键：</strong>如果男生能够及早识别这种情绪操纵，建立坚实的自我边界，就能从“全能自恋”中抽离，实现清醒脱困。反之则会陷入两败俱伤的深渊。
+                        </p>
+                    </div>
+
+                    <!-- Chart A Container -->
+                    <div class="pt-4 border-t border-slate-800">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">图表：男生的情感投入与理智波动对比</h4>
+                        <div class="h-64 relative">
+                            <canvas id="chartBoyBadGirl"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic B: Girls -> Bad Boys -->
+                <div class="glass-panel p-6 sm:p-8 rounded-2xl border-l-4 border-l-purple-500 relative overflow-hidden space-y-6">
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="flex items-center space-x-3">
+                        <div class="p-3 bg-purple-500/10 text-purple-400 rounded-xl">
+                            <i class="fa-solid fa-bolt text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wider">女生的盲点</span>
+                            <h3 class="text-xl font-bold text-white">为什么女生喜欢“坏男生”，最终却走向幻灭或成长？</h3>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+                        <p>
+                            <strong>1. 进化心理学与“暗黑三合一”吸引力：</strong>女性在潜意识中容易被具有自信、掌控力、甚至一丝危险气息的“坏男生”吸引。这种外在表现常被误读为强大的生存能力。
+                        </p>
+                        <p>
+                            <strong>2. “浪子回头”的终极心理迷思：</strong>女生常有一种集体神话：认为他是对全世界冷酷，唯独对她温柔。这种“特权感”极大满足了女性的自尊。
+                        </p>
+                        <p class="p-4 rounded-xl bg-purple-950/20 border border-purple-500/20 text-purple-200">
+                            <i class="fa-solid fa-triangle-exclamation mr-2 text-purple-400"></i><strong>破局关键：</strong>女性的觉醒往往在于看透“浪子无法被母性感化”的客观现实。当断则断时，便能斩断内耗，迎来心理的成熟与独立。
+                        </p>
+                    </div>
+
+                    <!-- Chart B Container -->
+                    <div class="pt-4 border-t border-slate-800">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">图表：女生的心理幻觉与代价演变</h4>
+                        <div class="h-64 relative">
+                            <canvas id="chartGirlBadBoy"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Comparative Summary Diagram Section -->
+            <div class="glass-panel p-6 sm:p-8 rounded-2xl space-y-6">
+                <div class="text-center max-w-2xl mx-auto">
+                    <h3 class="text-2xl font-bold text-white">宿命与破局：双向选择的游戏规则</h3>
+                    <p class="text-slate-400 text-sm mt-1">在接下来的互动模拟中，你的每一个决策将决定你是走向毁灭还是清醒觉醒。</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                    <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold">1</div>
+                        <h4 class="font-bold text-white text-sm">强烈的化学反应</h4>
+                        <p class="text-xs text-slate-400">反差感与神秘感引发多巴胺海啸，瞬间坠入情网。</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">2</div>
+                        <h4 class="font-bold text-white text-sm">关键决策分水岭</h4>
+                        <p class="text-xs text-slate-400">选择盲目顺从（走向消耗）还是坚守边界（走向觉醒）。</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">3</div>
+                        <h4 class="font-bold text-white text-sm">博弈与内耗升级</h4>
+                        <p class="text-xs text-slate-400">推拉与精神剥离考验着双方的理智值与自尊心。</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">4</div>
+                        <h4 class="font-bold text-white text-sm">多维结局导向</h4>
+                        <p class="text-xs text-slate-400">清醒脱困、中度消耗或精神崩溃由你亲手书写。</p>
+                    </div>
+                </div>
+
+                <div class="text-center pt-4">
+                    <button onclick="switchTab('game')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-rose-600 to-purple-600 font-bold text-white shadow-lg hover:opacity-95 transition-all">
+                        <i class="fa-solid fa-gamepad mr-2"></i>亲身体验这种宿命：进入互动模拟器
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PART 2: INTERACTIVE GAME SIMULATOR -->
+        <div id="section-game" class="hidden space-y-8">
+            
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                    沉浸式情感博弈模拟（多结局系统）
+                </span>
+                <h2 class="text-3xl font-extrabold text-white">选择你的宿命视角</h2>
+                <p class="text-slate-400 text-sm">
+                    你的每一次选择都将影响【理智值】、【情感沉迷】与【自尊心】。保持边界感将助你清醒脱困；一味盲目纵容则会走向痛苦崩溃。
+                </p>
+            </div>
+
+            <!-- Role Selection Menu -->
+            <div id="game-role-select" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <!-- Boy Route Card -->
+                <div onclick="startGame('boy')" class="glass-panel p-8 rounded-2xl cursor-pointer hover:border-rose-500 transition-all group space-y-4 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-mars"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-rose-400 transition-colors">男视角：追逐危险“坏女生”</h3>
+                        <p class="text-slate-400 text-sm mt-2">
+                            你是性格温和、追求稳定的优等生。你在派对上遇到了冷艳叛逆、烟视媚行的薇薇（Vivian）。她对你忽冷忽热，你是选择理智抽身还是深陷其中？
+                        </p>
+                    </div>
+                    <div class="pt-4 flex items-center text-rose-400 font-semibold text-sm">
+                        <span>开始男视角模拟</span>
+                        <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Girl Route Card -->
+                <div onclick="startGame('girl')" class="glass-panel p-8 rounded-2xl cursor-pointer hover:border-purple-500 transition-all group space-y-4 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-venus"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">女视角：迷恋不羁“坏男生”</h3>
+                        <p class="text-slate-400 text-sm mt-2">
+                            你是独立聪慧的职场新人。你被桀骜不驯、车技高超且充满神秘感的赛车手杰克（Jack）深深吸引。你是能让他定下来，还是及时止损全身而退？
+                        </p>
+                    </div>
+                    <div class="pt-4 flex items-center text-purple-400 font-semibold text-sm">
+                        <span>开始女视角模拟</span>
+                        <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Game Arena (Hidden initially) -->
+            <div id="game-arena" class="hidden max-w-3xl mx-auto glass-panel p-6 sm:p-8 rounded-2xl space-y-8 relative">
+                
+                <!-- Status Dashboard -->
+                <div class="grid grid-cols-3 gap-4 pb-6 border-b border-slate-800">
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-semibold text-slate-400">
+                            <span>理智值 (Sanity)</span>
+                            <span id="stat-sanity">100%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="bar-sanity" class="h-full bg-blue-500 transition-all duration-500" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-semibold text-slate-400">
+                            <span>情感沉迷 (Obsession)</span>
+                            <span id="stat-obsession">20%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="bar-obsession" class="h-full bg-rose-500 transition-all duration-500" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-semibold text-slate-400">
+                            <span>自尊心 (Self-Esteem)</span>
+                            <span id="stat-esteem">100%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="bar-esteem" class="h-full bg-emerald-500 transition-all duration-500" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Chapter Display -->
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span id="game-chapter-tag" class="px-3 py-1 rounded-md text-xs font-bold bg-rose-500/10 text-rose-400">
+                            第 1 幕：致命的初遇
+                        </span>
+                        <span id="game-progress" class="text-xs text-slate-400 font-mono">阶段 1 / 3</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 id="game-title" class="text-xl sm:text-2xl font-bold text-white">
+                            加载中...
+                        </h3>
+                        <p id="game-desc" class="text-slate-300 text-base leading-relaxed">
+                            加载中...
+                        </p>
+                    </div>
+
+                    <!-- Notification Feedback Toast -->
+                    <div id="game-feedback" class="hidden p-4 rounded-xl bg-slate-900/80 border border-slate-700 text-sm text-slate-200 transition-all">
+                        提示内容
+                    </div>
+
+                    <!-- Choices Container -->
+                    <div id="game-choices" class="space-y-3 pt-4">
+                        <!-- Dynamically inserted choice buttons -->
+                    </div>
+                </div>
+
+                <!-- Game Control Bar -->
+                <div class="flex justify-between items-center pt-4 border-t border-slate-800 text-xs text-slate-400">
+                    <button onclick="resetGameSelection()" class="hover:text-white transition-colors flex items-center">
+                        <i class="fa-solid fa-rotate-left mr-1.5"></i>返回角色选择
+                    </button>
+                    <span>吸引力悖论模拟器 v2.0 (多结局版)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-borderCol py-6 mt-12 text-center text-xs text-slate-500">
+        <p>吸引力悖论与复杂关系心理学研究成果展示 &copy; 2026. 保持理智，远离情绪内耗。</p>
+    </footer>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            const theorySection = document.getElementById('section-theory');
+            const gameSection = document.getElementById('section-game');
+            const navTheory = document.getElementById('nav-theory');
+            const navGame = document.getElementById('nav-game');
+
+            if (tabId === 'theory') {
+                theorySection.classList.remove('hidden');
+                gameSection.classList.add('hidden');
+                navTheory.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-rose-500/20 text-rose-400 border border-rose-500/30";
+                navGame.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50";
+            } else {
+                theorySection.classList.add('hidden');
+                gameSection.classList.remove('hidden');
+                navGame.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all bg-purple-500/20 text-purple-400 border border-purple-500/30";
+                navTheory.className = "px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50";
+            }
+        }
+
+        // Initialize Chart.js Diagrams
+        window.addEventListener('DOMContentLoaded', () => {
+            const mobileSidebarBtn = document.getElementById('mobile-sidebar-btn');
+            const sidebar = document.getElementById('sidebar');
+            mobileSidebarBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+                mobileSidebarBtn.setAttribute('aria-expanded', String(!sidebar.classList.contains('hidden')));
+            });
+
+            // Chart A: Boy & Bad Girl
+            const ctxBoy = document.getElementById('chartBoyBadGirl').getContext('2d');
+            new Chart(ctxBoy, {
+                type: 'line',
+                data: {
+                    labels: ['初识(反差吸引)', '博弈期(推拉对抗)', '决断期(边界防守)', '终局(觉醒或崩溃)'],
+                    datasets: [
+                        {
+                            label: '情感沉迷度',
+                            data: [30, 85, 45, 20],
+                            borderColor: '#f43f5e',
+                            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: '理智与自尊',
+                            data: [90, 50, 75, 95],
+                            borderColor: '#3b82f6',
+                            borderDash: [5, 5],
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 11 } } }
+                    },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Chart B: Girl & Bad Boy
+            const ctxGirl = document.getElementById('chartGirlBadBoy').getContext('2d');
+            new Chart(ctxGirl, {
+                type: 'line',
+                data: {
+                    labels: ['初识(坏男孩迷魅)', '博弈期(特权幻觉)', '决断期(冷暴力对抗)', '终局(清醒或内耗)'],
+                    datasets: [
+                        {
+                            label: '情感付出度',
+                            data: [20, 90, 55, 25],
+                            borderColor: '#a855f7',
+                            backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: '安全感与自我价值',
+                            data: [85, 45, 70, 90],
+                            borderColor: '#10b981',
+                            borderDash: [5, 5],
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 11 } } }
+                    },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                    }
+                }
+            });
+        });
+
+        // ==================== INTERACTIVE MULTI-ENDING GAME ENGINE ====================
+        let gameState = {
+            role: null, // 'boy' or 'girl'
+            step: 0,
+            sanity: 100,
+            obsession: 20,
+            esteem: 100,
+            choicesHistory: [] // To determine ending dynamically
+        };
+
+        const gameScripts = {
+            boy: [
+                {
+                    chapter: "第 1 幕：深夜酒吧的电光石火",
+                    title: "你遇到了冷艳叛逆的薇薇",
+                    desc: "在朋友的聚会上，薇薇坐在角落抽着电子烟，眼神冷漠而高傲。周围人都说她不好惹、私生活混乱。但她对你偶尔露出的一个坏笑，让你心跳骤然加速。",
+                    choices: [
+                        {
+                            text: "主动上前搭讪，觉得她是需要被特别对待的灵魂（沉迷+25，理智-10）",
+                            type: "risk",
+                            effect: { sanity: -10, obsession: 25, esteem: 0 },
+                            feedback: "你被神秘感吞噬，主动出击。她冷淡的回应激起了你强烈的征服欲与拯救者情结。"
+                        },
+                        {
+                            text: "保持安全距离，欣赏她的个性但不盲目介入（理智+10，沉迷-10）",
+                            type: "safe",
+                            effect: { sanity: 10, obsession: -10, esteem: 5 },
+                            feedback: "你克制住了荷尔蒙冲动，保持了健康的边界感。你发现她虽迷人，但并不适合深入生活。"
+                        }
+                    ]
+                },
+                {
+                    chapter: "第 2 幕：情绪过山车与博弈分水岭",
+                    title: "她开始向你倾诉她的“悲惨过去”",
+                    desc: "交往几周后，薇薇经常半夜喝醉打电话让你去接她。她会对你发脾气、失联几天，然后在你心灰意冷时又发来一句“只有你懂我”。",
+                    choices: [
+                        {
+                            text: "深信自己是她的救赎，无条件包容她的一切任性（沉迷+35，理智-30，自尊-25）",
+                            type: "risk",
+                            effect: { sanity: -30, obsession: 35, esteem: -25 },
+                            feedback: "全能自恋全面爆发！你把她的恶劣脾气归咎于受过伤，发誓要做她唯一的避风港。"
+                        },
+                        {
+                            text: "划定底线：关心可以，但不能接受无故失联与情绪虐待（理智+20，沉迷-15，自尊+15）",
+                            type: "safe",
+                            effect: { sanity: 20, obsession: -15, esteem: 15 },
+                            feedback: "你果断亮明底线。薇薇虽然略显错愕，但对你产生了一丝真正的尊重，关系趋于平等。"
+                        }
+                    ]
+                },
+                {
+                    chapter: "第 3 幕：深夜暧昧与最终审判",
+                    title: "当边界遭遇现实的考验",
+                    desc: "你发现她一边享受你的照顾，一边与其他异性保持模糊边界。面对你的质问，她反讽道：“我们又没结婚，你凭什么管我？”",
+                    choices: [
+                        {
+                            text: "卑微妥协，反思自己是不是哪里做得不够好（沉迷+20，理智-40，自尊-50）",
+                            type: "risk",
+                            effect: { sanity: -40, obsession: 20, esteem: -50 },
+                            feedback: "你的自尊彻底归零，陷入无休止的自我怀疑与精神内耗中。"
+                        },
+                        {
+                            text: "果断斩断关系：道不同不相为谋，及时止损（理智+30，沉迷-30，自尊+30）",
+                            type: "safe",
+                            effect: { sanity: 30, obsession: -30, esteem: 30 },
+                            feedback: "你看清了“坏女孩”不可预测的本质，决绝离开，找回了属于自己的尊严。"
+                        }
+                    ]
+                }
+            ],
+            girl: [
+                {
+                    chapter: "第 1 幕：机车轰鸣与危险迷恋",
+                    title: "你遇见了桀骜不驯的杰克",
+                    desc: "杰克是车队的核心，眼神里透着对规则的蔑视与玩世不恭。他带你坐上了深夜飙车的后座。风声呼啸中，你感到前所未有的心跳加速。",
+                    choices: [
+                        {
+                            text: "彻底沦陷在他危险的迷人气质中，觉得他与众不同（沉迷+25，理智-10）",
+                            type: "risk",
+                            effect: { sanity: -10, obsession: 25, esteem: 0 },
+                            feedback: "暗黑特质的吸引力极其强大。你被他身上那种“坏坏的自由感”迷得神魂颠倒。"
+                        },
+                        {
+                            text: "保持理性清醒：享受一时的刺激，但绝不深陷（理智+10, 沉迷-10）",
+                            type: "safe",
+                            effect: { sanity: 10, obsession: -10, esteem: 5 },
+                            feedback: "你清醒地分得清刺激与长期伴侣的区别，没有让自己过早投入过多的情感筹码。"
+                        }
+                    ]
+                },
+                {
+                    chapter: "第 2 幕：特权幻觉与母性感化",
+                    title: "“他虽然对别人冷酷，但对我很好”",
+                    desc: "杰克绯闻不断，但对你说过：“那些女人不过是玩玩，只有你能看穿我的心。”这句话极大满足了你的特权感。",
+                    choices: [
+                        {
+                            text: "坚信自己是能改变浪子的唯一真命天女，无私付出（沉迷+35，理智-30，自尊-25）",
+                            type: "risk",
+                            effect: { sanity: -30, obsession: 35, esteem: -25 },
+                            feedback: "你深陷拯救者迷思，把他的利己主义脑补为“不擅长表达的深情”。"
+                        },
+                        {
+                            text: "不吃甜言蜜语这套，要求他在公开场合保持尊重与专一边界（理智+20，沉迷-15，自尊+15）",
+                            type: "safe",
+                            effect: { sanity: 20, obsession: -15, esteem: 15 },
+                            feedback: "你用高自尊击碎了他的套路。杰克发现你不好掌控，反而收敛了轻浮的态度。"
+                        }
+                    ]
+                },
+                {
+                    chapter: "第 3 幕：冷暴力与清醒觉醒",
+                    title: "热恋褪去后的精神剥离",
+                    desc: "热恋期一过，杰克的冷酷面具摘下。他经常无故失联，并在聚会上和别人暧昧。质问时他说：“是你自己要贴上来的。”",
+                    choices: [
+                        {
+                            text: "陷入极度焦虑与自责，天天以泪洗面，卑微挽留（沉迷+20，理智-40，自尊-50）",
+                            type: "risk",
+                            effect: { sanity: -40, obsession: 20, esteem: -50 },
+                            feedback: "你彻底沦为这段有害关系的受害者，自尊与理智遭到毁灭性打击。"
+                        },
+                        {
+                            text: "感到恶心与清醒：直接拉黑删除，回归精彩的单身生活（理智+30，沉迷-30，自尊+30）",
+                            type: "safe",
+                            effect: { sanity: 30, obsession: -30, esteem: 30 },
+                            feedback: "剧烈的刺痛让你瞬间顿悟。你完美诠释了什么是高质量的“断舍离”！"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        function startGame(role) {
+            gameState.role = role;
+            gameState.step = 0;
+            gameState.sanity = 100;
+            gameState.obsession = 20;
+            gameState.esteem = 100;
+            gameState.choicesHistory = [];
+
+            document.getElementById('game-role-select').classList.add('hidden');
+            document.getElementById('game-arena').classList.remove('hidden');
+            renderGameStep();
+        }
+
+        function resetGameSelection() {
+            document.getElementById('game-arena').classList.add('hidden');
+            document.getElementById('game-role-select').classList.remove('hidden');
+            document.getElementById('game-feedback').classList.add('hidden');
+        }
+
+        function renderGameStep() {
+            const script = gameScripts[gameState.role];
+            
+            // Check if game is completed
+            if (gameState.step >= script.length) {
+                renderEnding();
+                return;
+            }
+
+            const currentData = script[gameState.step];
+
+            // Update stats UI
+            document.getElementById('stat-sanity').innerText = gameState.sanity + '%';
+            document.getElementById('bar-sanity').style.width = gameState.sanity + '%';
+            
+            document.getElementById('stat-obsession').innerText = gameState.obsession + '%';
+            document.getElementById('bar-obsession').style.width = gameState.obsession + '%';
+
+            document.getElementById('stat-esteem').innerText = gameState.esteem + '%';
+            document.getElementById('bar-esteem').style.width = gameState.esteem + '%';
+
+            // Update text content
+            document.getElementById('game-chapter-tag').innerText = currentData.chapter;
+            document.getElementById('game-progress').innerText = `阶段 ${gameState.step + 1} / ${script.length}`;
+            document.getElementById('game-title').innerText = currentData.title;
+            document.getElementById('game-desc').innerText = currentData.desc;
+
+            const feedbackEl = document.getElementById('game-feedback');
+            feedbackEl.classList.add('hidden');
+
+            const choicesContainer = document.getElementById('game-choices');
+            choicesContainer.innerHTML = '';
+
+            currentData.choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-rose-500/50 hover:bg-slate-800/80 transition-all text-sm text-slate-200 flex items-start space-x-3 group";
+                btn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full bg-slate-800 text-slate-400 group-hover:bg-rose-500 group-hover:text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 transition-colors">${index + 1}</span>
+                    <span class="flex-grow">${choice.text}</span>
+                `;
+                btn.onclick = () => handleChoice(choice);
+                choicesContainer.appendChild(btn);
+            });
+        }
+
+        function handleChoice(choice) {
+            // Record choice type
+            gameState.choicesHistory.push(choice.type);
+
+            // Apply effects with clamping
+            gameState.sanity = Math.max(0, Math.min(100, gameState.sanity + choice.effect.sanity));
+            gameState.obsession = Math.max(0, Math.min(100, gameState.obsession + choice.effect.obsession));
+            gameState.esteem = Math.max(0, Math.min(100, gameState.esteem + choice.effect.esteem));
+
+            // Show feedback toast
+            const feedbackEl = document.getElementById('game-feedback');
+            feedbackEl.innerText = choice.feedback;
+            feedbackEl.classList.remove('hidden');
+
+            // Advance step after short pause
+            setTimeout(() => {
+                gameState.step++;
+                renderGameStep();
+            }, 1800);
+        }
+
+        function renderEnding() {
+            // Count safe choices vs risk choices
+            const safeCount = gameState.choicesHistory.filter(t => t === 'safe').length;
+            
+            let endingTitle = "";
+            let endingDesc = "";
+            let endingBadgeColor = "";
+            let endingIcon = "";
+
+            if (safeCount >= 2) {
+                // Success / Awakening Ending
+                endingTitle = "【结局：清醒觉醒与优雅脱困】（成功破局）";
+                endingDesc = "恭喜你！在面对危险的吸引力时，你展现出了极高的情感成熟度与自我边界感。你没有落入“拯救者情结”的陷阱，看清了对方防御机制的本质。你及时止损，不仅保全了自尊，更迎来了个人心智的巨大成长。";
+                endingBadgeColor = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+                endingIcon = "fa-shield-heart text-emerald-400";
+            } else if (safeCount === 1) {
+                // Moderate Consumption Ending
+                endingTitle = "【结局：疲惫看透与中度内耗】（平庸结局）";
+                endingDesc = "在这段关系中，你经历了一番痛苦的拉扯与摇摆。虽然你最终没有彻底崩溃，但也付出了不少情绪代价与时间成本。你开始明白：有些人的“坏”不是靠爱能洗白的，保持清醒比盲目付出更重要。";
+                endingBadgeColor = "bg-blue-500/20 text-blue-400 border-blue-500/30";
+                endingIcon = "fa-scale-balanced text-blue-400";
+            } else {
+                // Total Failure / Breakdown Ending
+                endingTitle = "【结局：精神崩溃与满地鸡毛】（宿命毁灭）";
+                endingDesc = "正如心理学预言：盲目的拯救者情结与不断妥协，让你彻底陷入了精神内耗与情感虐待的泥潭。自尊心跌入谷底，理智被消磨殆尽。直到对方彻底抽离，你才在一地鸡毛中痛苦醒悟。";
+                endingBadgeColor = "bg-rose-500/20 text-rose-400 border-rose-500/30";
+                endingIcon = "fa-heart-crack text-rose-400";
+            }
+
+            // Render on UI
+            document.getElementById('game-chapter-tag').innerText = "模拟完成";
+            document.getElementById('game-progress').innerText = "游戏结束";
+            document.getElementById('game-title').innerText = "宿命终局报告";
+            document.getElementById('game-desc').innerText = "根据你的全程决策，系统为你生成了以下情感心理学判定：";
+
+            const feedbackEl = document.getElementById('game-feedback');
+            feedbackEl.classList.add('hidden');
+
+            const choicesContainer = document.getElementById('game-choices');
+            choicesContainer.innerHTML = `
+                <div class="p-6 rounded-xl bg-slate-900/90 border border-slate-700 text-center space-y-4">
+                    <div class="w-14 h-14 mx-auto rounded-full ${endingBadgeColor} border flex items-center justify-center text-2xl">
+                        <i class="fa-solid ${endingIcon}"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white">${endingTitle}</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed text-left sm:text-center px-2">
+                        ${endingDesc}
+                    </p>
+                    <div class="pt-2 flex flex-col sm:flex-row justify-center gap-3">
+                        <button onclick="startGame('${gameState.role}')" class="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-white text-sm transition-all border border-slate-700">
+                            重新挑战此视角
+                        </button>
+                        <button onclick="resetGameSelection()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-purple-600 font-bold text-white text-sm hover:opacity-95 transition-all shadow-lg">
+                            切换其他角色视角
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

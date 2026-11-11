@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱、责任与家庭：关系建造者</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Confetti for Victory -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#0f172a',
+                            950: '#070c18',
+                        },
+                        amberGold: {
+                            500: '#d97706',
+                            600: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', 'Noto Serif SC', 'serif'],
+                        sans: ['Inter', 'system-ui', 'PingFang SC', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-gold {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-navy-950 text-slate-100 font-sans antialiased custom-scrollbar min-h-screen flex flex-col md:flex-row">
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-navy-900 border-r border-amber-500/20 fixed md:relative inset-y-0 left-0 z-40">
+        <a href="index.html" class="group p-5 border-b border-amber-500/20 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                <i data-lucide="flower-2" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i data-lucide="scroll" class="w-5 h-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">实践专题</p>
+            <a href="culture_love.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i data-lucide="heart" class="w-5 h-5 text-center text-rose-400"></i>
+                <span>爱、责任与家庭</span>
+            </a>
+            <a href="culture_love_quiz.html" aria-current="page" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                <i data-lucide="compass" class="w-5 h-5 text-center"></i>
+                <span>关系建造者沙盘</span>
+            </a>
+            <a href="culture_love_trap.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i data-lucide="heart-crack" class="w-5 h-5 text-center text-rose-400"></i>
+                <span>吸引力悖论</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-amber-500/20 text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+            关系建造者沙盘
+        </div>
+    </aside>
+
+    <div class="flex flex-col flex-grow min-w-0">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 bg-navy-900/90 backdrop-blur-md border-b border-amber-500/20 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <button id="mobile-sidebar-btn" class="md:hidden text-slate-300 focus:outline-none" aria-label="打开页面导航" aria-expanded="false">
+                <i data-lucide="panel-left" class="w-6 h-6"></i>
+            </button>
+            <div class="p-2 bg-amber-500/10 rounded-lg border border-amber-500/30 text-amber-400">
+                <i data-lucide="compass" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-serif font-bold text-slate-100">爱、责任与家庭：关系建造者</h1>
+                <p class="text-xs text-amber-400/80">费曼社会学沙盘模拟游戏</p>
+            </div>
+        </div>
+
+        <!-- Status Dashboard / Stats Bar -->
+        <div class="flex items-center space-x-3 sm:space-x-6">
+            <div class="flex items-center space-x-1.5 bg-navy-950/80 px-3 py-1.5 rounded-lg border border-amber-500/30">
+                <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+                <span class="text-xs font-mono text-slate-300">责任值: <strong id="stat-resp" class="text-amber-400 font-bold">50</strong></span>
+            </div>
+            <div class="flex items-center space-x-1.5 bg-navy-950/80 px-3 py-1.5 rounded-lg border border-amber-500/30">
+                <i data-lucide="heart" class="w-4 h-4 text-rose-400"></i>
+                <span class="text-xs font-mono text-slate-300">共情值: <strong id="stat-empathy" class="text-rose-400 font-bold">50</strong></span>
+            </div>
+            <div class="hidden sm:flex items-center space-x-1.5 bg-navy-950/80 px-3 py-1.5 rounded-lg border border-amber-500/30">
+                <i data-lucide="home" class="w-4 h-4 text-emerald-400"></i>
+                <span class="text-xs font-mono text-slate-300">家庭积分: <strong id="stat-score" class="text-emerald-400 font-bold">0</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Game Container -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 sm:p-8 max-w-4xl mx-auto w-full">
+
+        <!-- INTRO SCREEN -->
+        <div id="screen-intro" class="w-full bg-navy-900 border border-amber-500/30 rounded-2xl p-6 sm:p-10 shadow-2xl text-center space-y-6">
+            <div class="inline-flex p-3 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full animate-float">
+                <i data-lucide="sparkles" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-serif font-bold text-slate-50 leading-tight">
+                欢迎来到<span class="gradient-gold">关系建筑者</span>沙盘
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed font-light">
+                在这场基于柏拉图、康德、黑格尔与埃里希·弗洛姆哲学思想的互动沙盘中，你将面临男女关系中从<b>“喜欢”</b>到<b>“性爱与责任”</b>，再到<b>“名人婚姻危机抉择”</b>的重大关卡。你的每一个抉择，都将决定你能否建造一座能够抵御时代风浪的“终极家庭避风港”。
+            </p>
+            <div class="pt-4">
+                <button onclick="startGame()" class="px-8 py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-serif font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 flex items-center justify-center space-x-2 mx-auto text-sm">
+                    <i data-lucide="play" class="w-5 h-5"></i>
+                    <span>开启沙盘模拟</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- GAME STAGES CONTAINER (Hidden by default) -->
+        <div id="screen-game" class="w-full hidden space-y-6">
+            <!-- Stage Progress Indicator -->
+            <div class="flex justify-between items-center bg-navy-900 border border-amber-500/20 px-6 py-3 rounded-xl">
+                <div class="flex items-center space-x-2">
+                    <span id="stage-badge" class="px-2.5 py-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 rounded-md text-xs font-mono font-bold">阶段一</span>
+                    <h3 id="stage-title" class="text-sm font-serif font-bold text-slate-100">吸引与辨析：喜欢 vs 爱</h3>
+                </div>
+                <span id="stage-counter" class="text-xs font-mono text-slate-400">进度: 1 / 4</span>
+            </div>
+
+            <!-- Dynamic Question / Scenario Card -->
+            <div id="scenario-card" class="bg-navy-900 border border-amber-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden">
+                <!-- Philosopher Quote Banner -->
+                <div id="philosopher-quote" class="bg-navy-950/80 border border-amber-500/20 p-4 rounded-xl flex items-start space-x-3">
+                    <i data-lucide="book-open" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+                    <div>
+                        <span id="quote-author" class="text-[10px] font-mono text-amber-400 uppercase font-bold">埃里希·弗洛姆《爱的艺术》</span>
+                        <p id="quote-text" class="text-xs text-slate-300 italic mt-0.5">“喜欢是把路边的好花摘下来据为己有；爱是每天给它浇水、施肥，即使它枯萎也依然悉心照料。”</p>
+                    </div>
+                </div>
+
+                <!-- Scenario Prompt -->
+                <div>
+                    <h4 id="scenario-question" class="text-base sm:text-lg font-serif font-bold text-slate-100 mb-2">情境加载中...</h4>
+                    <p id="scenario-desc" class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed">请仔细思考费曼第一性原理与伦理底线，做出你的抉择。</p>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="options-grid" class="grid grid-cols-1 gap-3.5">
+                    <!-- Dynamic option buttons inserted via JS -->
+                </div>
+            </div>
+
+            <!-- Feedback / Explanation Box (Hidden initially) -->
+            <div id="feedback-card" class="bg-navy-900 border rounded-2xl p-6 shadow-2xl hidden space-y-4">
+                <div class="flex items-center space-x-2" id="feedback-header">
+                    <i id="feedback-icon" class="w-6 h-6"></i>
+                    <h4 id="feedback-title" class="font-serif font-bold text-base">反馈解析</h4>
+                </div>
+                <p id="feedback-text" class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed"></p>
+                <div class="pt-2 flex justify-end">
+                    <button onclick="nextStep()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-serif font-bold rounded-xl text-xs transition-all flex items-center space-x-1.5">
+                        <span>进入下一阶段</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLETION REPORT SCREEN (Hidden by default) -->
+        <div id="screen-report" class="w-full hidden space-y-6">
+            <div class="bg-navy-900 border border-amber-500/40 rounded-2xl p-6 sm:p-10 shadow-2xl text-center space-y-6">
+                <div class="inline-flex p-3 bg-amber-500/20 border border-amber-500/40 text-amber-400 rounded-full">
+                    <i data-lucide="award" class="w-10 h-10"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider">社会学导师综合评价报告</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-slate-50 mt-1">你的家庭建筑师评级</h2>
+                </div>
+
+                <!-- Final Score Display -->
+                <div class="grid grid-cols-3 gap-4 max-w-md mx-auto py-2">
+                    <div class="bg-navy-950 p-3 rounded-xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 block font-mono">最终责任值</span>
+                        <strong id="final-resp" class="text-amber-400 text-lg font-mono">0</strong>
+                    </div>
+                    <div class="bg-navy-950 p-3 rounded-xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 block font-mono">最终共情值</span>
+                        <strong id="final-empathy" class="text-rose-400 text-lg font-mono">0</strong>
+                    </div>
+                    <div class="bg-navy-950 p-3 rounded-xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 block font-mono">家庭避风港积分</span>
+                        <strong id="final-score" class="text-emerald-400 text-lg font-mono">0</strong>
+                    </div>
+                </div>
+
+                <div id="report-comment" class="bg-navy-950 p-5 rounded-xl border border-amber-500/30 text-xs sm:text-sm text-slate-300 text-left leading-relaxed font-light">
+                    <!-- Evaluation commentary inserted via JS -->
+                </div>
+
+                <div>
+                    <button onclick="resetGame()" class="px-8 py-3 bg-amber-600 hover:bg-amber-500 text-slate-950 font-serif font-bold rounded-xl text-xs transition-all flex items-center justify-center space-x-2 mx-auto">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>重新进行沙盘模拟</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-navy-950 py-6 text-center text-xs text-slate-500">
+        <p class="font-serif">基于费曼第一性原理与经典道德哲学的互动游戏化呈现</p>
+    </footer>
+    </div>
+
+    <!-- Game Engine Script -->
+    <script>
+        // Game State
+        let state = {
+            resp: 50,
+            empathy: 50,
+            score: 0,
+            currentStage: 0,
+            currentQuestion: 0
+        };
+
+        // Game Stages & Scenarios Data Structure
+        const gameData = [
+            {
+                stageName: "阶段一：吸引与辨析",
+                stageTitle: "喜欢与爱的本质区别",
+                questions: [
+                    {
+                        quoteAuthor: "埃里希·弗洛姆《爱的艺术》",
+                        quoteText: "“喜欢是出于匮乏的消费；爱是出于丰盛的给予。喜欢是把花摘下来，爱是每天给它浇水。”",
+                        question: "当你在生活中遇到一位外表极具吸引力但价值观差异巨大的人时，你的内心倾向是？",
+                        options: [
+                            {
+                                text: "A. 迅速坠入热恋，认为荷尔蒙就是全部真爱，只要快乐就好。",
+                                respDelta: -15, empathyDelta: -10, scoreDelta: 0,
+                                correct: false,
+                                feedback: "【哲学警示】这属于短暂的多巴胺驱动和消费式“喜欢”。如果缺乏深层价值观契合与责任意愿，热恋退潮后关系极易崩溃（康德警告：不可将对方仅作为满足私欲的工具）。"
+                            },
+                            {
+                                text: "B. 欣赏其外表（喜欢），但通过理性对话与时间检验去评估双方是否存在深层灵魂共鸣（爱）。",
+                                respDelta: +15, empathyDelta: +15, scoreDelta: 20,
+                                correct: true,
+                                feedback: "【费曼解析】完美！你清晰辨别了“喜欢”与“爱”的界限。喜欢是摘花，爱是灌溉。你懂得以长远意志去审视关系。"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                stageName: "阶段二：激情与地基",
+                stageTitle: "性爱、契约与责任边界",
+                questions: [
+                    {
+                        quoteAuthor: "伊曼纽尔·康德《道德形而上学》",
+                        quoteText: "“人是目的，而不是手段。性爱若脱离了相互的道德契约与人格尊重，即是对人性的工具化异化。”",
+                        question: "在亲密关系步入更深层次时，面对伴侣对未来的焦虑与不安全感，你选择的态度是？",
+                        options: [
+                            {
+                                text: "A. 只享受当下的肉体亲密与激情，回避有关长期承诺和法律/道德责任的严肃对话。",
+                                respDelta: -25, empathyDelta: -15, scoreDelta: 0,
+                                correct: false,
+                                feedback: "【代价警示】性爱只是一座大厦中的供暖系统，没有承重墙（责任与契约）的大厦在风暴中会瞬间垮塌。逃避责任会导致信任赤字与极高的人格损耗。"
+                            },
+                            {
+                                text: "B. 将性爱视为身心整体契约的一部分，主动建立坦诚的责任底线与长远承诺。",
+                                respDelta: +25, empathyDelta: +20, scoreDelta: 30,
+                                correct: true,
+                                feedback: "【哲学肯定】卓越！正如康德与黑格尔所言，责任是男女关系的“安全带”。当性爱与道德契约结合，它才真正升华为造福身心的永恒纽带。"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                stageName: "阶段三：社会案例大挑战",
+                stageTitle: "名人婚姻沙盘：危机共担 vs 财富解体",
+                questions: [
+                    {
+                        quoteAuthor: "社会学经典实证研究",
+                        quoteText: "“贝克汉姆夫妇与奥巴马夫妇通过共同志业与意志践行跨越风浪；而盖茨夫妇则因信任解体付出了千亿资产撕裂与后半生孤独的代价。”",
+                        question: "面对高压职业危机与外界巨大的舆论诱惑，贝克汉姆式（或奥巴马式）的成功解法应当是？",
+                        options: [
+                            {
+                                text: "A. 将工作中的功利主义和自我中心带入家庭，各自为战，一旦出现危机便立刻选择解体分割。",
+                                respDelta: -30, empathyDelta: -20, scoreDelta: 0,
+                                correct: false,
+                                feedback: "【惨痛代价】重演了盖茨式婚姻解体的困境：即便坐拥巨额财富，失去生命锚点和信任链条后，面临的是天价财产切割与精神无处安放的巨大虚无。"
+                            },
+                            {
+                                text: "B. 将婚姻视为不可分割的“共同志业”（Joint Venture），在风暴中彼此包容、相互锚定、兑现长期承诺。",
+                                respDelta: +30, empathyDelta: +30, scoreDelta: 40,
+                                correct: true,
+                                feedback: "【胜利复刻】完美！你掌握了成功名人的婚姻密码：把家庭打造成抵御现代社会原子化风险的坚固城堡，实现了个人自由与伦理实体的最高统一。"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                stageName: "阶段四：终极福报",
+                stageTitle: "建造不可摧毁的家庭避风港",
+                questions: [
+                    {
+                        quoteAuthor: "克里斯托弗·拉斯奇《无情世界中的避风港》",
+                        quoteText: "“在冷酷异化的现代市场上，家庭是一个人免受狂风暴雨侵袭、获得无条件精神庇护的最终灵魂福报。”",
+                        question: "在经历前三阶段的历练后，你如何看待并构建你人生最终的“家庭避风港”？",
+                        options: [
+                            {
+                                text: "A. 认为家庭只是随时可以解约的合伙公司，随时准备在遇到挫折时抽身逃离。",
+                                respDelta: -20, empathyDelta: -20, scoreDelta: 10,
+                                correct: false,
+                                feedback: "【游戏结局】你错失了人类生命的终极福报。将一切视为契约算计，最终得到的将是漫长岁月里的精神荒原与孤独。"
+                            },
+                            {
+                                text: "B. 珍视家庭为人生最高福报：以责任为基石、以共情为暖流，将其筑成抵御岁月风浪的永恒避风港。",
+                                respDelta: +30, empathyDelta: +30, scoreDelta: 50,
+                                correct: true,
+                                feedback: "【圆满通关】太棒了！你深刻领悟了社会学与哲学的终极真谛，成功铸就了完美的生命避风港！"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Initialize Lucide icons on load
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            const mobileSidebarBtn = document.getElementById('mobile-sidebar-btn');
+            const sidebar = document.getElementById('sidebar');
+            mobileSidebarBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+                mobileSidebarBtn.setAttribute('aria-expanded', String(!sidebar.classList.contains('hidden')));
+            });
+        });
+
+        function startGame() {
+            document.getElementById('screen-intro').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            state.currentStage = 0;
+            state.currentQuestion = 0;
+            state.resp = 50;
+            state.empathy = 50;
+            state.score = 0;
+            updateStats();
+            loadStage();
+        }
+
+        function updateStats() {
+            document.getElementById('stat-resp').innerText = state.resp;
+            document.getElementById('stat-empathy').innerText = state.empathy;
+            document.getElementById('stat-score').innerText = state.score;
+        }
+
+        function loadStage() {
+            const stage = gameData[state.currentStage];
+            const q = stage.questions[state.currentQuestion];
+
+            document.getElementById('stage-badge').innerText = stage.stageName;
+            document.getElementById('stage-title').innerText = stage.stageTitle;
+            document.getElementById('stage-counter').innerText = `进度: ${state.currentStage + 1} / ${gameData.length}`;
+
+            document.getElementById('quote-author').innerText = q.quoteAuthor;
+            document.getElementById('quote-text').innerText = q.quoteText;
+            document.getElementById('scenario-question').innerText = q.question;
+            document.getElementById('scenario-desc').innerText = "请基于上述哲学指导原则，选择你的行动策略：";
+
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 bg-navy-950 hover:bg-amber-500/10 border border-slate-800 hover:border-amber-500/50 rounded-xl text-left transition-all text-xs sm:text-sm text-slate-200 flex items-start space-x-3 group";
+                btn.innerHTML = `<span class="font-mono text-amber-400 font-bold shrink-0 mt-0.5">选项 ${idx + 1}</span><span class="leading-relaxed">${opt.text}</span>`;
+                btn.onclick = () => selectOption(idx);
+                optionsGrid.appendChild(btn);
+            });
+
+            document.getElementById('scenario-card').classList.remove('hidden');
+            document.getElementById('feedback-card').classList.add('hidden');
+            lucide.createIcons();
+        }
+
+        function selectOption(idx) {
+            const stage = gameData[state.currentStage];
+            const q = stage.questions[state.currentQuestion];
+            const opt = q.options[idx];
+
+            // Update stats
+            state.resp = Math.max(0, Math.min(100, state.resp + opt.respDelta));
+            state.empathy = Math.max(0, Math.min(100, state.empathy + opt.empathyDelta));
+            state.score += opt.scoreDelta;
+            updateStats();
+
+            // Show feedback
+            document.getElementById('scenario-card').classList.add('hidden');
+            const feedbackCard = document.getElementById('feedback-card');
+            feedbackCard.classList.remove('hidden');
+
+            const header = document.getElementById('feedback-header');
+            const icon = document.getElementById('feedback-icon');
+            const title = document.getElementById('feedback-title');
+            const text = document.getElementById('feedback-text');
+
+            if (opt.correct) {
+                feedbackCard.className = "bg-navy-900 border border-emerald-500/40 rounded-2xl p-6 shadow-2xl space-y-4";
+                icon.className = "w-6 h-6 text-emerald-400";
+                icon.setAttribute('data-lucide', 'check-circle-2');
+                title.className = "font-serif font-bold text-base text-emerald-400";
+                title.innerText = "哲学抉择正确 · 境界提升";
+            } else {
+                feedbackCard.className = "bg-navy-900 border border-rose-500/40 rounded-2xl p-6 shadow-2xl space-y-4";
+                icon.className = "w-6 h-6 text-rose-400";
+                icon.setAttribute('data-lucide', 'alert-triangle');
+                title.className = "font-serif font-bold text-base text-rose-400";
+                title.innerText = "哲学警示 · 触发代价";
+            }
+
+            text.innerHTML = opt.feedback;
+            lucide.createIcons();
+        }
+
+        function nextStep() {
+            state.currentStage++;
+            if (state.currentStage < gameData.length) {
+                loadStage();
+            } else {
+                showReport();
+            }
+        }
+
+        function showReport() {
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-report').classList.remove('hidden');
+
+            document.getElementById('final-resp').innerText = state.resp;
+            document.getElementById('final-empathy').innerText = state.empathy;
+            document.getElementById('final-score').innerText = state.score;
+
+            const reportComment = document.getElementById('report-comment');
+            let ratingTitle = "";
+            let ratingDesc = "";
+
+            if (state.resp >= 80 && state.empathy >= 80) {
+                ratingTitle = "【最高级荣誉：首席家庭建筑师与伦理智者】";
+                ratingDesc = "你完美融合了弗洛姆的爱之艺术与康德的道德律令。你不仅洞悉“喜欢”与“爱”的根本区别，更懂得将性爱与责任统一，成功构筑了犹如贝克汉姆、奥巴马夫妇般坚固而富有尊严的终极家庭避风港。家庭已成为你对抗现代异化的最终福报！";
+                // Trigger celebratory confetti
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            } else if (state.resp >= 50) {
+                ratingTitle = "【进阶级：觉醒的同行者】";
+                ratingDesc = "你对男女关系和家庭责任有了深刻的觉醒，但在部分关卡中仍流露出对即时满足的依恋。建议多复盘埃里希·弗洛姆与黑格尔的哲学思想，将“意志”与“长期承诺”作为维系亲密关系的基石，方能行稳致远。";
+            } else {
+                ratingTitle = "【需警示：消费主义迷失者】";
+                ratingDesc = "你的选择过多偏向了短期的多巴胺刺激与责任割裂，容易陷入盖茨式婚姻解体或工具化他人的泥潭。建议重新审视康德绝对命令，体会责任与共情在人类生命避风港中的不可替代性。";
+            }
+
+            reportComment.innerHTML = `<strong class="text-amber-400 font-serif block mb-2 text-base">${ratingTitle}</strong><p class="leading-relaxed">${ratingDesc}</p>`;
+            lucide.createIcons();
+        }
+
+        function resetGame() {
+            document.getElementById('screen-report').classList.add('hidden');
+            document.getElementById('screen-intro').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

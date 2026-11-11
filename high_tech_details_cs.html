@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>费曼学习法：计算机如何理解 3 + 5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
+        }
+        .wire-glow {
+            filter: drop-shadow(0px 0px 4px #38bdf8);
+        }
+        .wire-glow-active {
+            filter: drop-shadow(0px 0px 6px #22c55e);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-full flex flex-col font-sans antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- Navbar Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-sky-500/10 border border-sky-500/30 rounded-xl text-sky-400">
+                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-100 leading-tight">费曼物理学：代码是如何变成物理现象的？</h1>
+                    <p class="text-xs text-slate-400">从高级语言 `3 + 5` 到晶体管电压转换原理</p>
+                </div>
+            </div>
+            
+            <div class="hidden sm:flex items-center space-x-2 text-xs font-medium bg-slate-800/80 p-1 rounded-lg border border-slate-700">
+                <button onclick="scrollToLevel(1)" class="nav-btn px-3 py-1.5 rounded-md hover:bg-slate-700 text-slate-300 transition" id="nav-1">1. 高级语言</button>
+                <button onclick="scrollToLevel(2)" class="nav-btn px-3 py-1.5 rounded-md hover:bg-slate-700 text-slate-300 transition" id="nav-2">2. 翻译与二进制</button>
+                <button onclick="scrollToLevel(3)" class="nav-btn px-3 py-1.5 rounded-md hover:bg-slate-700 text-slate-300 transition" id="nav-3">3. 电容与电场</button>
+                <button onclick="scrollToLevel(4)" class="nav-btn px-3 py-1.5 rounded-md hover:bg-slate-700 text-slate-300 transition" id="nav-4">4. 晶体管与ALU</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        
+        <!-- Hero / Feynman Method Intro -->
+        <section class="bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/40 border border-slate-800 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="max-w-3xl space-y-4 relative z-10">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold uppercase tracking-wider">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>费曼学习法 (Feynman Technique)</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                    用最简单的语言，揭开计算机的“物理魔术”
+                </h2>
+                <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
+                    理查德·费曼曾说：“如果你不能向一个六岁小孩解释清楚一个概念，说明你还没真正理解它。”<br>
+                    计算机看起来拥有神圣的“智慧”，但本质上它只是一堆**靠电压驱动的石头（硅片）**。本文将带领你剖析简单的计算表达式 <code class="bg-slate-800 px-2 py-0.5 rounded text-sky-300 font-mono text-sm">3 + 5</code>，一步一步拆解它如何从人类的思想，降级为物理世界中的电子流动。
+                </p>
+            </div>
+        </section>
+
+        <!-- LEVEL 1: High Level Code -->
+        <section id="level-1" class="scroll-mt-20 border border-slate-800 bg-slate-900/60 rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex items-center space-x-3">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 font-bold border border-sky-500/40 text-sm">1</span>
+                <h2 class="text-xl font-bold text-white">第 1 层：人类的高级语言 (High-Level Code)</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Metaphor -->
+                <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-5 space-y-3">
+                    <div class="flex items-center space-x-2 text-amber-400">
+                        <i data-lucide="utensils" class="w-5 h-5"></i>
+                        <h3 class="font-semibold text-slate-200">费曼类比：菜谱与大厨</h3>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        想像你在厨房做菜，菜谱上写着：“取3张面皮，再取5张面皮，合在一起”。
+                    </p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        这就是高级语言（Python、JavaScript等）。它是为了**让人类大脑高效阅读与交流**设计的。计算机CPU本身根本看不懂 `3`，也听不懂什么是 `+`。
+                    </p>
+                </div>
+
+                <!-- Code Example Interactive -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-3 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-mono text-slate-400">main.py / main.js</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">高级抽象</span>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-lg font-mono text-sm border border-slate-800 text-sky-300">
+                            <span class="text-purple-400">let</span> a = <span class="text-amber-400">3</span>;<br>
+                            <span class="text-purple-400">let</span> b = <span class="text-amber-400">5</span>;<br>
+                            <span class="text-purple-400">let</span> result = a + b;<br>
+                            <span class="text-slate-500">// 计算机能直接运行这句话吗？答案是：完全不能！</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-400 bg-slate-900/50 p-2.5 rounded border border-slate-800/80 flex items-center space-x-2">
+                        <i data-lucide="info" class="w-4 h-4 text-sky-400 flex-shrink-0"></i>
+                        <span>代码中的变量 `a` 和 `+` 仅仅是人类给机器编写的“说明书代号”。</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEVEL 2: Translation Layer -->
+        <section id="level-2" class="scroll-mt-20 border border-slate-800 bg-slate-900/60 rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex items-center space-x-3">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 font-bold border border-sky-500/40 text-sm">2</span>
+                <div>
+                    <h2 class="text-xl font-bold text-white">第 2 层：翻译层 (编译器/汇编语言 & 二进制指令)</h2>
+                    <p class="text-xs text-slate-400">编译器将文本拆解为 CPU 操作码 (Opcode) 与 010101 机器码</p>
+                </div>
+            </div>
+
+            <!-- Metaphor -->
+            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4 text-sm text-slate-300">
+                <span class="font-semibold text-sky-400">费曼类比：翻译官与微动作分解。</span>
+                “切洋葱”是一句高级指令，但翻译官需要拆解成微动作：“左手按住洋葱”、“右手握刀”、“按压向下”。汇编语言就是CPU的微动作分解，而二进制机器码则是最终传输给芯片管脚的**开关电信号编码**。
+            </div>
+
+            <!-- Interactive Translation Stepper Visualizer -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="font-bold text-slate-200">代码翻译全路径交互演示</h3>
+                        <p class="text-xs text-slate-400">点击下方步骤，逐步观看 `3 + 5` 如何降级变成 0101 二进制</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button id="btn-prev-step" onclick="changeStep(-1)" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700 transition">
+                            <i data-lucide="chevron-left" class="w-4 h-4 inline -mt-0.5"></i> 上一步
+                        </button>
+                        <button id="btn-next-step" onclick="changeStep(1)" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-sky-600 hover:bg-sky-500 text-white disabled:opacity-40 disabled:cursor-not-allowed shadow transition">
+                            下一步 <i data-lucide="chevron-right" class="w-4 h-4 inline -mt-0.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step Pipeline Display -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="pipeline-steps">
+                    <!-- Step 1 -->
+                    <div id="step-card-1" class="step-card p-4 rounded-xl border bg-slate-900 border-sky-500/50 transition-all duration-300">
+                        <div class="text-xs font-bold text-sky-400 mb-1">步骤 1: 高级源代码</div>
+                        <div class="font-mono text-sm bg-slate-950 p-2.5 rounded border border-slate-800 text-amber-300">
+                            result = 3 + 5
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">人类容易书写和理解的词汇和算式。</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div id="step-card-2" class="step-card p-4 rounded-xl border bg-slate-900 border-slate-800 opacity-50 transition-all duration-300">
+                        <div class="text-xs font-bold text-sky-400 mb-1">步骤 2: 汇编指令 (Assembly)</div>
+                        <div class="font-mono text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-purple-300 space-y-1">
+                            <div>MOV R1, 3</div>
+                            <div>MOV R2, 5</div>
+                            <div>ADD R1, R2</div>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">映射硬件寄存器(R1, R2)的极简原语操作。</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div id="step-card-3" class="step-card p-4 rounded-xl border bg-slate-900 border-slate-800 opacity-50 transition-all duration-300">
+                        <div class="text-xs font-bold text-sky-400 mb-1">步骤 3: 机器码 (Opcode+Data)</div>
+                        <div class="font-mono text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-emerald-300 space-y-1">
+                            <div>0001 0001 0011 (MOV)</div>
+                            <div>0001 0010 0101 (MOV)</div>
+                            <div>1000 0001 0010 (ADD)</div>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">每组0/1分别代表控制指令与数据数值。</p>
+                    </div>
+                    <!-- Step 4 -->
+                    <div id="step-card-4" class="step-card p-4 rounded-xl border bg-slate-900 border-slate-800 opacity-50 transition-all duration-300">
+                        <div class="text-xs font-bold text-sky-400 mb-1">步骤 4: 高低电平总线 (Voltage)</div>
+                        <div class="font-mono text-xs bg-slate-950 p-2.5 rounded border border-slate-800 text-sky-300 space-y-1">
+                            <div>LOW LOW LOW HIGH...</div>
+                            <div class="text-emerald-400 font-bold">[ 0V, 0V, 0V, 3.3V ]</div>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">转化为铜线总线上的真实物理电压波形。</p>
+                    </div>
+                </div>
+
+                <!-- Detailed Explanation Panel for active step -->
+                <div id="step-detail-box" class="bg-slate-900/90 p-4 rounded-lg border border-slate-800 text-xs text-slate-300 leading-relaxed flex items-start space-x-3">
+                    <i data-lucide="cpu" class="w-5 h-5 text-sky-400 flex-shrink-0 mt-0.5"></i>
+                    <div id="step-detail-text">
+                        在高级语言中，我们将数学表达写为 <code class="text-amber-300">3 + 5</code>。这里的数值和符号只是内存中的抽象词汇，机器尚无法理解。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEVEL 3: Physical Memory & Capacitors -->
+        <section id="level-3" class="scroll-mt-20 border border-slate-800 bg-slate-900/60 rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex items-center space-x-3">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 font-bold border border-sky-500/40 text-sm">3</span>
+                <div>
+                    <h2 class="text-xl font-bold text-white">第 3 层：物理存储——电容与电压状态 (0与1的实体)</h2>
+                    <p class="text-xs text-slate-400">计算机里其实根本没有“0”和“1”，只有“有电”和“没电”</p>
+                </div>
+            </div>
+
+            <!-- Metaphor -->
+            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4 text-sm text-slate-300">
+                <span class="font-semibold text-amber-400">费曼类比：一排装水的小水桶。</span>
+                想象你有排成一排的8个水桶。水桶满了代表数字 <span class="text-emerald-400 font-bold font-mono">1</span>，空水桶代表数字 <span class="text-slate-400 font-bold font-mono">0</span>。
+                数字 <code class="text-sky-300">3</code> 的二进制是 <code class="text-amber-300 font-mono">0000 0011</code>（最后两个桶装满水）；数字 <code class="text-sky-300">5</code> 是 <code class="text-amber-300 font-mono">0000 0101</code>。计算机内存（DRAM）就是由几百亿个极小的“电子水桶”（微型电容）组成的！
+            </div>
+
+            <!-- Interactive DRAM Capacitor Simulator -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-800 pb-3">
+                    <h3 class="font-bold text-slate-200">8位内存寄存器电容充放电实验</h3>
+                    <div class="text-xs text-slate-400">点击下方电容单元切换电信号状态</div>
+                </div>
+
+                <!-- 8-bit memory register row -->
+                <div class="grid grid-cols-4 sm:grid-cols-8 gap-3" id="capacitor-register">
+                    <!-- Capacitors generated via JS -->
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800">
+                    <div class="space-y-1">
+                        <div class="text-xs text-slate-400">当前存储二进制:</div>
+                        <div class="text-xl font-mono font-bold text-sky-400" id="binary-val-display">00000000</div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="text-xs text-slate-400">十进制数值转换:</div>
+                        <div class="text-xl font-mono font-bold text-emerald-400" id="decimal-val-display">0</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="presetCapacitor(3)" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-sky-300 rounded-lg border border-slate-700 transition">加载数字 3 (0000 0011)</button>
+                        <button onclick="presetCapacitor(5)" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg border border-slate-700 transition">加载数字 5 (0000 0101)</button>
+                        <button onclick="presetCapacitor(8)" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded-lg border border-slate-700 transition">加载数字 8 (0000 1000)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEVEL 4: Hardware Transistors & ALU -->
+        <section id="level-4" class="scroll-mt-20 border border-slate-800 bg-slate-900/60 rounded-2xl p-6 sm:p-8 space-y-8">
+            <div class="flex items-center space-x-3">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 font-bold border border-sky-500/40 text-sm">4</span>
+                <div>
+                    <h2 class="text-xl font-bold text-white">第 4 层：物理执行层 (晶体管、逻辑门与算术逻辑单元 ALU)</h2>
+                    <p class="text-xs text-slate-400">键盘按键与传感器如何触发硬件计算 3 + 5 = 8</p>
+                </div>
+            </div>
+
+            <!-- Metaphor -->
+            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4 text-sm text-slate-300 space-y-2">
+                <p><span class="font-semibold text-emerald-400">费曼类比：水流开关与自动水闸。</span></p>
+                <p>
+                    晶体管（Transistor）是现代计算机的核心，它本质上就是一个**水龙头开关**（或者电磁阀开关）。
+                    你用手指压下水龙头开关（给晶体管栅极施加高电压 3.3V），水流（电子）就能流过去；松开开关（低电压 0V），水流截断。
+                </p>
+            </div>
+
+            <!-- Interactive Transistor Simulator -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-4">
+                <h3 class="font-bold text-slate-200 border-b border-slate-800 pb-2">1. MOSFET 晶体管物理开关仿真演示</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <!-- SVG Visualizer for N-Channel MOSFET -->
+                    <div class="relative bg-slate-900 rounded-xl p-4 border border-slate-800 flex justify-center">
+                        <svg id="transistor-svg" viewBox="0 0 320 220" class="w-full max-w-xs">
+                            <!-- Background silicon base -->
+                            <rect x="40" y="120" width="240" height="70" fill="#1e293b" rx="6" stroke="#334155" stroke-width="2"/>
+                            <text x="160" y="160" fill="#64748b" font-size="12" text-anchor="middle">P型硅基底 (P-Substrate)</text>
+
+                            <!-- Drain and Source N+ regions -->
+                            <rect x="60" y="120" width="45" height="35" fill="#0284c7" rx="3"/>
+                            <text x="82" y="142" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N+</text>
+                            
+                            <rect x="215" y="120" width="45" height="35" fill="#0284c7" rx="3"/>
+                            <text x="237" y="142" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N+</text>
+
+                            <!-- Conducting Channel Area -->
+                            <rect id="mosfet-channel" x="105" y="120" width="110" height="15" fill="#334155" transition="all 0.3s"/>
+
+                            <!-- Gate Oxide Layer -->
+                            <rect x="105" y="110" width="110" height="10" fill="#94a3b8"/>
+
+                            <!-- Gate Electrode -->
+                            <rect x="120" y="75" width="80" height="35" fill="#475569" rx="2"/>
+                            <text x="160" y="96" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">栅极 (Gate)</text>
+
+                            <!-- Wire Gate -->
+                            <line x1="160" y1="75" x2="160" y2="30" stroke="#64748b" stroke-width="4" id="gate-wire"/>
+                            
+                            <!-- Wire Source & Drain -->
+                            <line x1="82" y1="120" x2="82" y2="30" stroke="#e2e8f0" stroke-width="4"/>
+                            <text x="70" y="22" fill="#cbd5e1" font-size="11" font-weight="bold">源极 S</text>
+
+                            <line x1="237" y1="120" x2="237" y2="30" stroke="#64748b" stroke-width="4" id="drain-wire"/>
+                            <text x="225" y="22" fill="#cbd5e1" font-size="11" font-weight="bold">漏极 D</text>
+
+                            <!-- Electrons dots -->
+                            <g id="electron-particles" opacity="0">
+                                <circle cx="95" cy="128" r="3" fill="#facc15"/>
+                                <circle cx="130" cy="128" r="3" fill="#facc15"/>
+                                <circle cx="160" cy="128" r="3" fill="#facc15"/>
+                                <circle cx="190" cy="128" r="3" fill="#facc15"/>
+                                <circle cx="225" cy="128" r="3" fill="#facc15"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Interactive Controls -->
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="text-xs text-slate-300 font-semibold block">控制栅极电压 (Gate Voltage V_g):</label>
+                            <div class="flex items-center space-x-4">
+                                <button id="btn-gate-off" onclick="toggleGate(false)" class="flex-1 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-mono text-xs border border-slate-700 font-bold transition">
+                                    0V (断开 / LOW)
+                                </button>
+                                <button id="btn-gate-on" onclick="toggleGate(true)" class="flex-1 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-500 font-mono text-xs font-bold shadow transition">
+                                    +3.3V (导通 / HIGH)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="transistor-status-card" class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">沟道状态:</span>
+                                <span id="channel-status-text" class="font-bold text-red-400">未形成导电沟道 (截断)</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">输出逻辑状态:</span>
+                                <span id="logic-output-text" class="font-mono font-bold text-slate-400">二进制 0 (无电流)</span>
+                            </div>
+                            <p class="text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+                                当栅极没有施加电压时，正负电荷无法吸引，电子无法跨越中介区域；只有施加高电压时，正电场将电子吸引至表面形成沟道，电流顺利流过！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Logic Gate & Full Adder Simulation for 3 + 5 -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-6">
+                <div>
+                    <h3 class="font-bold text-slate-200">2. 核心计算硬核实现：4位加法器 (Full Adder) 算 3 + 5</h3>
+                    <p class="text-xs text-slate-400 mt-1">组合异或门 (XOR) 与与门 (AND) 形成物理电路，通过高低电平叠加计算出二进制数值 <code class="text-emerald-400">1000</code>（十进制 8）</p>
+                </div>
+
+                <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-6">
+                    <!-- Adder Input Switches -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-slate-800 pb-4">
+                        <!-- Input A Controls -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-sky-400">输入 A (二进制表示 3)</span>
+                                <span class="text-xs font-mono text-slate-400" id="adder-a-dec">十进制: 3</span>
+                            </div>
+                            <div class="flex space-x-2" id="input-a-bits">
+                                <!-- Bits generated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Input B Controls -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-amber-400">输入 B (二进制表示 5)</span>
+                                <span class="text-xs font-mono text-slate-400" id="adder-b-dec">十进制: 5</span>
+                            </div>
+                            <div class="flex space-x-2" id="input-b-bits">
+                                <!-- Bits generated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Circuit Architecture Display -->
+                    <div class="space-y-3">
+                        <div class="text-xs font-bold text-slate-300">硬件逐位加法运算电路流转</div>
+                        
+                        <div class="grid grid-cols-4 gap-2 text-center text-xs font-mono" id="adder-bits-flow">
+                            <!-- Bit 3 (MSB) -->
+                            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                                <div class="text-slate-500 font-bold">Bit 3 (2³)</div>
+                                <div class="text-sky-400" id="bit3-a">A3: 0</div>
+                                <div class="text-amber-400" id="bit3-b">B3: 0</div>
+                                <div class="text-slate-400 text-[10px]" id="bit3-carry-in">进位In: 1</div>
+                                <div class="border-t border-slate-800 pt-1 text-emerald-400 font-bold" id="bit3-sum">输出: 1</div>
+                            </div>
+                            <!-- Bit 2 -->
+                            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                                <div class="text-slate-500 font-bold">Bit 2 (2²)</div>
+                                <div class="text-sky-400" id="bit2-a">A2: 0</div>
+                                <div class="text-amber-400" id="bit2-b">B2: 1</div>
+                                <div class="text-slate-400 text-[10px]" id="bit2-carry-in">进位In: 1</div>
+                                <div class="border-t border-slate-800 pt-1 text-emerald-400 font-bold" id="bit2-sum">输出: 0</div>
+                            </div>
+                            <!-- Bit 1 -->
+                            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                                <div class="text-slate-500 font-bold">Bit 1 (2¹)</div>
+                                <div class="text-sky-400" id="bit1-a">A1: 1</div>
+                                <div class="text-amber-400" id="bit1-b">B1: 0</div>
+                                <div class="text-slate-400 text-[10px]" id="bit1-carry-in">进位In: 1</div>
+                                <div class="border-t border-slate-800 pt-1 text-emerald-400 font-bold" id="bit1-sum">输出: 0</div>
+                            </div>
+                            <!-- Bit 0 (LSB) -->
+                            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                                <div class="text-slate-500 font-bold">Bit 0 (2⁰)</div>
+                                <div class="text-sky-400" id="bit0-a">A0: 1</div>
+                                <div class="text-amber-400" id="bit0-b">B0: 1</div>
+                                <div class="text-slate-400 text-[10px]" id="bit0-carry-in">进位In: 0</div>
+                                <div class="border-t border-slate-800 pt-1 text-emerald-400 font-bold" id="bit0-sum">输出: 0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final ALU Output -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl gap-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg">
+                                <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-emerald-400 font-bold">ALU 计算完成并写回寄存器</div>
+                                <div class="text-xs text-slate-300">通过加法器组合电路，结果通过电信号瞬间被锁存在输出总线</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400">输出结果二进制: </span>
+                            <span class="font-mono text-lg font-bold text-emerald-400" id="adder-result-bin">1000</span>
+                            <span class="text-xs text-slate-400 ml-2">(十进制: <span class="font-bold text-white" id="adder-result-dec">8</span>)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physical Sensors & Keyboard Trigger -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-3">
+                <div class="flex items-center space-x-2 text-sky-400">
+                    <i data-lucide="keyboard" class="w-5 h-5"></i>
+                    <h3 class="font-bold text-slate-200">最初的起点：物理按键与传感器如何产生 0 和 1？</h3>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    当你的手指按下键盘上的字符 <code class="text-sky-300 font-mono font-bold">3</code> 或 <code class="text-sky-300 font-mono font-bold">+</code> 时：
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 space-y-1">
+                        <div class="font-bold text-sky-400">1. 机械接触触发</div>
+                        <div class="text-slate-400">手指按下按键，导电橡胶将两根裸露的铜线导通。</div>
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 space-y-1">
+                        <div class="font-bold text-sky-400">2. 电压下降 (下降沿)</div>
+                        <div class="text-slate-400">原本高电平 3.3V 的引脚立刻被接地拉低至 0V。</div>
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 space-y-1">
+                        <div class="font-bold text-sky-400">3. 产生硬件中断</div>
+                        <div class="text-slate-400">芯片检测到电压变化，触发扫描电路将按键编码存入电容中。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary & Recap -->
+        <section class="border border-sky-500/30 bg-gradient-to-b from-sky-950/20 to-slate-900 rounded-2xl p-6 sm:p-8 space-y-4">
+            <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                <i data-lucide="award" class="w-6 h-6 text-sky-400"></i>
+                <span>费曼总结：计算机世界的真相</span>
+            </h2>
+            <div class="text-sm text-slate-300 space-y-3 leading-relaxed">
+                <p>
+                    现在我们再看一眼所谓的计算机程序 <code class="bg-slate-800 px-2 py-0.5 rounded text-sky-300 font-mono">3 + 5</code>：
+                </p>
+                <ol class="list-decimal list-inside space-y-2 text-slate-300">
+                    <li><strong class="text-white">代码不是魔法：</strong> 它只是人类书写的便利符号规范（高级语言）。</li>
+                    <li><strong class="text-white">翻译机制：</strong> 编译器将其变成控制机器开关的电信号指令指令集（0101机器码）。</li>
+                    <li><strong class="text-white">存储真相：</strong> 0 和 1 并不是写在纸上的数字，而是数十亿个电容里储存的**电荷量多与少**。</li>
+                    <li><strong class="text-white">计算物理化：</strong> 所谓的加法计算，本质上是导线上的高高低低电压，推动晶体管水闸开合，将电子导流向特定线路，最终汇聚出新的电压分布！</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>基于理查德·费曼学习法打造 · 极简计算机科学与物理原理互动教程</p>
+    </footer>
+
+    <!-- JavaScript Interactive Code Logic -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // -------------------------------------------------------------
+        // LEVEL 2: Stepper logic
+        // -------------------------------------------------------------
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        const stepDescriptions = [
+            "在高级语言中，我们将数学表达写为 <code class='text-amber-300'>3 + 5</code>。这里的数值和符号只是内存中的抽象词汇，机器尚无法理解。",
+            "汇编语言（Assembly）将抽象的算式拆解为特定的硬件寄存器操作。<code class='text-purple-300'>MOV R1, 3</code> 意为：把数值3放入一号寄存器；<code class='text-purple-300'>ADD R1, R2</code> 意为发起相加。",
+            "机器码（Machine Code）是汇编指令与数据的一对一二进制编码。例如 <code class='text-emerald-300'>1000</code> 可能代表CPU内部加法指令的控制操作码 (Opcode)。",
+            "这是最底层的物理现实：二进制中的 <code class='text-emerald-400 font-bold'>1</code> 对应物理铜线上的 <b>+3.3伏特高电压</b>，二进制中的 <code class='text-slate-400 font-bold'>0</code> 对应 <b>0伏特（接地）</b>。"
+        ];
+
+        function changeStep(delta) {
+            currentStep += delta;
+            if (currentStep < 1) currentStep = 1;
+            if (currentStep > totalSteps) currentStep = totalSteps;
+
+            updateStepUI();
+        }
+
+        function updateStepUI() {
+            // Update button states
+            document.getElementById('btn-prev-step').disabled = (currentStep === 1);
+            document.getElementById('btn-next-step').disabled = (currentStep === totalSteps);
+
+            // Update cards visually
+            for (let i = 1; i <= totalSteps; i++) {
+                const card = document.getElementById(`step-card-${i}`);
+                if (i === currentStep) {
+                    card.classList.remove('opacity-50', 'border-slate-800');
+                    card.classList.add('border-sky-500/80', 'bg-slate-900', 'glow-effect');
+                } else {
+                    card.classList.add('opacity-50', 'border-slate-800');
+                    card.classList.remove('border-sky-500/80', 'glow-effect');
+                }
+            }
+
+            // Update text description
+            document.getElementById('step-detail-text').innerHTML = stepDescriptions[currentStep - 1];
+        }
+
+        // -------------------------------------------------------------
+        // LEVEL 3: Capacitor Register Simulation
+        // -------------------------------------------------------------
+        let capacitorStates = [0, 0, 0, 0, 0, 0, 0, 0];
+
+        function initCapacitors() {
+            const container = document.getElementById('capacitor-register');
+            container.innerHTML = '';
+            
+            for (let i = 7; i >= 0; i--) {
+                const div = document.createElement('div');
+                div.className = `p-3 rounded-xl border flex flex-col items-center justify-between cursor-pointer transition-all duration-300 ${capacitorStates[i] ? 'bg-sky-950/60 border-sky-500 text-sky-300' : 'bg-slate-900 border-slate-800 text-slate-500'}`;
+                div.onclick = () => toggleCapacitor(i);
+                
+                div.innerHTML = `
+                    <div class="text-[10px] font-mono text-slate-500 mb-1">Bit ${i}</div>
+                    <!-- Tank/Capacitor SVG -->
+                    <div class="w-10 h-14 border-2 border-slate-600 rounded-b-lg relative overflow-hidden bg-slate-950 my-1">
+                        <div class="capacitor-fill absolute bottom-0 left-0 right-0 bg-gradient-to-t from-sky-600 to-sky-400 transition-all duration-500" 
+                             style="height: ${capacitorStates[i] ? '85%' : '5%'}"></div>
+                    </div>
+                    <div class="font-mono font-bold text-sm mt-1">${capacitorStates[i]}</div>
+                    <div class="text-[9px] text-slate-400 mt-0.5">${capacitorStates[i] ? '3.3V(满位)' : '0V(空状态)'}</div>
+                `;
+                container.appendChild(div);
+            }
+
+            updateMemoryDisplays();
+        }
+
+        function toggleCapacitor(index) {
+            capacitorStates[index] = capacitorStates[index] === 1 ? 0 : 1;
+            initCapacitors();
+        }
+
+        function presetCapacitor(val) {
+            for (let i = 0; i < 8; i++) {
+                capacitorStates[i] = (val >> i) & 1;
+            }
+            initCapacitors();
+        }
+
+        function updateMemoryDisplays() {
+            const binStr = capacitorStates.slice().reverse().join('');
+            const decVal = parseInt(binStr, 2);
+            document.getElementById('binary-val-display').innerText = binStr.replace(/(.{4})/g, '$1 ').trim();
+            document.getElementById('decimal-val-display').innerText = decVal;
+        }
+
+        // -------------------------------------------------------------
+        // LEVEL 4: MOSFET Transistor Logic Simulation
+        // -------------------------------------------------------------
+        let isGateOn = false;
+
+        function toggleGate(state) {
+            isGateOn = state;
+            const channel = document.getElementById('mosfet-channel');
+            const gateWire = document.getElementById('gate-wire');
+            const drainWire = document.getElementById('drain-wire');
+            const electrons = document.getElementById('electron-particles');
+            const statusText = document.getElementById('channel-status-text');
+            const logicText = document.getElementById('logic-output-text');
+            const btnOff = document.getElementById('btn-gate-off');
+            const btnOn = document.getElementById('btn-gate-on');
+
+            if (isGateOn) {
+                channel.setAttribute('fill', '#38bdf8');
+                gateWire.setAttribute('stroke', '#38bdf8');
+                drainWire.setAttribute('stroke', '#22c55e');
+                electrons.setAttribute('opacity', '1');
+                statusText.innerText = "电子沟道受反转层吸引连通！(开关闭合)";
+                statusText.className = "font-bold text-emerald-400";
+                logicText.innerText = "二进制 1 (电流导通 / +3.3V)";
+                logicText.className = "font-mono font-bold text-emerald-400";
+                
+                btnOn.classList.add('ring-2', 'ring-sky-400');
+                btnOff.classList.remove('ring-2', 'ring-sky-400');
+            } else {
+                channel.setAttribute('fill', '#334155');
+                gateWire.setAttribute('stroke', '#64748b');
+                drainWire.setAttribute('stroke', '#64748b');
+                electrons.setAttribute('opacity', '0');
+                statusText.innerText = "未形成导电沟道 (截断)";
+                statusText.className = "font-bold text-red-400";
+                logicText.innerText = "二进制 0 (无电流 / 0V)";
+                logicText.className = "font-mono font-bold text-slate-400";
+
+                btnOff.classList.add('ring-2', 'ring-sky-400');
+                btnOn.classList.remove('ring-2', 'ring-sky-400');
+            }
+        }
+
+        // -------------------------------------------------------------
+        // LEVEL 4: Full Adder Circuit for 3 + 5
+        // -------------------------------------------------------------
+        let valA = 3; // Binary 0011
+        let valB = 5; // Binary 0101
+
+        function renderAdderInputs() {
+            const containerA = document.getElementById('input-a-bits');
+            const containerB = document.getElementById('input-b-bits');
+
+            containerA.innerHTML = '';
+            containerB.innerHTML = '';
+
+            for (let i = 3; i >= 0; i--) {
+                const bitA = (valA >> i) & 1;
+                const btnA = document.createElement('button');
+                btnA.className = `flex-1 py-1.5 font-mono text-xs font-bold rounded border transition ${bitA ? 'bg-sky-600 text-white border-sky-400' : 'bg-slate-950 text-slate-500 border-slate-800'}`;
+                btnA.innerText = bitA;
+                btnA.onclick = () => {
+                    valA ^= (1 << i);
+                    updateAdderSimulation();
+                };
+                containerA.appendChild(btnA);
+
+                const bitB = (valB >> i) & 1;
+                const btnB = document.createElement('button');
+                btnB.className = `flex-1 py-1.5 font-mono text-xs font-bold rounded border transition ${bitB ? 'bg-amber-600 text-white border-amber-400' : 'bg-slate-950 text-slate-500 border-slate-800'}`;
+                btnB.innerText = bitB;
+                btnB.onclick = () => {
+                    valB ^= (1 << i);
+                    updateAdderSimulation();
+                };
+                containerB.appendChild(btnB);
+            }
+
+            document.getElementById('adder-a-dec').innerText = `十进制: ${valA}`;
+            document.getElementById('adder-b-dec').innerText = `十进制: ${valB}`;
+        }
+
+        function updateAdderSimulation() {
+            renderAdderInputs();
+
+            let carry = 0;
+            let resultBin = [];
+
+            for (let i = 0; i < 4; i++) {
+                const bitA = (valA >> i) & 1;
+                const bitB = (valB >> i) & 1;
+
+                // Full Adder logic
+                // Sum = A ^ B ^ CarryIn
+                // CarryOut = (A & B) | (CarryIn & (A ^ B))
+                const sum = bitA ^ bitB ^ carry;
+                const nextCarry = (bitA & bitB) | (carry & (bitA ^ bitB));
+
+                document.getElementById(`bit${i}-a`).innerText = `A${i}: ${bitA}`;
+                document.getElementById(`bit${i}-b`).innerText = `B${i}: ${bitB}`;
+                document.getElementById(`bit${i}-carry-in`).innerText = `进位In: ${carry}`;
+                document.getElementById(`bit${i}-sum`).innerText = `输出: ${sum}`;
+
+                resultBin.unshift(sum);
+                carry = nextCarry;
+            }
+
+            const resultVal = valA + valB;
+            document.getElementById('adder-result-bin').innerText = (carry ? '1' : '') + resultBin.join('');
+            document.getElementById('adder-result-dec').innerText = resultVal;
+        }
+
+        // Navigation scroll helper
+        function scrollToLevel(levelNum) {
+            const el = document.getElementById(`level-${levelNum}`);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Window load initialization
+        window.onload = function() {
+            initCapacitors();
+            toggleGate(false);
+            updateAdderSimulation();
+            updateStepUI();
+        };
+    </script>
+</body>
+</html>

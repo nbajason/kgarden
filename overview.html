@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>花园八景：多维生态金字塔图谱</title>
+    <style>
+        :root {
+            --bg-color: #070b14;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(circle at 50% 10%, rgba(14, 165, 233, 0.07) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(192, 132, 252, 0.07) 0%, transparent 40%);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #38bdf8, #c084fc, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 金字塔整体容器 */
+        .pyramid-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 40px;
+        }
+
+        /* 阶层标签 */
+        .tier-indicator {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: -8px;
+            font-weight: 600;
+        }
+
+        /* 金字塔层级宽度控制，完美呈现梯形收窄 */
+        .pyramid-level {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .level-4 { width: 38%; }
+        .level-3 { width: 62%; }
+        .level-2 { width: 85%; }
+        .level-1 { width: 100%; }
+
+        /* Tile 卡片 */
+        .tile-card {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.55);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 12px;
+            padding: 18px 20px;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--tile-color, #38bdf8);
+        }
+
+        .tile-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--tile-color, #38bdf8);
+            box-shadow: 0 10px 25px -5px var(--accent-glow);
+            background: rgba(30, 41, 59, 0.85);
+        }
+
+        .tile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .tile-id {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .perspective-tag {
+            font-size: 0.68rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--tile-color, #38bdf8);
+        }
+
+        .tile-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+
+        .tile-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.15);
+            padding-top: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        @media (max-width: 768px) {
+            .pyramid-level {
+                flex-direction: column;
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏛️ 花园八景：多维生态金字塔</h1>
+        <p class="subtitle">从科学的客观物质基石出发，穿过社会的交互网络与教育的生长支架，直达哲学存在的顶峰。</p>
+    </header>
+
+    <div class="pyramid-container">
+
+        <!-- 顶层：哲学巅峰 (Level 4) -->
+        <div class="tier-indicator">✦ 顶层：存在与本体（哲学觉醒） ✦</div>
+        <div class="pyramid-level level-4">
+            <div class="tile-card" style="--tile-color: #c084fc;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 08 · 巅峰</span>
+                    <span class="perspective-tag">哲学视角</span>
+                </div>
+                <div class="tile-title">存在本质与反思园</div>
+                <div class="tile-desc">追问生命的终极意义、意识边界与本体真理。</div>
+            </div>
+        </div>
+
+        <!-- 第三层：美学与认知 (Level 3) -->
+        <div class="tier-indicator">✦ 第三层：精神内化与价值升华（哲学与教育） ✦</div>
+        <div class="pyramid-level level-3">
+            <div class="tile-card" style="--tile-color: #a855f7;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 07</span>
+                    <span class="perspective-tag">哲学视角</span>
+                </div>
+                <div class="tile-title">美学、诗意与价值园</div>
+                <div class="tile-desc">在世界的复杂性中重构价值坐标，寻找诗意秩序。</div>
+            </div>
+            <div class="tile-card" style="--tile-color: #fbbf24;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 06</span>
+                    <span class="perspective-tag">教育视角</span>
+                </div>
+                <div class="tile-title">认知觉醒与支架园</div>
+                <div class="tile-desc">搭建知识阶梯，在启发中实现个体的自我超越。</div>
+            </div>
+        </div>
+
+        <!-- 第二层：社会与系统 (Level 2) -->
+        <div class="tier-indicator">✦ 第二层：交往、规则与反馈（社会学与系统科学） ✦</div>
+        <div class="pyramid-level level-2">
+            <div class="tile-card" style="--tile-color: #38bdf8;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 03</span>
+                    <span class="perspective-tag">社会学</span>
+                </div>
+                <div class="tile-title">社群动力与共振园</div>
+                <div class="tile-desc">探讨群体心理、人际网络与集体无意识的交汇。</div>
+            </div>
+            <div class="tile-card" style="--tile-color: #f43f5e;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 04</span>
+                    <span class="perspective-tag">社会学</span>
+                </div>
+                <div class="tile-title">秩序、契约与治理园</div>
+                <div class="tile-desc">通过伦理与制度规范，保障自由与协作的底线。</div>
+            </div>
+            <div class="tile-card" style="--tile-color: #2dd4bf;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 05</span>
+                    <span class="perspective-tag">科学视角</span>
+                </div>
+                <div class="tile-title">复杂系统与反馈园</div>
+                <div class="tile-desc">解构控制论与系统涌现，分析要素间的循环因果。</div>
+            </div>
+        </div>
+
+        <!-- 底层：基石与行动 (Level 1) -->
+        <div class="tier-indicator">✦ 底层：客观物质与知行合一（科学与教育根基） ✦</div>
+        <div class="pyramid-level level-1">
+            <div class="tile-card" style="--tile-color: #34d399;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 01 · 根基</span>
+                    <span class="perspective-tag">科学视角</span>
+                </div>
+                <div class="tile-title">生态与物质重构园</div>
+                <div class="tile-desc">遵循客观物质能量流动，维持整个花园的生态平衡。</div>
+            </div>
+            <div class="tile-card" style="--tile-color: #fb923c;">
+                <div class="tile-header">
+                    <span class="tile-id">TILE 02 · 实践</span>
+                    <span class="perspective-tag">教育视角</span>
+                </div>
+                <div class="tile-title">行动与知行合一园</div>
+                <div class="tile-desc">将理论落脚于实践，实现可持续的终身知行传递。</div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 花园八景金字塔系统图谱 · 科学、社会、教育与哲学的共生结构</p>
+    </footer>
+
+</body>
+</html>

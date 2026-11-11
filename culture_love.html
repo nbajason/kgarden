@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱、责任与家庭的哲学生态：男女关系的理性解构</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Mermaid.js for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fcf8f2',
+                            100: '#f7eee1',
+                            200: '#eddabf',
+                            500: '#d97706',
+                            600: '#b45309',
+                            800: '#2b2319',
+                            900: '#1c1610',
+                            950: '#0f0c09',
+                        },
+                        navy: {
+                            800: '#1a2332',
+                            900: '#0f172a',
+                            950: '#070c18',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', 'Noto Serif SC', 'serif'],
+                        sans: ['Inter', 'system-ui', 'PingFang SC', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-gold {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background: transparent;
+        }
+    </style>
+</head>
+<body class="bg-navy-950 text-slate-100 font-sans antialiased custom-scrollbar min-h-screen flex flex-col md:flex-row">
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-navy-900 border-r border-amber-500/20 fixed md:relative inset-y-0 left-0 z-40">
+        <a href="index.html" class="group p-5 border-b border-amber-500/20 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                <i data-lucide="flower-2" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i data-lucide="scroll" class="w-5 h-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">实践专题</p>
+            <a href="culture_love.html" aria-current="page" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                <i data-lucide="heart-handshake" class="w-5 h-5 text-center"></i>
+                <span>爱、责任与家庭</span>
+            </a>
+            <a href="culture_love_quiz.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i data-lucide="compass" class="w-5 h-5 text-center text-amber-400"></i>
+                <span>关系建造者沙盘</span>
+            </a>
+            <a href="culture_love_trap.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 transition-colors">
+                <i data-lucide="heart-crack" class="w-5 h-5 text-center text-rose-400"></i>
+                <span>吸引力悖论</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-amber-500/20 text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+            关系与家庭专题
+        </div>
+    </aside>
+
+    <div class="flex flex-col flex-grow min-w-0">
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 bg-navy-900/90 backdrop-blur-md border-b border-amber-500/20 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="p-2 bg-amber-500/10 rounded-lg border border-amber-500/30 text-amber-400">
+                <i data-lucide="scale" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-serif font-bold text-slate-100">爱、责任与家庭的哲学生态</h1>
+                <p class="text-xs text-amber-400/80 hidden sm:block">费曼第一性原理 × 传统与现代社会学导论</p>
+            </div>
+        </div>
+
+        <nav class="hidden md:flex space-x-6 text-xs font-semibold tracking-wider uppercase">
+            <a href="#core-principles" class="text-slate-300 hover:text-amber-400 transition-colors">五大核心定理</a>
+            <a href="#diagrams" class="text-slate-300 hover:text-amber-400 transition-colors">哲学结构图谱</a>
+            <a href="#philosophical-matrix" class="text-slate-300 hover:text-amber-400 transition-colors">思想家矩阵</a>
+            <a href="#case-studies" class="text-slate-300 hover:text-amber-400 transition-colors">名人婚姻拆解</a>
+            <a href="#feynman-quiz" class="text-slate-300 hover:text-amber-400 transition-colors">交互思考实验室</a>
+        </nav>
+
+        <div class="md:hidden flex items-center gap-3">
+            <button id="mobile-sidebar-btn" class="text-slate-300 focus:outline-none" aria-label="打开页面导航" aria-expanded="false">
+                <i data-lucide="panel-left" class="w-6 h-6"></i>
+            </button>
+            <button id="mobile-menu-btn" class="text-slate-300 focus:outline-none" aria-label="打开章节目录" aria-expanded="false">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-[57px] bg-navy-900 border-b border-amber-500/20 z-40 px-6 py-4 space-y-3 shadow-2xl">
+        <a href="#core-principles" class="block text-slate-200 hover:text-amber-400 py-1 text-sm">五大核心定理</a>
+        <a href="#diagrams" class="block text-slate-200 hover:text-amber-400 py-1 text-sm">哲学结构图谱</a>
+        <a href="#philosophical-matrix" class="block text-slate-200 hover:text-amber-400 py-1 text-sm">思想家矩阵</a>
+        <a href="#case-studies" class="block text-slate-200 hover:text-amber-400 py-1 text-sm">名人婚姻拆解</a>
+        <a href="#feynman-quiz" class="block text-slate-200 hover:text-amber-400 py-1 text-sm">交互思考实验室</a>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative py-16 px-6 lg:px-12 max-w-5xl mx-auto text-center">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-6">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>费曼学习法 · 理性伦理学视角</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-serif font-bold text-slate-50 leading-tight mb-6">
+                解构男女关系：<br/>从<span class="gradient-gold">情绪本能</span>到<span class="gradient-gold">终极生命避风港</span>
+            </h1>
+            <p class="text-sm sm:text-base text-slate-300/80 max-w-3xl mx-auto font-light leading-relaxed mb-10">
+                结合柏拉图、康德、黑格尔与弗洛姆的经典哲学框架，用最浅显直白的物理与生活隐喻，揭示“喜欢、欲望、真爱、伦理责任与家庭”之间的演进逻辑。
+            </p>
+        </section>
+
+        <!-- SECTION 1: Five Core Principles (Feynman Cards) -->
+        <section id="core-principles" class="py-12 px-6 lg:px-12 max-w-6xl mx-auto">
+            <div class="flex items-center space-x-3 mb-8 border-b border-amber-500/20 pb-4">
+                <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+                    <i data-lucide="layers" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-serif font-bold text-slate-50">一、男女关系推论：五大核心定理</h2>
+                    <p class="text-xs text-slate-400">使用费曼直觉比喻（Feynman Analogy）剖析关系演进</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-navy-900 border border-amber-500/20 hover:border-amber-500/50 rounded-xl p-6 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-amber-400 font-bold">01. 辨析</span>
+                            <i data-lucide="heart" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-slate-50 mb-2">喜欢 ≠ 爱</h3>
+                        <p class="text-xs text-slate-400 mb-4">消费与欣赏 vs. 主动灌溉与终生意志</p>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800 mb-4">
+                            <span class="text-[10px] font-mono text-amber-400 block mb-1">⚡ 费曼第一性原理比喻</span>
+                            <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                “喜欢”是看到路边盛开的花，忍不住摘下来戴在头上享受芳香（满足自我消费）；“爱”则是每天给它浇水、施肥、遮风挡雨，即使它枯萎也依然悉心照料（付出意志与奉献）。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+                        <strong class="text-amber-400/90 font-mono">哲学基石：</strong>弗洛姆《爱的艺术》——爱并非掉入的陷阱，而是一门需要练习的技能。
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-navy-900 border border-amber-500/20 hover:border-amber-500/50 rounded-xl p-6 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-amber-400 font-bold">02. 结构</span>
+                            <i data-lucide="flame" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-slate-50 mb-2">性爱只是爱的一部分</h3>
+                        <p class="text-xs text-slate-400 mb-4">激情局部 vs. 身心整体与存在主义契合</p>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800 mb-4">
+                            <span class="text-[10px] font-mono text-amber-400 block mb-1">⚡ 费曼第一性原理比喻</span>
+                            <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                性爱就像一座大厦里的供暖系统。它能带来温暖与热烈，但如果一座大厦只有供暖管道而没有承重墙和地基（信任、价值观、责任），大厦瞬间就会坍塌。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+                        <strong class="text-amber-400/90 font-mono">哲学基石：</strong>柏拉图《会饮篇》——从肉体吸引（Eros）升华为对真理与美德的追求。
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-navy-900 border border-amber-500/20 hover:border-amber-500/50 rounded-xl p-6 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-amber-400 font-bold">03. 伦理</span>
+                            <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-slate-50 mb-2">性与爱皆需责任</h3>
+                        <p class="text-xs text-slate-400 mb-4">拒绝主体物化 vs. 道德绝对命令</p>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800 mb-4">
+                            <span class="text-[10px] font-mono text-amber-400 block mb-1">⚡ 费曼第一性原理比喻</span>
+                            <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                在公路上开赛车固然爽快，但如果不系安全带、不遵守交通规则，车祸是必然的。责任就是男女关系里的安全带与导航系统，保护彼此免受碰撞伤害。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+                        <strong class="text-amber-400/90 font-mono">哲学基石：</strong>康德绝对命令——永远将他人视作目的，而非满足私欲的工具。
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-navy-900 border border-amber-500/20 hover:border-amber-500/50 rounded-xl p-6 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-amber-400 font-bold">04. 制度</span>
+                            <i data-lucide="home" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-slate-50 mb-2">爱是家庭的基石</h3>
+                        <p class="text-xs text-slate-400 mb-4">主观情感 vs. 法定与伦理实体</p>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800 mb-4">
+                            <span class="text-[10px] font-mono text-amber-400 block mb-1">⚡ 费曼第一性原理比喻</span>
+                            <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                光凭“心跳加速”是盖不起房子的。心跳加速提供动工的激情，而基于爱的契约、共同信念与责任才是砌成墙壁与屋顶的坚固砖石。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+                        <strong class="text-amber-400/90 font-mono">哲学基石：</strong>黑格尔《法哲学原理》——家庭是将个人主观爱意转化为客观伦理生活的实体。
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="bg-navy-900 border border-amber-500/20 hover:border-amber-500/50 rounded-xl p-6 transition-all duration-300 flex flex-col justify-between shadow-xl md:col-span-2 lg:col-span-2">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-mono text-amber-400 font-bold">05. 终极</span>
+                            <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-slate-50 mb-2">家庭是一个人的最终福报</h3>
+                        <p class="text-xs text-slate-400 mb-4">抗衡现代社会异化 vs. 存在主义无条件庇护所</p>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800 mb-4">
+                            <span class="text-[10px] font-mono text-amber-400 block mb-1">⚡ 费曼第一性原理比喻</span>
+                            <p class="text-xs text-slate-300 leading-relaxed font-light">
+                                在风暴连绵的大海上航行，金钱和名誉不过是偶尔翻起的浪花；唯有港湾能让你放下锚链安心睡眠。在冷酷的市场与异化的社会中，家庭就是你唯一的终极灵魂港湾。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+                        <strong class="text-amber-400/90 font-mono">哲学基石：</strong>克里斯托弗·拉斯奇《无情世界中的避风港》 & 汉娜·阿伦特——抗衡原子化社会。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Structural Diagrams -->
+        <section id="diagrams" class="py-12 px-6 lg:px-12 max-w-6xl mx-auto">
+            <div class="flex items-center space-x-3 mb-8 border-b border-amber-500/20 pb-4">
+                <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+                    <i data-lucide="git-merge" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-serif font-bold text-slate-50">二、哲学与社会学结构图谱</h2>
+                    <p class="text-xs text-slate-400">通过金字塔模型与斯滕伯格-康德三元矩阵解构关系层次</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Diagram 1: Pyramid of Human Connection -->
+                <div class="bg-navy-900 border border-amber-500/20 rounded-xl p-6 shadow-xl">
+                    <h3 class="text-lg font-serif font-bold text-slate-50 mb-2 flex items-center space-x-2">
+                        <i data-lucide="triangle" class="w-5 h-5 text-amber-400"></i>
+                        <span>图谱 1：人类连接的阶梯金字塔</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-6">从生物本能到存在主义终极庇护的递进架构</p>
+                    
+                    <div class="mermaid">
+                        graph TD
+                            A["Level 5: 最终福报 (终极灵魂避风港 / Sanctuary)"] --- B["Level 4: 家庭共同体 (伦理实体 / Sittlichkeit)"]
+                            B --- C["Level 3: 理性承诺与责任 (Agape / 绝对命令)"]
+                            C --- D["Level 2: 性爱与亲密 (Eros / 欲望表达)"]
+                            D --- E["Level 1: 喜欢 / 好感 (Liking / 情绪感知)"]
+
+                            style A fill:#d97706,stroke:#fbbf24,color:#0f172a,stroke-width:2px
+                            style B fill:#1e293b,stroke:#d97706,color:#f8fafc,stroke-width:1px
+                            style C fill:#0f172a,stroke:#94a3b8,color:#cbd5e1,stroke-width:1px
+                            style D fill:#070c18,stroke:#64748b,color:#94a3b8,stroke-width:1px
+                            style E fill:#020617,stroke:#475569,color:#64748b,stroke-width:1px
+                    </div>
+                </div>
+
+                <!-- Diagram 2: Triangulation Matrix -->
+                <div class="bg-navy-900 border border-amber-500/20 rounded-xl p-6 shadow-xl">
+                    <h3 class="text-lg font-serif font-bold text-slate-50 mb-2 flex items-center space-x-2">
+                        <i data-lucide="shield" class="w-5 h-5 text-amber-400"></i>
+                        <span>图谱 2：真爱与家庭的三元支撑矩阵</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-6">整合斯滕伯格三元爱意理论与康德道德伦理</p>
+
+                    <div class="mermaid">
+                        graph TD
+                            Top["意志与伦理责任 (Responsibility & Commitment)<br/><i>康德绝对命令 · 黑格尔伦理</i>"]
+                            Left["情感与灵性吸引 (Intimacy & Passion)<br/><i>柏拉图Eros · 弗洛姆理性爱</i>"]
+                            Right["身体与本能亲密 (Physicality & Sex)<br/><i>生物繁衍 · 情绪共振</i>"]
+
+                            Top <--> Left
+                            Left <--> Right
+                            Right <--> Top
+
+                            Center["<b>坚固家庭 (Solid Family)</b><br/>终极福报与安全港"] --- Top
+                            Center --- Left
+                            Center --- Right
+
+                            style Top fill:#b45309,stroke:#fbbf24,color:#ffffff
+                            style Left fill:#1e293b,stroke:#d97706,color:#ffffff
+                            style Right fill:#1e293b,stroke:#d97706,color:#ffffff
+                            style Center fill:#d97706,stroke:#ffffff,color:#0f172a,stroke-width:2px
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Philosophical Matrix -->
+        <section id="philosophical-matrix" class="py-12 px-6 lg:px-12 max-w-6xl mx-auto">
+            <div class="flex items-center space-x-3 mb-8 border-b border-amber-500/20 pb-4">
+                <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-serif font-bold text-slate-50">三、哲学家与社会学家思想矩阵</h2>
+                    <p class="text-xs text-slate-400">系统梳理伦理大师对爱、性、责任与家庭的经典论述</p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-amber-500/20 bg-navy-900 shadow-2xl">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b border-amber-500/20 bg-navy-950 text-amber-400 font-serif">
+                            <th class="p-4 min-w-[150px]">思想家 / 著作</th>
+                            <th class="p-4 min-w-[200px]">核心哲学主张</th>
+                            <th class="p-4 min-w-[220px]">对男女关系与家庭的解构</th>
+                            <th class="p-4 min-w-[200px]">费曼通俗推论</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-slate-300">
+                        <tr class="hover:bg-navy-800/40 transition-colors">
+                            <td class="p-4 font-bold text-slate-100">
+                                <div>埃里希·弗洛姆</div>
+                                <span class="text-[10px] font-mono text-amber-400/80">《爱的艺术》</span>
+                            </td>
+                            <td class="p-4">爱并非被动陷入的情感（Fall in love），而是一门需要主动练习与意志实践的“能力”。</td>
+                            <td class="p-4">“喜欢”是出于匮乏的占有与消费，“爱”则是给予、关心、尊重与深入了解。</td>
+                            <td class="p-4 italic text-slate-400">“喜欢是把花摘下来；爱是每天给花浇水。”</td>
+                        </tr>
+                        <tr class="hover:bg-navy-800/40 transition-colors">
+                            <td class="p-4 font-bold text-slate-100">
+                                <div>伊曼纽尔·康德</div>
+                                <span class="text-[10px] font-mono text-amber-400/80">《道德形而上学》</span>
+                            </td>
+                            <td class="p-4">绝对命令：人永远是目的，绝不能仅仅作为满足私欲的手段。</td>
+                            <td class="p-4">缺乏道德契约与责任的性爱，即是对他人身体与人格的工具化利用（Objectification）。</td>
+                            <td class="p-4 italic text-slate-400">“爱是不把对方当工具人，而是尊重的独立灵魂。”</td>
+                        </tr>
+                        <tr class="hover:bg-navy-800/40 transition-colors">
+                            <td class="p-4 font-bold text-slate-100">
+                                <div>G.W.F. 黑格尔</div>
+                                <span class="text-[10px] font-mono text-amber-400/80">《法哲学原理》</span>
+                            </td>
+                            <td class="p-4">伦理生活（Sittlichkeit）的三阶段：家庭、市民社会、国家。</td>
+                            <td class="p-4">婚姻与家庭是个人主观情感升华为客观伦理实体的过程，个体在责任中获得真自由。</td>
+                            <td class="p-4 italic text-slate-400">“家庭是两个人放弃孤立自我、融合成‘我们’。”</td>
+                        </tr>
+                        <tr class="hover:bg-navy-800/40 transition-colors">
+                            <td class="p-4 font-bold text-slate-100">
+                                <div>柏拉图</div>
+                                <span class="text-[10px] font-mono text-amber-400/80">《会饮篇》</span>
+                            </td>
+                            <td class="p-4">爱的阶梯（Ladder of Love）：从感官欲望上升至对绝对美与真理的渴望。</td>
+                            <td class="p-4">性爱是阶梯的最底层，唯有通过意志与智慧升华，才能触碰到永恒的真爱。</td>
+                            <td class="p-4 italic text-slate-400">“欲望是火箭的推力，但导航目的地必须是灵魂。”</td>
+                        </tr>
+                        <tr class="hover:bg-navy-800/40 transition-colors">
+                            <td class="p-4 font-bold text-slate-100">
+                                <div>克里斯托弗·拉斯奇</div>
+                                <span class="text-[10px] font-mono text-amber-400/80">《无情世界中的避风港》</span>
+                            </td>
+                            <td class="p-4">现代原子化与功利主义社会对人类精神的严重侵蚀。</td>
+                            <td class="p-4">家庭是抵抗冷酷市场法则与社会竞争的唯一心理防线，提供无条件的存在主义庇护。</td>
+                            <td class="p-4 italic text-slate-400">“在外面你是个随时可被替代的齿轮；回到家你是唯一。”</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Case Studies -->
+        <section id="case-studies" class="py-12 px-6 lg:px-12 max-w-6xl mx-auto">
+            <div class="flex items-center space-x-3 mb-8 border-b border-amber-500/20 pb-4">
+                <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+                    <i data-lucide="award" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-serif font-bold text-slate-50">四、名人婚姻实证：成功典范与失败代价</h2>
+                    <p class="text-xs text-slate-400">理性责任与意志建构 vs 享乐主义与责任割裂的现实对照</p>
+                </div>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex space-x-4 mb-8">
+                <button onclick="switchTab('success')" id="tab-success" class="flex-1 py-3 px-6 rounded-xl font-serif font-bold transition-all border border-amber-500/40 bg-amber-500/20 text-amber-400 flex items-center justify-center space-x-2 text-sm">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    <span>成功与坚韧典范（共同志业与意志践行）</span>
+                </button>
+                <button onclick="switchTab('failure')" id="tab-failure" class="flex-1 py-3 px-6 rounded-xl font-serif font-bold transition-all border border-slate-700 bg-navy-900 text-slate-400 hover:text-red-400 flex items-center justify-center space-x-2 text-sm">
+                    <i data-lucide="x-circle" class="w-4 h-4"></i>
+                    <span>失败与解体案例（惨痛代价与精力耗散）</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: SUCCESSFUL CASES -->
+            <div id="case-success" class="space-y-6">
+                <!-- Beckham -->
+                <div class="bg-navy-900 border border-amber-500/30 rounded-xl p-6 sm:p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 mb-4">
+                        <div>
+                            <span class="text-[10px] font-mono text-amber-400 uppercase font-bold tracking-wider">成功典范 01</span>
+                            <h3 class="text-xl font-serif font-bold text-slate-50">维多利亚·贝克汉姆 与 大卫·贝克汉姆</h3>
+                        </div>
+                        <span class="mt-2 md:mt-0 text-xs px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full font-mono">25+ 年婚姻 · 共同品牌与危机共担</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4 font-light">
+                        在遭遇外界巨大的舆论风暴、事业转型压力以及个人危机时，贝克汉姆夫妇并未选择轻易放弃。他们的结合不仅是情感的共鸣，更是极其深刻的“共同体建构”。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800">
+                            <strong class="text-amber-400 block mb-1 font-serif">意志力的胜利</strong>
+                            <p class="text-slate-400 leading-normal">维多利亚在多次危机中展现出极高的人格韧性，两人将婚姻打造为包含家庭、事业与共同财富的不可摧毁的城堡。</p>
+                        </div>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800">
+                            <strong class="text-amber-400 block mb-1 font-serif">社会学启示</strong>
+                            <p class="text-slate-400 leading-normal">真正的长期婚姻需要将激情升华为“共同志业”。在风浪中相互锚定，使家庭成为抵御社会风险的坚固盾牌。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Obama -->
+                <div class="bg-navy-900 border border-amber-500/30 rounded-xl p-6 sm:p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 mb-4">
+                        <div>
+                            <span class="text-[10px] font-mono text-amber-400 uppercase font-bold tracking-wider">成功典范 02</span>
+                            <h3 class="text-xl font-serif font-bold text-slate-50">米歇尔·奥巴马 与 巴拉克·奥巴马</h3>
+                        </div>
+                        <span class="mt-2 md:mt-0 text-xs px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full font-mono">平等伙伴关系 · 相互成就</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4 font-light">
+                        米歇尔与奥巴马的婚姻诠释了康德“互相尊重”与平等伙伴关系的最高境界。在充满巨大权势诱惑与高压的政治漩涡中，他们始终保持着平等的对话与灵魂关照。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800">
+                            <strong class="text-amber-400 block mb-1 font-serif">深层的情感庇护</strong>
+                            <p class="text-slate-400 leading-normal">米歇尔在著作中强调，婚姻绝非时刻50/50的公平，而是当一方脆弱时另一方倾力承担的责任连带。</p>
+                        </div>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800">
+                            <strong class="text-amber-400 block mb-1 font-serif">社会学启示</strong>
+                            <p class="text-slate-400 leading-normal">家庭不仅提供了情绪安全感，更成为了高压职业生涯中唯一的精神避风港（Haven），避免个体在权力中异化。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: FAILED CASES -->
+            <div id="case-failure" class="space-y-6 hidden">
+                <!-- Bill Gates -->
+                <div class="bg-navy-900 border border-red-500/30 rounded-xl p-6 sm:p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 mb-4">
+                        <div>
+                            <span class="text-[10px] font-mono text-red-400 uppercase font-bold tracking-wider">失败与破裂案例 01</span>
+                            <h3 class="text-xl font-serif font-bold text-slate-50">比尔·盖茨 与 梅琳达·弗伦奇·盖茨</h3>
+                        </div>
+                        <span class="mt-2 md:mt-0 text-xs px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-400 rounded-full font-mono">27年婚姻破裂 · 巨大的财产分割与精神耗散</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4 font-light">
+                        长达27年的婚姻最终走向解体，其背后的代价令人深思。即便拥有顶尖的财富与社会资源，当基础的信任信任链条断裂、生命优先级产生不可调和的分歧时，婚姻依然难以维持。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800">
+                            <strong class="text-red-400 block mb-1 font-serif">天价财富撕裂</strong>
+                            <p class="text-slate-400 leading-normal">超过千亿美元的资产重新分割，不仅涉及极其繁琐的法律诉讼，更导致共同慈善事业的治理危机。</p>
+                        </div>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800">
+                            <strong class="text-red-400 block mb-1 font-serif">精神避风港丧失</strong>
+                            <p class="text-slate-400 leading-normal">晚年失去了陪伴数十年的生命锚点，在公众舆论中承受巨大的名誉损耗与精神寂寞。</p>
+                        </div>
+                        <div class="bg-navy-950 p-4 rounded-lg border border-slate-800">
+                            <strong class="text-red-400 block mb-1 font-serif">社会学代价</strong>
+                            <p class="text-slate-400 leading-normal">证明了财富无法替代道德责任与情绪信任。家庭解体所带来的精神亏空，任何资本都无法弥补。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- High Stress / Tech Marriage Contrast & Huang Clarification -->
+                <div class="bg-navy-900 border border-amber-500/20 rounded-xl p-6 sm:p-8 shadow-xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 mb-4">
+                        <div>
+                            <span class="text-[10px] font-mono text-amber-400 uppercase font-bold tracking-wider">学术对比与澄清</span>
+                            <h3 class="text-xl font-serif font-bold text-slate-50">高压科技巨头的婚姻抉择：对比分析</h3>
+                        </div>
+                        <span class="mt-2 md:mt-0 text-xs px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full font-mono">事实核查与伦理对照</span>
+                    </div>
+                    <div class="space-y-4 text-xs text-slate-300">
+                        <p class="leading-relaxed font-light">
+                            在科技与商业高压领域，家庭常面临极大的异化风险。例如贝索斯与麦肯齐的离婚导致了四百亿美元级的资产切割与感情解体；而与之形成鲜明对比的是<strong>黄仁勋（Jensen Huang）与妻子 Lori Huang</strong>。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-navy-950 p-4 rounded-lg border border-emerald-500/20">
+                                <strong class="text-emerald-400 block mb-1 font-serif">正面对照：黄仁勋与 Lori（1983年至今）</strong>
+                                <p class="text-slate-400 leading-normal">自大学时代相识并结婚40余年来，即便在英伟达经历数次濒临破产的极高压力期，家庭始终是其坚固的后盾。这种长期责任的坚守，使其免于高额的精力损耗与情感撕裂。</p>
+                            </div>
+                            <div class="bg-navy-950 p-4 rounded-lg border border-red-500/20">
+                                <strong class="text-red-400 block mb-1 font-serif">负面代价：功利主义侵蚀家庭的教训</strong>
+                                <p class="text-slate-400 leading-normal">许多高压成功人士因将工作中的功利计算带入家庭，忽视了伴侣的情绪与责任，最终支付了巨额的法律分红、公关危机以及后半生无处锚定的孤独代价。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Feynman Interactive Thought Quiz -->
+        <section id="feynman-quiz" class="py-12 px-6 lg:px-12 max-w-4xl mx-auto mb-16">
+            <div class="bg-gradient-to-br from-navy-900 via-navy-900 to-amber-950/30 border border-amber-500/40 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-2 bg-amber-500/20 text-amber-400 rounded-lg">
+                        <i data-lucide="help-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-serif font-bold text-slate-50">五、费曼交互实验室：评估你的关系状态</h2>
+                        <p class="text-xs text-slate-400">回答3个核心哲学问题，检视你的关系处于哪个阶梯</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6" id="quiz-container">
+                    <!-- Question 1 -->
+                    <div class="bg-navy-950/80 p-5 rounded-xl border border-slate-800">
+                        <h4 class="text-xs font-mono text-amber-400 uppercase font-bold mb-2">问题 01 · 辨析喜欢与爱</h4>
+                        <p class="text-sm text-slate-200 mb-4">当伴侣在生活中遇到重大挫折或容貌褪去时，你的内心第一反应是什么？</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <button onclick="answerQuiz(1, 'A')" class="p-3 bg-navy-900 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 rounded-lg text-left transition-all">
+                                A. 觉得麻烦或失望，新鲜感降低 (停留于消费式喜欢)
+                            </button>
+                            <button onclick="answerQuiz(1, 'B')" class="p-3 bg-navy-900 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 rounded-lg text-left transition-all">
+                                B. 感到责任与心疼，愿意共同分担 (上升至理性真爱)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="bg-navy-950/80 p-5 rounded-xl border border-slate-800">
+                        <h4 class="text-xs font-mono text-amber-400 uppercase font-bold mb-2">问题 02 · 康德伦理视角</h4>
+                        <p class="text-sm text-slate-200 mb-4">在处理亲密关系中的矛盾时，你是否曾将对方视作实现自己情绪价值或社会地位的手段？</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <button onclick="answerQuiz(2, 'A')" class="p-3 bg-navy-900 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 rounded-lg text-left transition-all">
+                                A. 是的，希望对方按我的意志改变 (工具化他人)
+                            </button>
+                            <button onclick="answerQuiz(2, 'B')" class="p-3 bg-navy-900 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 rounded-lg text-left transition-all">
+                                B. 否，尊重对方是独立的自由意志实体 (遵循绝对命令)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Box -->
+                <div id="quiz-result" class="mt-6 p-5 bg-amber-500/10 border border-amber-500/40 rounded-xl hidden text-xs text-slate-200">
+                    <strong class="text-amber-400 font-serif text-sm block mb-1">哲学诊疗报告：</strong>
+                    <p id="quiz-text" class="leading-relaxed font-light"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-navy-950 py-8 text-center text-xs text-slate-500">
+        <p class="font-serif">基于社会学与道德哲学的学术框架梳理 · 费曼第一性原理可视化呈现</p>
+    </footer>
+    </div>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Initialize Mermaid Diagrams
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            fontFamily: 'Inter, sans-serif',
+            themeVariables: {
+                darkMode: true,
+                background: '#0f172a',
+                primaryColor: '#d97706',
+                lineColor: '#cbd5e1'
+            }
+        });
+
+        // Mobile Nav Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileSidebarBtn = document.getElementById('mobile-sidebar-btn');
+        const sidebar = document.getElementById('sidebar');
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileBtn.setAttribute('aria-expanded', String(!mobileMenu.classList.contains('hidden')));
+        });
+        mobileSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('flex');
+            mobileSidebarBtn.setAttribute('aria-expanded', String(!sidebar.classList.contains('hidden')));
+        });
+
+        // Switch Case Study Tabs
+        function switchTab(type) {
+            const tabSuccess = document.getElementById('tab-success');
+            const tabFailure = document.getElementById('tab-failure');
+            const caseSuccess = document.getElementById('case-success');
+            const caseFailure = document.getElementById('case-failure');
+
+            if (type === 'success') {
+                tabSuccess.className = "flex-1 py-3 px-6 rounded-xl font-serif font-bold transition-all border border-amber-500/40 bg-amber-500/20 text-amber-400 flex items-center justify-center space-x-2 text-sm";
+                tabFailure.className = "flex-1 py-3 px-6 rounded-xl font-serif font-bold transition-all border border-slate-700 bg-navy-900 text-slate-400 hover:text-red-400 flex items-center justify-center space-x-2 text-sm";
+                caseSuccess.classList.remove('hidden');
+                caseFailure.classList.add('hidden');
+            } else {
+                tabFailure.className = "flex-1 py-3 px-6 rounded-xl font-serif font-bold transition-all border border-red-500/40 bg-red-500/20 text-red-400 flex items-center justify-center space-x-2 text-sm";
+                tabSuccess.className = "flex-1 py-3 px-6 rounded-xl font-serif font-bold transition-all border border-slate-700 bg-navy-900 text-slate-400 hover:text-amber-400 flex items-center justify-center space-x-2 text-sm";
+                caseFailure.classList.remove('hidden');
+                caseSuccess.classList.add('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        // Quiz Logic
+        const answers = {};
+        function answerQuiz(q, option) {
+            answers[q] = option;
+            if (answers[1] && answers[2]) {
+                const resultBox = document.getElementById('quiz-result');
+                const resultText = document.getElementById('quiz-text');
+                resultBox.classList.remove('hidden');
+
+                if (answers[1] === 'B' && answers[2] === 'B') {
+                    resultText.innerHTML = "你的关系观念已跨越了简单的激情与被动吸引，成功进入黑格尔所谓的<b>‘伦理实体’与弗洛姆的‘理性主动大爱’</b>。你具备构建稳定家庭与获得终极福报的精神基石。";
+                } else if (answers[1] === 'A' || answers[2] === 'A') {
+                    resultText.innerHTML = "你的关系观念可能仍部分停留在<b>消费主义或感官吸引（Eros）阶段</b>。需注意康德的道德提醒：避免将他人工具化。试着从被动接受情绪价值，转向主动的意志投入与责任承担。";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
