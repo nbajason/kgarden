@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <title>人类哲学与男女关系：吸引力、契合度与伦理</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f111a',
+                        cardBg: '#181b26',
+                        glassBorder: 'rgba(255, 255, 255, 0.08)',
+                        amberGold: '#e5a93c',
+                        crimsonRed: '#e05666',
+                        violetAccent: '#9d65c9',
+                        tealAccent: '#2dd4bf'
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f111a;
+            color: #e2e8f0;
+        }
+        .glass-card {
+            background: rgba(24, 27, 38, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card:hover {
+            border-color: rgba(229, 169, 60, 0.3);
+        }
+        .gradient-text-gold {
+            background: linear-gradient(135deg, #fef08a 0%, #e5a93c 50%, #b45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-text-rose {
+            background: linear-gradient(135deg, #fecdd3 0%, #e05666 50%, #9f1239 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glow-amber {
+            box-shadow: 0 0 25px -5px rgba(229, 169, 60, 0.15);
+        }
+        .diagram-node {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .diagram-node:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(229, 169, 60, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row font-sans antialiased selection:bg-amberGold selection:text-slate-900">
+
+    <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 fixed md:relative inset-y-0 left-0 w-full md:w-72 z-40">
+        <a href="index.html" class="group p-5 border-b border-slate-800 flex items-center gap-3 hover:bg-slate-800/40 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-spa"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-base font-bold tracking-wide">个人知识花园</h1>
+                <p class="text-xs text-amber-400">费曼高效学习法</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:text-amber-400"></i>
+        </a>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
+            <a href="china_culture_overview.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-scroll w-5 text-center"></i>
+                <span>中国文化总览</span>
+            </a>
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">思想分支专题</p>
+            <a href="china_kongmeng.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-book w-5 text-center text-red-300"></i>
+                <span>儒家专题</span>
+            </a>
+            <a href="china_laozi.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-leaf w-5 text-center text-emerald-300"></i>
+                <span>道家专题</span>
+            </a>
+            <a href="china_chan.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-spa w-5 text-center text-purple-300"></i>
+                <span>禅宗专题</span>
+            </a>
+            <p class="px-3 pt-3 pb-1 text-xs text-slate-400 uppercase tracking-wider">实践专题</p>
+            <a href="culture_love.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-heart w-5 text-center text-amber-300"></i>
+                <span>爱、责任与家庭</span>
+            </a>
+            <a href="culture_love_wisdom.html" aria-current="page" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                <i class="fa-solid fa-lightbulb w-5 text-center"></i>
+                <span>爱的哲思与伦理</span>
+            </a>
+            <a href="culture_love_quiz.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-compass w-5 text-center text-amber-300"></i>
+                <span>关系建造者沙盘</span>
+            </a>
+            <a href="culture_love_trap.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60">
+                <i class="fa-solid fa-heart-crack w-5 text-center text-rose-300"></i>
+                <span>吸引力悖论</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                文化费曼模式
+            </span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px]">v1.0</span>
+        </div>
+    </aside>
+
+    <div class="flex flex-col flex-grow min-w-0">
+
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 glass-card border-b border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <button id="mobile-sidebar-btn" class="md:hidden text-slate-300 hover:text-white p-2" aria-label="打开页面导航" aria-expanded="false">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <span class="p-2 bg-gradient-to-br from-amberGold to-amber-700 text-slate-950 rounded-lg text-lg font-serif font-bold">哲</span>
+                <div>
+                    <h1 class="text-base sm:text-lg font-serif font-bold text-slate-100 leading-tight">爱的哲思、社会学与伦理</h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">布迪厄 · 康德 · 萨特 · 费曼拆解</p>
+                </div>
+            </div>
+            <nav class="hidden lg:flex items-center space-x-1 sm:space-x-6 text-xs sm:text-sm font-medium">
+                <a href="#foundations" class="px-3 py-2 rounded-md hover:bg-slate-800/80 text-slate-300 transition">哲学与社会学</a>
+                <a href="#mechanisms" class="px-3 py-2 rounded-md hover:bg-slate-800/80 text-slate-300 transition">匹配矩阵</a>
+                <a href="#cases" class="px-3 py-2 rounded-md hover:bg-slate-800/80 text-slate-300 transition">名人图谱</a>
+                <a href="#quiz" class="px-3 py-2 bg-amberGold text-slate-950 font-bold rounded-md hover:bg-yellow-400 transition">费曼诊断</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-16 sm:py-24 overflow-hidden border-b border-stone-800/80">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/20 via-slate-950 to-darkBg pointer-events-none"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
+            <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amberGold/10 text-amberGold text-xs font-semibold mb-6 border border-amberGold/30">
+                <i class="fa-solid fa-atom"></i>
+                <span>社会学 · 道德哲学 · 费曼认知解构</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif font-extrabold tracking-tight text-slate-100 mb-6 leading-tight">
+                解构吸引力，重构契合度：<br>
+                <span class="gradient-text-gold">为什么不同的人喜欢不同的人？</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">
+                “爱不是一种偶然遇到的热烈感情，而是一种需要知识、习惯、道德承诺与意志力的实践艺术。” 
+                从布迪厄的文化资本，到康德的主体性伦理，再到弗洛姆的存在主义力学，为你拆解爱的终极原理。
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#diagram-attraction" class="px-6 py-3 bg-amberGold text-slate-950 font-bold rounded-xl shadow-lg hover:bg-yellow-400 transition flex items-center space-x-2 text-sm">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <span>探索吸引力发生模型</span>
+                </a>
+                <a href="#cases" class="px-6 py-3 bg-slate-800/80 text-slate-200 border border-slate-700 font-medium rounded-xl hover:bg-slate-700 transition flex items-center space-x-2 text-sm">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <span>查看三大成功案例</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+        <!-- SECTION 1: Philosophical & Sociological Foundations -->
+        <section id="foundations" class="space-y-8">
+            <div class="border-l-4 border-amberGold pl-4">
+                <h2 class="text-xs uppercase font-bold text-amberGold tracking-wider">Module 01</h2>
+                <h3 class="text-2xl sm:text-3xl font-serif font-bold text-slate-100">核心困惑：不同的人为何喜欢不同的人？</h3>
+                <p class="text-slate-400 text-sm mt-1">融合古希腊思想、康德伦理、黑格尔承认学说与布迪厄社会学</p>
+            </div>
+
+            <!-- 5 Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Plato -->
+                <div class="glass-card rounded-2xl p-6 glow-amber transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-amberGold/10 text-amberGold rounded-xl font-bold">01</div>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-slate-800 text-slate-400 rounded-full">柏拉图《会饮篇》</span>
+                    </div>
+                    <h4 class="text-lg font-bold font-serif text-slate-100 mb-2">“半球理论”与心理缺失补完</h4>
+                    <p class="text-xs text-amberGold/80 mb-3 uppercase tracking-wider">心理学与神话原型</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        偏好的本质，是寻找能补偿自身“认知缺陷”或“人格阴影”的补完半球。你所狂热迷恋的特征，往往是你内心深处渴望拥有的特质或未能实现的潜能。
+                    </p>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center text-xs text-amberGold font-medium">
+                        <i class="fa-solid fa-lightbulb mr-2"></i>
+                        <span>费曼点拨：迷恋往往是一面镜子，映出你对完整自我的渴望。</span>
+                    </div>
+                </div>
+
+                <!-- Bourdieu (Sociology) -->
+                <div class="glass-card rounded-2xl p-6 glow-amber transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-tealAccent/10 text-tealAccent rounded-xl font-bold">02</div>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-slate-800 text-slate-400 rounded-full">皮埃尔·布迪厄（社会学）</span>
+                    </div>
+                    <h4 class="text-lg font-bold font-serif text-slate-100 mb-2">“惯习 (Habitus) 与文化资本”</h4>
+                    <p class="text-xs text-tealAccent/80 mb-3 uppercase tracking-wider">社会学视角下的“一见钟情”</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        所谓的“天然默契”，本质上是双方在相似的文化资本、阶层惯习、审美品味与生活节奏上的同频。人的偏好受深层社会化结构的塑造，并非纯粹随机的自由意志。
+                    </p>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center text-xs text-tealAccent font-medium">
+                        <i class="fa-solid fa-network-wired mr-2"></i>
+                        <span>费曼点拨：你以为的灵魂电波，其实是底层代码格式的一致。</span>
+                    </div>
+                </div>
+
+                <!-- Kant -->
+                <div class="glass-card rounded-2xl p-6 glow-amber transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-crimsonRed/10 text-crimsonRed rounded-xl font-bold">03</div>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-slate-800 text-slate-400 rounded-full">康德伦理学</span>
+                    </div>
+                    <h4 class="text-lg font-bold font-serif text-slate-100 mb-2">“人是目的，而非手段”</h4>
+                    <p class="text-xs text-crimsonRed/80 mb-3 uppercase tracking-wider">绝对道德底线</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        错误的吸引始于将对方视为“情绪工具”、“阶层跳板”或“美学摆件”。健全的喜欢，是爱其独立自由的理性意志本身，尊重其作为独立个体的尊严。
+                    </p>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center text-xs text-crimsonRed font-medium">
+                        <i class="fa-solid fa-shield-halved mr-2"></i>
+                        <span>道德底线：爱不是消费对方，而是承担尊重与保护的义务。</span>
+                    </div>
+                </div>
+
+                <!-- Hegel -->
+                <div class="glass-card rounded-2xl p-6 glow-amber transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-amberGold/10 text-amberGold rounded-xl font-bold">04</div>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-slate-800 text-slate-400 rounded-full">黑格尔辩证法</span>
+                    </div>
+                    <h4 class="text-lg font-bold font-serif text-slate-100 mb-2">“承认欲望”与自我确证</h4>
+                    <p class="text-xs text-amberGold/80 mb-3 uppercase tracking-wider">精神层面的终极发牌</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        欲望是他人欲望的欲望。每个人都在寻找能够给予自己最高维度精神承认的人。你喜欢的人，必定能够在你最看重的领域（智识、道德、审美）看重你。
+                    </p>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center text-xs text-amberGold font-medium">
+                        <i class="fa-solid fa-arrows-rotate mr-2"></i>
+                        <span>费曼点拨：真正的吸引，是两个灵魂互颁勋章。</span>
+                    </div>
+                </div>
+
+                <!-- Sartre -->
+                <div class="glass-card rounded-2xl p-6 glow-amber transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-violetAccent/10 text-violetAccent rounded-xl font-bold">05</div>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-slate-800 text-slate-400 rounded-full">萨特存在主义</span>
+                    </div>
+                    <h4 class="text-lg font-bold font-serif text-slate-100 mb-2">存在先于本质与“自由重负”</h4>
+                    <p class="text-xs text-violetAccent/80 mb-3 uppercase tracking-wider">拒斥“天生合适”的迷思</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        没有现成的“天生一对”。当你选择一个人，你就在通过选择塑造未来的自己。抱怨“不合适”却不愿承担沟通的痛苦，是一种逃避责任的“自欺（Bad Faith）”。
+                    </p>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center text-xs text-violetAccent font-medium">
+                        <i class="fa-solid fa-hand-fist mr-2"></i>
+                        <span>费曼点拨：合适不是捡来的，合适是共同在风浪里锻造出来的。</span>
+                    </div>
+                </div>
+
+                <!-- Erich Fromm -->
+                <div class="glass-card rounded-2xl p-6 glow-amber transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-amberGold/10 text-amberGold rounded-xl font-bold">06</div>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-slate-800 text-slate-400 rounded-full">弗洛姆《爱的艺术》</span>
+                    </div>
+                    <h4 class="text-lg font-bold font-serif text-slate-100 mb-2">爱是一门主动践行的艺术</h4>
+                    <p class="text-xs text-amberGold/80 mb-3 uppercase tracking-wider">从“被爱”到“爱的能力”</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        成熟的爱是“在保留自身完整性前提下的结合”。它需要四种核心力量的持续输出：关心（Care）、责任（Responsibility）、尊重（Respect）与了解（Knowledge）。
+                    </p>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center text-xs text-amberGold font-medium">
+                        <i class="fa-solid fa-seedling mr-2"></i>
+                        <span>费曼点拨：爱不是名词，爱是动词；不是靠碰运气的彩票。</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIAGRAM 1: Interactive Attraction Mechanism Spectrum -->
+            <div id="diagram-attraction" class="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                    <div>
+                        <h4 class="text-lg font-serif font-bold text-slate-100">交互图谱 1：人类吸引力发生机制四大演化层级</h4>
+                        <p class="text-xs text-slate-400">点击下方各层级，展开对应的社会学与哲学原理分析</p>
+                    </div>
+                    <span class="text-xs bg-amberGold/10 text-amberGold border border-amberGold/30 px-3 py-1 rounded-full font-medium w-fit">点击节点交互</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <button onclick="updateAttractionDetail('bio')" class="text-left p-5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 hover:bg-slate-800/80 transition diagram-node focus:ring-2 focus:ring-amberGold outline-none">
+                        <div class="text-amberGold font-bold text-xs mb-1"><i class="fa-solid fa-dna mr-2"></i>第一级：生物本能 (Eros)</div>
+                        <h5 class="font-bold text-slate-200 text-sm mb-1">荷尔蒙 · 基因 · 外貌</h5>
+                        <p class="text-xs text-slate-400">演化心理学决定的第一眼冲动，半衰期最短。</p>
+                    </button>
+
+                    <button onclick="updateAttractionDetail('habitus')" class="text-left p-5 rounded-xl border border-slate-800 hover:border-tealAccent bg-slate-900/60 hover:bg-slate-800/80 transition diagram-node focus:ring-2 focus:ring-tealAccent outline-none">
+                        <div class="text-tealAccent font-bold text-xs mb-1"><i class="fa-solid fa-users mr-2"></i>第二级：社会惯习 (Habitus)</div>
+                        <h5 class="font-bold text-slate-200 text-sm mb-1">文化资本 · 阶层 · 品味</h5>
+                        <p class="text-xs text-slate-400">布迪厄提出的暗流：生活方式与共同语境的默契。</p>
+                    </button>
+
+                    <button onclick="updateAttractionDetail('psyche')" class="text-left p-5 rounded-xl border border-slate-800 hover:border-violetAccent bg-slate-900/60 hover:bg-slate-800/80 transition diagram-node focus:ring-2 focus:ring-violetAccent outline-none">
+                        <div class="text-violetAccent font-bold text-xs mb-1"><i class="fa-solid fa-brain mr-2"></i>第三级：心理依恋 (Psyche)</div>
+                        <h5 class="font-bold text-slate-200 text-sm mb-1">补完心理 · 安全感 · 熟悉感</h5>
+                        <p class="text-xs text-slate-400">原生家庭遗留与人格阴影的寻找与修复。</p>
+                    </button>
+
+                    <button onclick="updateAttractionDetail('logos')" class="text-left p-5 rounded-xl border border-slate-800 hover:border-crimsonRed bg-slate-900/60 hover:bg-slate-800/80 transition diagram-node focus:ring-2 focus:ring-crimsonRed outline-none">
+                        <div class="text-crimsonRed font-bold text-xs mb-1"><i class="fa-solid fa-scale-balanced mr-2"></i>第四级：存在伦理 (Logos)</div>
+                        <h5 class="font-bold text-slate-200 text-sm mb-1">价值观 · 道德履约 · 共同理想</h5>
+                        <p class="text-xs text-slate-400">康德式相互尊重，抗击岁月与危机的终极防线。</p>
+                    </button>
+                </div>
+
+                <!-- Dynamic Content Display Box -->
+                <div id="attraction-detail-box" class="p-6 bg-slate-900/90 rounded-xl border border-amberGold/30 transition-all">
+                    <h5 id="attraction-title" class="font-serif font-bold text-amberGold text-base mb-2">点击上方四大层级节点探索</h5>
+                    <p id="attraction-desc" class="text-xs text-slate-300 leading-relaxed mb-3">
+                        请选择任意一个吸引力层级，学者将为您解构其底层运行机制。
+                    </p>
+                    <div id="attraction-feynman" class="text-xs bg-slate-950 p-3 rounded-lg border border-slate-800 text-slate-300 font-medium">
+                        <i class="fa-solid fa-quote-left mr-1 text-amberGold"></i> 费曼通俗拆解准备中...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Methodology & Compatibility Matrix -->
+        <section id="mechanisms" class="space-y-8">
+            <div class="border-l-4 border-tealAccent pl-4">
+                <h2 class="text-xs uppercase font-bold text-tealAccent tracking-wider">Module 02</h2>
+                <h3 class="text-2xl sm:text-3xl font-serif font-bold text-slate-100">选择方法论：如何寻找契合，并让自己变得契合？</h3>
+                <p class="text-slate-400 text-sm mt-1">从“盲目寻找”转向“自我建设与伦理对齐”</p>
+            </div>
+
+            <!-- Interactive Radar Canvas & Sliders -->
+            <div class="glass-card rounded-2xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Controls Side (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div>
+                        <span class="text-xs text-amberGold font-mono uppercase">Interactive Dynamic Radar</span>
+                        <h4 class="text-xl font-serif font-bold text-slate-100 mt-1">契合度四维雷达计算器</h4>
+                        <p class="text-xs text-slate-400">调节四大维度比率，观察双方关系抗风险能力雷达图的变化</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Dim 1 -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">1. 自我觉察度 (Self-Awareness)</span>
+                                <span id="radar-val-1" class="text-amberGold font-bold">75%</span>
+                            </div>
+                            <input type="range" id="radar-input-1" min="20" max="100" value="75" oninput="renderRadarChart()" class="w-full accent-amberGold cursor-pointer">
+                        </div>
+
+                        <!-- Dim 2 -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">2. 文化惯习共振 (Habitus Sync)</span>
+                                <span id="radar-val-2" class="text-tealAccent font-bold">80%</span>
+                            </div>
+                            <input type="range" id="radar-input-2" min="20" max="100" value="80" oninput="renderRadarChart()" class="w-full accent-tealAccent cursor-pointer">
+                        </div>
+
+                        <!-- Dim 3 -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">3. 伦理履约担当 (Moral Agency)</span>
+                                <span id="radar-val-3" class="text-crimsonRed font-bold">70%</span>
+                            </div>
+                            <input type="range" id="radar-input-3" min="20" max="100" value="70" oninput="renderRadarChart()" class="w-full accent-crimsonRed cursor-pointer">
+                        </div>
+
+                        <!-- Dim 4 -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">4. 共同进化能力 (Co-Evolution)</span>
+                                <span id="radar-val-4" class="text-violetAccent font-bold">85%</span>
+                            </div>
+                            <input type="range" id="radar-input-4" min="20" max="100" value="85" oninput="renderRadarChart()" class="w-full accent-violetAccent cursor-pointer">
+                        </div>
+                    </div>
+
+                    <div id="radar-summary-box" class="p-4 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-300">
+                        <!-- Dynamic output -->
+                    </div>
+                </div>
+
+                <!-- Canvas Side (5 cols) -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center p-4 bg-slate-950/60 rounded-2xl border border-slate-800">
+                    <canvas id="radarCanvas" width="280" height="280" class="max-w-full h-auto"></canvas>
+                    <div class="text-[10px] text-slate-500 mt-2 text-center">图表：实时计算契合稳健性区域</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: Detailed Case Studies -->
+        <section id="cases" class="space-y-8">
+            <div class="border-l-4 border-crimsonRed pl-4">
+                <h2 class="text-xs uppercase font-bold text-crimsonRed tracking-wider">Module 03</h2>
+                <h3 class="text-2xl sm:text-3xl font-serif font-bold text-slate-100">近现代成功范式：三种至高关系的社会学解构</h3>
+                <p class="text-slate-400 text-sm mt-1">他们如何在变动与危机中找到并成就彼此？</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Beckham Case -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-slate-800 hover:border-amberGold/50 transition">
+                    <div class="p-6 bg-gradient-to-b from-amber-950/40 to-transparent">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs px-2.5 py-1 bg-amberGold/20 text-amberGold rounded-md font-mono">范式 A</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-gem mr-1"></i>商业与生命共同体</span>
+                        </div>
+                        <h4 class="text-xl font-serif font-bold text-slate-100">贝克汉姆夫妇</h4>
+                        <p class="text-xs text-amberGold/80 mt-1">大卫 · 贝克汉姆 & 维多利亚 · 贝克汉姆</p>
+                    </div>
+                    <div class="p-6 space-y-4 flex-1">
+                        <div class="text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-amberGold">1. 共同体进化：</strong> 从激情吸引快速升级为“Beckham Brand”共同体，将个人资本转化为协同声誉。</p>
+                            <p><strong class="text-amberGold">2. 伦理履约：</strong> 面对职业转型、退役阵痛与外界危机，双方始终以高度自律履行家庭与事业保障。</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-xs text-slate-400">
+                            <strong class="text-slate-200">费曼总结：</strong> 爱情不只是谈恋爱，更是几十年的“战略合伙人”制度，持续重新签署合作协议。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Obama Case -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-slate-800 hover:border-tealAccent/50 transition">
+                    <div class="p-6 bg-gradient-to-b from-teal-950/40 to-transparent">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs px-2.5 py-1 bg-tealAccent/20 text-tealAccent rounded-md font-mono">范式 B</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-scale-balanced mr-1"></i>智识与价值观同频</span>
+                        </div>
+                        <h4 class="text-xl font-serif font-bold text-slate-100">奥巴马夫妇</h4>
+                        <p class="text-xs text-tealAccent/80 mt-1">巴拉克 · 奥巴马 & 米歇尔 · 奥巴马</p>
+                    </div>
+                    <div class="p-6 space-y-4 flex-1">
+                        <div class="text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-tealAccent">1. 康德式尊重：</strong> 巴拉克始终将米歇尔视为完全平等的辩论伙伴，尊重其独立事业。</p>
+                            <p><strong class="text-tealAccent">2. 文化资本对齐：</strong> 相同的法律背景与社会正义感，使他们在极高压力的政治风浪里有不倒的底座。</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-xs text-slate-400">
+                            <strong class="text-slate-200">费曼总结：</strong> 最好的爱情不是两个人相互凝视，而是两个成熟灵魂并肩凝视同一个远方。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curie Case -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-slate-800 hover:border-violetAccent/50 transition">
+                    <div class="p-6 bg-gradient-to-b from-violet-950/40 to-transparent">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs px-2.5 py-1 bg-violetAccent/20 text-violetAccent rounded-md font-mono">范式 C</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-microscope mr-1"></i>科学与信仰的极致同盟</span>
+                        </div>
+                        <h4 class="text-xl font-serif font-bold text-slate-100">居里夫妇</h4>
+                        <p class="text-xs text-violetAccent/80 mt-1">皮埃尔 · 居里 & 玛丽 · 居里</p>
+                    </div>
+                    <div class="p-6 space-y-4 flex-1">
+                        <div class="text-xs text-slate-300 space-y-2 leading-relaxed">
+                            <p><strong class="text-violetAccent">1. 纯粹理性结合：</strong> 在简陋的实验室里因对真理的共同追求而吸引，超越了物质与功利求索。</p>
+                            <p><strong class="text-violetAccent">2. 精神相互确证：</strong> 皮埃尔在玛丽面临性别偏见时，坚定地在诺贝尔奖提名中要求列入玛丽的名字。</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-xs text-slate-400">
+                            <strong class="text-slate-200">费曼总结：</strong> 当两个人的终极目标是超越自我的崇高事物时，爱情便获得了永恒的基石。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Feynman Assessment Quiz -->
+        <section id="quiz" class="space-y-8">
+            <div class="border-l-4 border-amberGold pl-4">
+                <h2 class="text-xs uppercase font-bold text-amberGold tracking-wider">Module 04</h2>
+                <h3 class="text-2xl sm:text-3xl font-serif font-bold text-slate-100">费曼自测：你的择偶观处于哪个认知阶梯？</h3>
+                <p class="text-slate-400 text-sm mt-1">4个透视问题，用最通俗的语言诊断你的亲密关系伦理与主体度</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+                <form id="feynman-quiz-form" class="space-y-6">
+                    
+                    <!-- Q1 -->
+                    <div class="space-y-3 pb-6 border-b border-slate-800">
+                        <label class="block text-sm font-bold text-slate-200">
+                            1. 当你对某人产生强烈的心动（第一眼吸引）时，你的理性认知是？
+                        </label>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q1" value="A" class="accent-amberGold mr-3" checked>
+                                <span class="text-slate-300">A. 沉溺于这份情绪，认为这是命中注定的灵魂伴侣降临。（生物冲动/宿命自欺）</span>
+                            </label>
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q1" value="B" class="accent-amberGold mr-3">
+                                <span class="text-slate-300">B. 意识到这是荷尔蒙或文化惯习（Habitus）带来的熟悉感，需要观察双方在道德与价值观上的真实匹配度。（理性觉察）</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="space-y-3 pb-6 border-b border-slate-800">
+                        <label class="block text-sm font-bold text-slate-200">
+                            2. 康德提出“人是目的，而非手段”，在关系中这意味着什么？
+                        </label>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q2" value="A" class="accent-amberGold mr-3" checked>
+                                <span class="text-slate-300">A. 找一个能为我提供情绪价值、生活照顾或社交面子的伴侣。（工具化对方）</span>
+                            </label>
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q2" value="B" class="accent-amberGold mr-3">
+                                <span class="text-slate-300">B. 尊重对方作为一个独立自由人的意志与发展，不试图控制或改造对方。（目的化对方）</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="space-y-3 pb-6 border-b border-slate-800">
+                        <label class="block text-sm font-bold text-slate-200">
+                            3. 面对关系中的摩擦与性格不合，萨特的存在主义会给出什么建议？
+                        </label>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q3" value="A" class="accent-amberGold mr-3" checked>
+                                <span class="text-slate-300">A. “分歧说明我们天生不适合，换一个人就好了。”（逃避自由与责任）</span>
+                            </label>
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q3" value="B" class="accent-amberGold mr-3">
+                                <span class="text-slate-300">B. “世上没有现成的合适。契合是双方通过自由选择、痛苦磨合与承诺共同创造出来的。”（承担选择的重负）</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="space-y-3">
+                        <label class="block text-sm font-bold text-slate-200">
+                            4. 埃里希·弗洛姆在《爱的艺术》中强调，寻找合适伴侣的第一步是？
+                        </label>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q4" value="A" class="accent-amberGold mr-3" checked>
+                                <span class="text-slate-300">A. 提升自己的吸引力条件，去茫茫人海中挑选那个“对的人”。（把爱看作被动被爱）</span>
+                            </label>
+                            <label class="flex items-center p-3.5 rounded-xl border border-slate-800 hover:border-amberGold bg-slate-900/60 cursor-pointer">
+                                <input type="radio" name="q4" value="B" class="accent-amberGold mr-3">
+                                <span class="text-slate-300">B. 先培养自己独立、健全、具备关心与责任的“爱的能力”。（把爱看作主动能力）</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="calculateQuizResult()" class="w-full py-3.5 bg-amberGold text-slate-950 font-bold text-sm rounded-xl hover:bg-yellow-400 transition shadow-lg">
+                        生成我的亲密关系哲学诊断报告
+                    </button>
+                </form>
+
+                <!-- Result Box -->
+                <div id="quiz-result" class="hidden p-6 rounded-xl bg-slate-900 border border-amberGold/40 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="p-2 bg-amberGold text-slate-950 rounded-lg"><i class="fa-solid fa-scroll"></i></span>
+                        <h4 id="quiz-result-title" class="font-serif font-bold text-slate-100 text-base">诊断计算中...</h4>
+                    </div>
+                    <p id="quiz-result-desc" class="text-xs text-slate-300 leading-relaxed">
+                        描述分析...
+                    </p>
+                    <div class="pt-3 border-t border-slate-800 text-xs text-amberGold font-semibold flex flex-col sm:flex-row justify-between gap-2">
+                        <span>费曼一句话格言：</span>
+                        <span id="quiz-result-summary" class="bg-slate-950 px-3 py-1 rounded border border-slate-800">...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 py-12 mt-20 text-slate-500 text-xs text-center space-y-3">
+        <p class="font-serif text-slate-300 text-sm">“真正的人类之爱，是两个独立灵魂在自由与责任中的高阶共舞。”</p>
+        <p>结合社会学（皮埃尔·布迪厄）、道德哲学（康德/黑格尔/萨特）与费曼学习法的单页交互解析</p>
+    </footer>
+    </div>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Data for Attraction Mechanism
+        const attractionDetails = {
+            bio: {
+                title: "第一级：生物本能 (Eros) - 演化与荷尔蒙",
+                desc: "演化心理学表明，外貌对称性、声音、嗅觉等是基因适应性的外化指标。这决定了‘第一眼心动’，但其生物学半衰期极短（通常在6至24个月内递减）。",
+                feynman: "费曼拆解：这就像新买的跑车引擎。启动时轰鸣声很迷人，但它不能保证你在没有导航和维修团队的情况下开完万里长途。"
+            },
+            habitus: {
+                title: "第二级：社会惯习 (Habitus) - 布迪厄文化资本匹配",
+                desc: "布迪厄指出，个人的生活习惯、审美偏好、言谈举止是由其社会阶层与文化资本决定的。两个拥有相似惯习的人会产生天然的‘熟稔感’与‘懂我’的错觉，这是社会学意义上的默契。",
+                feynman: "费曼拆解：这就像两台电脑运行相同的操作系统（iOS 与 iOS）。不需要转化器，文件就能直接互传。"
+            },
+            psyche: {
+                title: "第三级：心理依恋 (Psyche) - 补完与早期印记",
+                desc: "结合柏拉图半球理论与依恋理论。每个人都在寻找能够补完自己性格阴影（如内向者吸引外向者）或修复原生家庭未完成议题的伴侣。",
+                feynman: "费曼拆解：这是在寻找能够精准拼接你性格缺口的拼图块。"
+            },
+            logos: {
+                title: "第四级：存在伦理 (Logos) - 康德式尊重与共同价值",
+                desc: "关系的终极支柱。关乎双方是否将彼此视为尊严独立的‘目的’（康德），是否愿意为选择承担存在主义的重负（萨特），以及是否有共同的社会理想。",
+                feynman: "费曼拆解：这是这艘船的底盘防浪结构与终极罗盘。只要底盘稳，哪怕遇上海啸，船也不会沉。"
+            }
+        };
+
+        function updateAttractionDetail(key) {
+            const data = attractionDetails[key];
+            document.getElementById('attraction-title').innerText = data.title;
+            document.getElementById('attraction-desc').innerText = data.desc;
+            document.getElementById('attraction-feynman').innerHTML = `<i class="fa-solid fa-quote-left mr-1 text-amberGold"></i> ${data.feynman}`;
+        }
+
+        // Radar Chart Implementation via Pure Canvas
+        function renderRadarChart() {
+            const v1 = parseInt(document.getElementById('radar-input-1').value);
+            const v2 = parseInt(document.getElementById('radar-input-2').value);
+            const v3 = parseInt(document.getElementById('radar-input-3').value);
+            const v4 = parseInt(document.getElementById('radar-input-4').value);
+
+            document.getElementById('radar-val-1').innerText = v1 + '%';
+            document.getElementById('radar-val-2').innerText = v2 + '%';
+            document.getElementById('radar-val-3').innerText = v3 + '%';
+            document.getElementById('radar-val-4').innerText = v4 + '%';
+
+            const canvas = document.getElementById('radarCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = 90;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Angles for 4 dimensions
+            const angles = [
+                -Math.PI / 2,         // Top: Self awareness
+                0,                    // Right: Habitus
+                Math.PI / 2,          // Bottom: Moral Agency
+                Math.PI               // Left: Co-Evolution
+            ];
+
+            // Draw Background Web Grids
+            const levels = 4;
+            for (let l = 1; l <= levels; l++) {
+                const r = (radius / levels) * l;
+                ctx.beginPath();
+                for (let i = 0; i < 4; i++) {
+                    const x = centerX + r * Math.cos(angles[i]);
+                    const y = centerY + r * Math.sin(angles[i]);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Draw Axis Lines
+            for (let i = 0; i < 4; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + radius * Math.cos(angles[i]), centerY + radius * Math.sin(angles[i]));
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.stroke();
+            }
+
+            // Data Points Calculation
+            const values = [v1, v2, v3, v4];
+            const points = values.map((v, i) => {
+                const r = (radius * (v / 100));
+                return {
+                    x: centerX + r * Math.cos(angles[i]),
+                    y: centerY + r * Math.sin(angles[i])
+                };
+            });
+
+            // Draw Data Area Fill
+            ctx.beginPath();
+            points.forEach((p, i) => {
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+            });
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(229, 169, 60, 0.25)';
+            ctx.fill();
+            ctx.strokeStyle = '#e5a93c';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw Points
+            points.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#fef08a';
+                ctx.fill();
+            });
+
+            // Text Summary Logic
+            const avg = Math.round((v1 + v2 + v3 + v4) / 4);
+            const summaryBox = document.getElementById('radar-summary-box');
+            
+            if (avg >= 80) {
+                summaryBox.innerHTML = `<strong class="text-amberGold">综合评分 ${avg} 分 · 至高弹性共同体：</strong> 双方具备极强的自我觉察与道德履约意愿，不仅有社会学意义上的默契，更能共同应对人生大浪。`;
+            } else if (avg >= 60) {
+                summaryBox.innerHTML = `<strong class="text-tealAccent">综合评分 ${avg} 分 · 成熟磨合型关系：</strong> 具备良好的日常相处基础，但在面对重大伦理考验或身份巨变时，仍需提升道德承诺履约度。`;
+            } else {
+                summaryBox.innerHTML = `<strong class="text-crimsonRed">综合评分 ${avg} 分 · 脆弱/工具化风险关系：</strong> 过度依赖单一冲动吸引，缺少足够的自我觉察与共同进化能力，易产生自欺摩擦。`;
+            }
+        }
+
+        // Quiz Result Calculation
+        function calculateQuizResult() {
+            const form = document.getElementById('feynman-quiz-form');
+            const formData = new FormData(form);
+            
+            let countB = 0;
+            for (let val of formData.values()) {
+                if (val === 'B') countB++;
+            }
+
+            const resultBox = document.getElementById('quiz-result');
+            const titleEl = document.getElementById('quiz-result-title');
+            const descEl = document.getElementById('quiz-result-desc');
+            const summaryEl = document.getElementById('quiz-result-summary');
+
+            resultBox.classList.remove('hidden');
+
+            if (countB >= 3) {
+                titleEl.innerText = "主体自主型（康德与存在主义践行者）";
+                descEl.innerText = "你拥有极其成熟清醒的择偶观。你不再盲目等待‘命中注定’的偶然，而是将亲密关系看作两个独立主体通过理性选择、道德承诺与主动能力共同锻造的生命作品。";
+                summaryEl.innerText = "爱是主动践行的能力，而非被动等待的彩票";
+            } else if (countB >= 2) {
+                titleEl.innerText = "理性觉察型（理想与现实探索者）";
+                descEl.innerText = "你在理智上理解相互尊重与沟通的重要性，但在具体情绪中偶尔仍会陷入‘期待对方迁就自己’的工具化倾向。多关注弗洛姆的‘主动关心与了解’，将有助于你建立更稳固的关系。";
+                summaryEl.innerText = "少一点工具化期待，多一点主动倾听与尊重";
+            } else {
+                titleEl.innerText = "宿命依赖型（易陷于自欺与冲动）";
+                descEl.innerText = "你目前容易把关系寄托于第一眼的心动或被动的安全感需求。这容易导致把伴侣当作满足自己情绪的‘手段’。建议提升自我觉察，建立独立的自我在进入关系。";
+                summaryEl.innerText = "先成为完整独立的自己，再寻找平等的灵魂";
+            }
+        }
+
+        // On Load Init
+        window.onload = function() {
+            const mobileSidebarBtn = document.getElementById('mobile-sidebar-btn');
+            const sidebar = document.getElementById('sidebar');
+            mobileSidebarBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+                mobileSidebarBtn.setAttribute('aria-expanded', String(!sidebar.classList.contains('hidden')));
+            });
+            updateAttractionDetail('logos');
+            renderRadarChart();
+        };
+    </script>
+</body>
+</html>
